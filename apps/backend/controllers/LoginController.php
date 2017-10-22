@@ -1,11 +1,12 @@
 <?php
 
+namespace Multiple\Backend\Controllers;
+
 use Phalcon\Mvc\Controller;
 
-class IndexController extends Controller
+class LoginController extends Controller
 {
     public function indexAction()
     {
-        echo '<h1>Helloaaa!</h1>';
     }
 }

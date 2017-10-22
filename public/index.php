@@ -1,57 +1,88 @@
 <?php
 
+error_reporting(E_ALL);
+
 use Phalcon\Loader;
-use Phalcon\Mvc\View;
-use Phalcon\Mvc\Application;
-use Phalcon\Di\FactoryDefault;
-use Phalcon\Mvc\Url as UrlProvider;
+use Phalcon\Mvc\Router;
+use Phalcon\DI\FactoryDefault;
+use Phalcon\Mvc\Application as BaseApplication;
 
-// Define some absolute path constants to aid in locating resources
-define('BASE_PATH', dirname(__DIR__));
-define('APP_PATH', BASE_PATH . '/app');
+class Application extends BaseApplication
+{
+    /**
+     * Register the services here to make them general or register in the ModuleDefinition to make them module-specific
+     */
+    protected function registerServices()
+    {
 
-// Register an autoloader
-$loader = new Loader();
+        $di = new FactoryDefault();
 
-$loader->registerDirs(
-    [
-        APP_PATH . '/controllers/',
-        APP_PATH . '/models/',
-    ]
-);
+        $loader = new Loader();
 
-$loader->register();
+        /**
+         * We're a registering a set of directories taken from the configuration file
+         */
+        $loader
+            ->registerDirs([__DIR__ . '/../apps/library/'])
+            ->register();
 
-// Create a DI
-$di = new FactoryDefault();
+        // Registering a router
+        $di->set('router', function () {
 
-// Setup the view component
-$di->set(
-    'view',
-    function () {
-        $view = new View();
-        $view->setViewsDir(APP_PATH . '/views/');
-        return $view;
+            $router = new Router();
+
+            $router->setDefaultModule("frontend");
+
+            $router->add('/:controller/:action', [
+                'module'     => 'frontend',
+                'controller' => 1,
+                'action'     => 2,
+            ])->setName('frontend');
+
+            $router->add("/administrator", [
+                'module'     => 'backend',
+                'controller' => 'login',
+                'action'     => 'index',
+            ])->setName('backend-login');
+
+            $router->add("/admin/products", [
+                'module'     => 'backend',
+                'controller' => 'products',
+                'action'     => 'index',
+            ])->setName('backend-product');
+
+            $router->add("/products/:action", [
+                'module'     => 'frontend',
+                'controller' => 'products',
+                'action'     => 1,
+            ])->setName('frontend-product');
+
+            return $router;
+        });
+
+        $this->setDI($di);
     }
-);
 
-// Setup a base URI so that all generated URIs include the "tutorial" folder
-$di->set(
-    'url',
-    function () {
-        $url = new UrlProvider();
-        $url->setBaseUri('/');
-        return $url;
+    public function main()
+    {
+
+        $this->registerServices();
+
+        // Register the installed modules
+        $this->registerModules([
+            'frontend' => [
+                'className' => 'Multiple\Frontend\Module',
+                'path'      => '../apps/frontend/Module.php'
+            ],
+            'backend'  => [
+                'className' => 'Multiple\Backend\Module',
+                'path'      => '../apps/backend/Module.php'
+            ]
+        ]);
+
+        echo $this->handle()->getContent();
     }
-);
-
-$application = new Application($di);
-
-try {
-    // Handle the request
-    $response = $application->handle();
-
-    $response->send();
-} catch (\Exception $e) {
-    echo 'Exception: ', $e->getMessage();
 }
+
+$application = new Application();
+$application->main();
