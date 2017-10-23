@@ -488,6 +488,10 @@ nav.side-navbar a {
   padding: 12px;
 }
 
+nav.side-navbar.shrink a {
+  padding: 12px 4px;
+}
+
 nav.side-navbar a:focus, nav.side-navbar a:hover, nav.side-navbar a[aria-expanded="true"] {
   background: #33b35a;
   color: #fff;
