@@ -117,11 +117,10 @@ UNLOCK TABLES;
 --
 -- Table structure for table `users`
 --
-
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
+/*CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `password` char(40) COLLATE utf8_unicode_ci NOT NULL,
@@ -130,9 +129,25 @@ CREATE TABLE `users` (
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `active` char(1) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;*/
 /*!40101 SET character_set_client = @saved_cs_client */;
-
+CREATE TABLE `users` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`number` SMALLINT(3) UNSIGNED NOT NULL,
+	`type` SMALLINT(1) UNSIGNED NOT NULL,
+	`first_name` VARCHAR(70) NOT NULL,
+	`last_name` VARCHAR(70) NOT NULL,
+	`email` VARCHAR(70) NOT NULL,
+	`password` VARCHAR(70) NOT NULL,
+	`active` CHAR(1) NOT NULL DEFAULT '1',
+	`created_by` INT(11) NULL DEFAULT NULL,
+	`created_at` DATETIME NULL DEFAULT NULL,
+	`updated_by` INT(11) NULL DEFAULT NULL,
+	`updated_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `UNIQUE` (`email`)
+)
+COLLATE='utf8_general_ci' ENGINE=InnoDB AUTO_INCREMENT=1;
 --
 -- Dumping data for table `users`
 --
