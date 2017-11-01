@@ -1,1 +1,19 @@
 /* your styles go here */
+img.logo {
+    width: 100px;
+    height: auto;
+}
+span.circle {
+    color: #fff;
+    border-radius: 50%;
+    height: 22px;
+    width: 22px;
+    text-align: center;
+    padding: 2px;
+}
+span.circle.inactive-user {
+    background-color: #ffce56;
+}
+span.circle.active-user {
+    background-color: #33b35a;
+}

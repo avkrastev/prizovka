@@ -489,7 +489,7 @@ nav.side-navbar a {
 }
 
 nav.side-navbar.shrink a {
-  padding: 12px 4px;
+  padding: 12px 0px;
 }
 
 nav.side-navbar a:focus, nav.side-navbar a:hover, nav.side-navbar a[aria-expanded="true"] {
@@ -1457,8 +1457,13 @@ section.forms .input-group-btn .dropdown-menu a {
   position: relative;
 }
 
-.login-page form input,
-.register-page form input {
+.login-page form input[type='text'], 
+.login-page form input[type='password'], 
+.login-page form input[type='email'],
+.register-page form input[type='text'],
+.register-page form input[type='password'],
+.register-page form input[type='email'] {
+  background: none;
   outline: none;
   border-radius: 0;
   width: 100%;
@@ -1473,23 +1478,9 @@ section.forms .input-group-btn .dropdown-menu a {
   font-size: 0.9em;
 }
 
-.login-page form input[type='text'], .login-page form input[type='password'], .login-page form input[type='email'],
-.register-page form input[type='text'],
-.register-page form input[type='password'],
-.register-page form input[type='email'] {
-  background: none;
-}
-
 .login-page form input[type='submit'],
 .register-page form input[type='submit'] {
-  width: 200px;
-  border-radius: 50px;
-  text-transform: uppercase;
-  font-weight: 300;
   cursor: pointer;
-  font-size: 0.8em;
-  margin-bottom: 0;
-  color: #fff;
 }
 
 .login-page form label.error,

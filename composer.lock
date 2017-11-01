@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "40ad530c079ddb5c364a71b96349aba9",
-    "content-hash": "a81658259055bbe575b88812aa6fa274",
+    "hash": "91ecbe19e670232a5910bdcc1e6602ba",
+    "content-hash": "b31fe7dbde374171b3139e15ebd0a42b",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -180,16 +180,16 @@
         },
         {
             "name": "phalcon/devtools",
-            "version": "v3.2.8",
+            "version": "v3.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phalcon/phalcon-devtools.git",
-                "reference": "c77ddde6802224c2a498159c9f702d9a5e546187"
+                "reference": "61ece695c233f4bf16be1488dfc61649fc8ba1c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phalcon/phalcon-devtools/zipball/c77ddde6802224c2a498159c9f702d9a5e546187",
-                "reference": "c77ddde6802224c2a498159c9f702d9a5e546187",
+                "url": "https://api.github.com/repos/phalcon/phalcon-devtools/zipball/61ece695c233f4bf16be1488dfc61649fc8ba1c3",
+                "reference": "61ece695c233f4bf16be1488dfc61649fc8ba1c3",
                 "shasum": ""
             },
             "require": {
@@ -238,7 +238,7 @@
                 "phar",
                 "webtools"
             ],
-            "time": "2017-10-20 12:19:48"
+            "time": "2017-10-25 13:49:41"
         },
         {
             "name": "psr/log",
@@ -618,8 +618,6 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {
-        "ext-phalcon": "*"
-    },
+    "platform": [],
     "platform-dev": []
 }

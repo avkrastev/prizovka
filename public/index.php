@@ -2,65 +2,31 @@
 
 error_reporting(E_ALL);
 
-use Phalcon\Loader;
-use Phalcon\Mvc\Router;
-use Phalcon\DI\FactoryDefault;
-use Phalcon\Mvc\Application as BaseApplication;
+use Phalcon\Mvc\Application;
+use Phalcon\Config\Adapter\Ini as ConfigIni;
 
-class Application extends BaseApplication
-{
+try {
+    define('APP_PATH', realpath('..') . '/');
+
     /**
-     * Register the services here to make them general or register in the ModuleDefinition to make them module-specific
+     * Read the configuration
      */
-    protected function registerServices()
-    {
-
-        $di = new FactoryDefault();
-
-        $loader = new Loader();
-
-        /**
-         * We're a registering a set of directories taken from the configuration file
-         */
-        $loader
-            ->registerDirs([__DIR__ . '/../apps/library/'])
-            ->register();
-
-        // Registering a router
-        $di->set('router', function () {
-
-            $router = new Router();
-
-            $router->setDefaultModule("frontend");
-
-            require_once 'router.php';
-
-            return $router;
-        });
-
-        $this->setDI($di);
+    $config = new ConfigIni(APP_PATH . 'app/config/config.ini');
+    if (is_readable(APP_PATH . 'app/config/config.ini.dev')) {
+        $override = new ConfigIni(APP_PATH . 'app/config/config.ini.dev');
+        $config->merge($override);
     }
 
-    public function main()
-    {
+    /**
+     * Auto-loader configuration
+     */
+    require APP_PATH . 'app/config/loader.php';
 
-        $this->registerServices();
+    $application = new Application(new Services($config));
 
-        // Register the installed modules
-        $this->registerModules([
-            'frontend' => [
-                'className' => 'Multiple\Frontend\Module',
-                'path'      => '../apps/frontend/Module.php'
-            ],
-            'backend'  => [
-                'className' => 'Multiple\Backend\Module',
-                'path'      => '../apps/backend/Module.php'
-            ]
-        ]);
-
-        echo $this->handle()->getContent();
-    }
+    // NGINX - PHP-FPM already set PATH_INFO variable to handle route
+    echo $application->handle(!empty($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : null)->getContent();
+} catch (Exception $e){
+    echo $e->getMessage() . '<br>';
+    echo '<pre>' . $e->getTraceAsString() . '</pre>';
 }
-
-$application = new Application();
-$application->main();
