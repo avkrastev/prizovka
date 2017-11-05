@@ -14,11 +14,11 @@
         </div>
         <div class="main-menu">
         <ul id="side-main-menu" class="side-menu list-unstyled">                  
-            <li class="active"><a href="/employees"> <i class="icon-home"></i><span>Служители</span></a></li>
-            <li> <a href="forms.html"><i class="icon-form"></i><span>Призовки</span></a></li>
-            <li> <a href="charts.html"><i class="icon-presentation"></i><span>Статистика</span></a></li>
-            <li> <a href="tables.html"> <i class="icon-grid"> </i><span>История</span></a></li>
-            <li> <a href="login.html"> <i class="icon-picture"></i><span>Адреси</span></a></li>
+            <li class="active"><a href="/employees"><i class="icon ion-ios-people-outline"></i><span>Служители</span></a></li>
+            <li> <a href="forms.html"><i class="icon ion-ios-paper-outline"></i><span>Призовки</span></a></li>
+            <li> <a href="charts.html"><i class="icon ion-arrow-graph-up-right"></i><span>Статистика</span></a></li>
+            <li> <a href="tables.html"> <i class="icon ion-ios-box-outline"> </i><span>История</span></a></li>
+            <li> <a href="login.html"> <i class="icon ion-map"></i><span>Адреси</span></a></li>
         </ul>
         </div>
     </div>
@@ -29,7 +29,7 @@
         <nav class="navbar">
         <div class="container-fluid">
             <div class="navbar-holder d-flex align-items-center justify-content-between">
-            <div class="navbar-header"><a id="toggle-btn" href="/" class="menu-btn"><i class="icon-bars"> </i></a><a href="/" class="navbar-brand">
+            <div class="navbar-header"><a id="toggle-btn" href="/" class="menu-btn"><i class="icon ion-android-menu"> </i></a><a href="/" class="navbar-brand">
             <div class="brand-text hidden-sm-down"><span>{{ user.first_name }}</span>&nbsp;<strong class="text-primary">{{ user.last_name }}</strong></div></a></div>
                 <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                     <li class="nav-item"><a href="/session/end" class="nav-link logout">Излез<i class="fa fa-sign-out"></i></a></li>

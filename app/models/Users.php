@@ -7,6 +7,12 @@ use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
 
 class Users extends Model
 {
+    const ADMIN = 1;
+    const COADMIN = 2;
+	const EMPLOYEE = 3;
+    const SUMMON = 4;
+    const CLERK = 5;
+    
     public function validation()
     {
         $validator = new Validation();
@@ -24,4 +30,14 @@ class Users extends Model
         
         return $this->validate($validator);
     }
+
+    public static function getUserTypes() {
+		return [
+			self::ADMIN => "ЧСИ",
+			self::COADMIN => "ПЧСИ",
+			self::EMPLOYEE => "Служител",
+            self::SUMMON => "Призовкар",
+            self::CLERK => "Деловодител"
+        ];  
+	}
 }

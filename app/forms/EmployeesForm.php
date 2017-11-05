@@ -49,7 +49,7 @@ class EmployeesForm extends Form
         ));
         $this->add($password);
 
-        $type = new Select('type', ProductTypes::find(), array(
+        $type = new Select('type', Users::getUserTypes(), array(
             'using'      => array('id', 'name'),
             'useEmpty'   => true,
             'emptyText'  => '',

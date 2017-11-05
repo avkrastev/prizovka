@@ -17,3 +17,30 @@ span.circle.inactive-user {
 span.circle.active-user {
     background-color: #33b35a;
 }
+table td.operations a {
+    margin: 0px 10px;
+}
+table td.operations i.icon {
+    font-size: 1.1rem !important;
+}
+table td.operations a:first-child {
+    margin-left: 0px;
+}
+.btn i.icon {
+    margin: 0px 10px 0px 0px;
+    vertical-align: middle;
+}
+#side-main-menu i.icon {
+    font-size: 1.8rem !important;
+    vertical-align: middle;
+    width: 25px;
+}
+nav.side-navbar a {
+    padding: 6px 12px;
+}
+.menu-btn i.icon {
+    font-size: 1.5rem;
+}
+a[href="#"] {
+    outline: none;
+}

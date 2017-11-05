@@ -50,7 +50,7 @@ class SecurityPlugin extends Plugin
 				'products'     => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'producttypes' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'invoices'     => array('index', 'profile'),
-				'employees'    => array('index', 'create')
+				'employees'    => array('index', 'create', 'edit', 'save', 'view', 'delete'),
 			);
 			foreach ($privateResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);
@@ -124,7 +124,7 @@ class SecurityPlugin extends Plugin
 		}
 
 		$allowed = $acl->isAllowed($role, $controller, $action);
-		
+
 		if (!$allowed) {
 			$dispatcher->forward(array(
 				'controller' => 'errors',

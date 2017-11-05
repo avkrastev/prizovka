@@ -2,6 +2,7 @@
 
 use Phalcon\Flash;
 use Phalcon\Session;
+use Phalcon\Mvc\View;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class EmployeesController extends ControllerBase
@@ -18,20 +19,13 @@ class EmployeesController extends ControllerBase
     public function indexAction()
     {
         $numberPage = 1;
-        if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, "Users", $this->request->getPost());
-            $this->persistent->searchParams = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery("page", "int");
-        }
+        $numberPage = $this->request->getQuery("page", "int");
 
         $parameters = array();
-        if ($this->persistent->searchParams) {
-            $parameters = $this->persistent->searchParams;
-        }
 
-        $parameters['order'] = 'first_name ASC'; //TODO get order dinamically
+        $parameters['order'] = 'type ASC'; //TODO get order dinamically
         $employees = Users::find($parameters);
+
         if (count($employees) == 0) {
             $this->flash->notice("Няма намерени служители по зададените критерии");
 
@@ -50,6 +44,7 @@ class EmployeesController extends ControllerBase
         ));
 
         $this->view->users = $employees;
+        $this->view->userTypes = Users::getUserTypes();
         $this->view->page = $paginator->getPaginate();
     }
 
@@ -86,7 +81,8 @@ class EmployeesController extends ControllerBase
                     $this->flash->error((string) $message);
                 }
             } else {
-                $this->flash->success('Your profile information was updated successfully');
+                $this->flash->success('Служителят беше добавен успешно!');
+                $this->view->userId = $user->id; // TODO get record position
                 
                 return $this->dispatcher->forward(
                     [
@@ -99,6 +95,65 @@ class EmployeesController extends ControllerBase
 
         $this->view->form = $form;
     }
+
+    public function viewAction() 
+    {
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+
+        $userId = $this->request->getPost('userId');
+
+        $user = Users::findFirstById($userId);
+
+        if (!$user) {
+            echo json_encode(['error' => 'Служителят не беше намерен!']);
+            return;
+        }
+
+        echo json_encode($user);
+    }
+
+     /**
+     * Deletes a user
+     *
+     * @param string $id
+     */
+    public function deleteAction($id)
+    {
+        $user = Users::findFirstById($id);
+        if (!$user) {
+            $this->flash->error("Служителят не беше намерен!");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "employees",
+                    "action"     => "index",
+                ]
+            );
+        }
+
+        if (!$user->delete()) {
+            foreach ($user->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "employees",
+                    "action"     => "index",
+                ]
+            );
+        }
+
+        $this->flash->success("Служителят беше изтрит успешно!");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "employees",
+                    "action"     => "index",
+                ]
+            );
+    }
+
     /**
      * Edit the active user profile
      *
