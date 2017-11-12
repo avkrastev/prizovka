@@ -146,12 +146,12 @@ class EmployeesController extends ControllerBase
 
         $this->flash->success("Служителят беше изтрит успешно!");
 
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "employees",
-                    "action"     => "index",
-                ]
-            );
+        return $this->dispatcher->forward(
+            [
+                "controller" => "employees",
+                "action"     => "index",
+            ]
+        );
     }
 
     /**

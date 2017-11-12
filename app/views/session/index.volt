@@ -5,7 +5,7 @@
     <div class="container">
         <div class="form-outer text-center d-flex align-items-center"> 
         <div class="form-inner">
-            <img class="logo" src="../img/kchsi.jpg" alt="лого"/>
+            <img class="logo" src="{{ static_url('img/kchsi.jpg') }}" alt="лого"/>
             <div class="logo text-uppercase"><strong class="text-primary">Частен съдебен изпълнител</strong></div>
             <p>Система за управление и контрол при раздаването на призовки</p>
             {{ flash.output() }}

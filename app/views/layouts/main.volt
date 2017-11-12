@@ -2,7 +2,7 @@
 <nav class="side-navbar">
     <div class="side-navbar-wrapper">
         <div class="sidenav-header d-flex align-items-center justify-content-center">
-        <div class="sidenav-header-inner text-center"><img src="../img/logo.jpg" alt="лого" class="img-fluid rounded-circle">
+        <div class="sidenav-header-inner text-center"><img src="{{ static_url('img/logo.jpg') }}" alt="лого" class="img-fluid rounded-circle">
             <h2 class="h5 text-uppercase">{{ user.number }}</h2><span class="text-uppercase">ЧСИ {{ user.first_name }}  {{ user.last_name }}</span>
         </div>
         <div class="sidenav-header-logo">
