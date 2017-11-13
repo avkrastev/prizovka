@@ -39,7 +39,7 @@
                                 <td>{{ user.last_name }}</td>
                                 <td>{{ userTypes[user.type] }}</td>
                                 <td class="operations">
-                                    <a href="{{ url('employees/edit/id') }}" title="Редакция"><i class="icon ion-edit"></i></a>
+                                    {{ link_to("employees/edit/" ~ user.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
                                     <a href="#" class="viewUser" user-id="{{ user.id }}" data-toggle="modal" data-target="#viewUserModal" title="Преглед"><i class="icon ion-eye"></i></a>
                                     <!-- Modal-->
                                     <div id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby="viewUserLabel" aria-hidden="true" class="modal fade text-left">

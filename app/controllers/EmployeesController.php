@@ -112,6 +112,103 @@ class EmployeesController extends ControllerBase
         echo json_encode($user);
     }
 
+    /**
+    * Edits an user based on its id
+    */
+    public function editAction($id)
+    {
+        if (!$this->request->isPost()) {
+            $user = Users::findFirstById($id);
+            if (!$user) {
+                $this->flash->error("Служителят не беше намерен!");
+
+                return $this->dispatcher->forward(
+                    [
+                        "controller" => "employees",
+                        "action"     => "index",
+                    ]
+                );
+            }
+
+            $this->view->form = new EmployeesForm($user, array('edit' => true));
+        }
+    }
+
+    /**
+    * Saves current user in screen
+    *
+    * @param string $id
+    */
+    public function saveAction()
+    {
+        if (!$this->request->isPost()) {
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "employees",
+                    "action"     => "index",
+                ]
+            );
+        }
+
+        $id = $this->request->getPost("id", "int");
+
+        $user = Users::findFirstById($id);
+        if (!$user) {
+            $this->flash->error("Служителят не съществува!");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "employees",
+                    "action"     => "index",
+                ]
+            );
+        }
+
+        $form = new EmployeesForm;
+        $this->view->form = $form;
+
+        $data = $this->request->getPost();
+
+        if (!$form->isValid($data, $user)) {
+            foreach ($form->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "employees",
+                    "action"     => "edit",
+                    "params"     => [$id]
+                ]
+            );
+        }
+
+        if ($user->save() == false) {
+            foreach ($user->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "employees",
+                    "action"     => "edit",
+                    "params"     => [$id]
+                ]
+            );
+        }
+
+        $form->clear();
+
+        $this->flash->success("Информацията беше редактирана успешно!");
+
+        return $this->dispatcher->forward(
+            [
+                "controller" => "employees",
+                "action"     => "index",
+            ]
+        );
+    }
+
      /**
      * Deletes a user
      *
