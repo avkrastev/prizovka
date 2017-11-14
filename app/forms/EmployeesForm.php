@@ -63,7 +63,6 @@ class EmployeesForm extends Form
         $this->add($type);
 
         $active = new Check('active', array(
-            'value'    => 1,
             'checked'  => 1
         ));
         $active->setLabel('Активен профил');

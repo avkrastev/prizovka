@@ -72,7 +72,7 @@ class EmployeesController extends ControllerBase
             $user->password = sha1($password);
             $user->email = $email;
             $user->type = $type;
-            $user->active = $active;
+            $user->active = $active = isset($active) ? 1 : 0;
             $user->created_at = new Phalcon\Db\RawValue('now()');
             $user->created_by = $auth['id'];
             
@@ -168,6 +168,7 @@ class EmployeesController extends ControllerBase
         $this->view->form = $form;
 
         $data = $this->request->getPost();
+        $data['active'] = isset($data['active']) ? 1 : 0;
 
         if (!$form->isValid($data, $user)) {
             foreach ($form->getMessages() as $message) {

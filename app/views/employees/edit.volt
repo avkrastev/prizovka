@@ -25,7 +25,8 @@
                                 {{ element.label(['class': 'col-sm-3 form-control-label']) }}
                                 <div class="col-sm-9">
                                     <div class="i-checks">
-                                        {{ element.render('active') }}
+                                        {% set value = element.getValue()  %}                                  
+                                        {{ value == 1 ? check_field('active', 'value' : value, 'checked' : 'checked') : check_field('active', 'value' : value) }}
                                     </div>
                                 </div>
                             </div>
