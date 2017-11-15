@@ -47,7 +47,9 @@
         </div>
     </div>
     <div class="container-fluid">
-        {{ flash.output() }}
+        <div class="container-fluid flash-output">
+            {{ flash.output() }}
+        </div>
         {{ content() }}
     </div>
     <footer class="main-footer">

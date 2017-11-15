@@ -55,30 +55,32 @@ class EmployeesController extends ControllerBase
         $form = new EmployeesForm;
 
         if ($this->request->isPost()) {
-            $first_name = $this->request->getPost('first_name', array('string', 'striptags'));
-            $last_name = $this->request->getPost('last_name', array('string', 'striptags'));
-            $email = $this->request->getPost('email', 'email');
-            $password = $this->request->getPost('password');
-            $type = $this->request->getPost('type');
-            $active = $this->request->getPost('active');
+            $data['first_name'] = $this->request->getPost('first_name', array('string', 'striptags'));
+            $data['last_name'] = $this->request->getPost('last_name', array('string', 'striptags'));
+            $data['email'] = $this->request->getPost('email', 'email');
+            $data['password'] = $this->request->getPost('password');
+            $data['type'] = $this->request->getPost('type');
+            $data['active'] = $this->request->getPost('active');
 
             $auth = $this->session->get('auth');
             $loggedUser = Users::findFirst($auth['id']);
 
             $user = new Users();
-            $user->first_name = $first_name;
-            $user->last_name = $last_name;
+            $user->first_name = $data['first_name'];
+            $user->last_name = $data['last_name'];
             $user->number = $loggedUser->number;
-            $user->password = sha1($password);
-            $user->email = $email;
-            $user->type = $type;
-            $user->active = $active = isset($active) ? 1 : 0;
+            $user->password = sha1($data['password']);
+            $user->email = $data['email'];
+            $user->type = $data['type'];
+            $user->active = $active = isset($data['active']) ? 1 : 0;
             $user->created_at = new Phalcon\Db\RawValue('now()');
             $user->created_by = $auth['id'];
             
             if ($user->save() == false) {
-                foreach ($user->getMessages() as $message) {
-                    $this->flash->error((string) $message);
+                if (!$form->isValid($data, $user)) {
+                    foreach ($form->getMessages() as $message) {
+                        $this->view->setVar($message->getField(), $message);
+                    }
                 }
             } else {
                 $this->flash->success('Служителят беше добавен успешно!');

@@ -34,11 +34,11 @@ class EmployeesForm extends Form
         $email->setLabel('Електронна поща');
         $email->setFilters('email');
         $email->addValidators(array(
-            new PresenceOf(array(
-                'message' => 'E-mail is required'
-            )),
             new Email(array(
-                'message' => 'E-mail is not valid'
+                'message' => 'Въведената електронната поща не валидна'
+            )),
+            new PresenceOf(array(
+                'message' => 'Електронната поща е задължително поле'
             ))
         ));
         $this->add($email);
@@ -48,16 +48,14 @@ class EmployeesForm extends Form
         $password->setLabel('Парола');
         $password->addValidators(array(
             new PresenceOf(array(
-                'message' => 'Password is required'
+                'message' => 'Паролата е задължително поле'
             ))
         ));
         $this->add($password);
 
         $type = new Select('type', Users::getUserTypes(), array(
-            'using'      => array('id', 'name'),
-            'useEmpty'   => true,
-            'emptyText'  => '',
-            'emptyValue' => ''
+            'using' => array('id', 'name'),
+            'value' => Users::SUMMON
         ));
         $type->setLabel('Тип потребител');
         $this->add($type);

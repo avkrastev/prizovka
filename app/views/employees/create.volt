@@ -7,7 +7,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-block">
-                    {{ form('employees/create', 'id': 'employeesForm', 'class': 'form-horizontal', 'onbeforesubmit': 'return false') }}
+                    {{ form('employees/create', 'id': 'employeesForm', 'class': 'form-horizontal', 'onbeforesubmit': 'return false', 'autocomplete': 'off') }}
                     <div class="form-group row">
                         {{ form.label('first_name', ['class': 'col-sm-3 form-control-label']) }}
                         <div class="col-sm-9">
@@ -20,18 +20,34 @@
                             {{ form.render('last_name', ['class': 'form-control']) }}
                         </div>
                     </div>
-                    <div class="form-group row">
-                        {{ form.label('email', ['class': 'col-sm-3 form-control-label']) }}
+                    {% set emailformClass = '' %}
+                    {% set emailformControlClass = '' %}
+                    {% set emailMessage = '' %}
+                    {% if email is defined %}
+                        {% set emailformClass = 'has-danger' %}
+                        {% set emailformControlClass = 'form-control-danger' %}
+                        {% set emailMessage = email %}
+                    {% endif %}   
+                    <div class="form-group row {{ emailformClass }}">
+                        {{ form.label('email', ['class': 'col-sm-3 form-control-label', 'autocomplete': 'off']) }}
                         <div class="col-sm-9">
-                            {{ form.render('email', ['class': 'form-control']) }}
-                            <span class="help-block-none">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+                            {{ form.render('email', ['class': 'form-control ' ~ emailformControlClass]) }}
+                            <span class="help-block-none form-control-feedback">{{ emailMessage }}</span>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    {% set passformClass = '' %}
+                    {% set passformControlClass = '' %}
+                    {% set passMessage = '' %}
+                    {% if password is defined %}
+                        {% set passformClass = 'has-danger' %}
+                        {% set passformControlClass = 'form-control-danger' %}
+                        {% set passMessage = password %}
+                    {% endif %}   
+                    <div class="form-group row {{ passformClass }}">
                         {{ form.label('password', ['class': 'col-sm-3 form-control-label']) }}
                         <div class="col-sm-9">
-                            {{ form.render('password', ['class': 'form-control']) }}
-                            <span class="help-block-none">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+                            {{ form.render('password', ['class': 'form-control ' ~ passformControlClass]) }}
+                            <span class="help-block-none form-control-feedback">{{ passMessage }}</span>
                         </div>
                     </div>
                     <div class="form-group row">

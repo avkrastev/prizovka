@@ -44,3 +44,6 @@ nav.side-navbar a {
 a[href="#"] {
     outline: none;
 }
+.flash-output {
+    padding-top: 2rem;
+}
