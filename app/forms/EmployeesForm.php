@@ -33,9 +33,10 @@ class EmployeesForm extends Form
         $email = new Text('email');
         $email->setLabel('Електронна поща');
         $email->setFilters('email');
+        $email->setAttribute('autocomplete', 'off');
         $email->addValidators(array(
             new Email(array(
-                'message' => 'Въведената електронната поща не валидна'
+                'message' => 'Въведената електронна поща не e валидна'
             )),
             new PresenceOf(array(
                 'message' => 'Електронната поща е задължително поле'
@@ -46,6 +47,8 @@ class EmployeesForm extends Form
         // Password
         $password = new Password('password');
         $password->setLabel('Парола');
+        $password->setDefault('');
+        $password->setAttribute('autocomplete', 'off');
         $password->addValidators(array(
             new PresenceOf(array(
                 'message' => 'Паролата е задължително поле'

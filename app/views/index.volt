@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ static_url('css/style.default.css') }}" type="text/css" />
     <!-- jQuery Circle-->
     <link rel="stylesheet" href="{{ static_url('css/grasp_mobile_progress_circle-1.0.0.min.css') }}" type="text/css" />
-    <!-- Custom stylesheet - for your changes-->s
+    <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet" href="{{ static_url('css/custom.css') }}" type="text/css" />
     <!-- Favicon-->
     <link rel="shortcut icon" href="{{ static_url('img/favicon.ico') }}">

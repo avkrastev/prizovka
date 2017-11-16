@@ -70,9 +70,15 @@
                                 <td colspan="7" align="right">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination justify-content-center">
-                                            <li class="page-item">
-                                                {{ link_to("employees/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
-                                            </li>
+                                            {% if page.before == page.current %}
+                                                <li class="page-item disabled">
+                                                    {{ link_to("employees/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item">
+                                                    {{ link_to("employees/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
+                                                </li>
+                                            {% endif %}
                                             {% for i in 1..page.total_pages %}
                                                 {% if i == page.current %}
                                                     <li class="page-item active">
@@ -83,11 +89,16 @@
                                                         {{ link_to("employees/index?page=" ~ i, i, "class": "page-link") }}
                                                     </li>
                                                 {% endif %}
-
                                             {% endfor %}
-                                            <li class="page-item">
-                                                {{ link_to("employees/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
-                                            </li>
+                                            {% if page.next == page.current %}
+                                                <li class="page-item disabled">
+                                                    {{ link_to("employees/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item">
+                                                    {{ link_to("employees/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
+                                                </li>
+                                            {% endif %}
                                         </ul>
                                     </nav>
                                 </td>

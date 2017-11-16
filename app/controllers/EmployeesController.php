@@ -62,8 +62,7 @@ class EmployeesController extends ControllerBase
             $data['type'] = $this->request->getPost('type');
             $data['active'] = $this->request->getPost('active');
 
-            $auth = $this->session->get('auth');
-            $loggedUser = Users::findFirst($auth['id']);
+            $loggedUser = Users::findFirst($this->session->get('auth')['id']);
 
             $user = new Users();
             $user->first_name = $data['first_name'];
@@ -131,7 +130,8 @@ class EmployeesController extends ControllerBase
                     ]
                 );
             }
-
+            $user->password = '';
+            
             $this->view->form = new EmployeesForm($user, array('edit' => true));
         }
     }
@@ -166,15 +166,24 @@ class EmployeesController extends ControllerBase
             );
         }
 
-        $form = new EmployeesForm;
+        $form = new EmployeesForm(null, array('edit' => true));
         $this->view->form = $form;
 
         $data = $this->request->getPost();
+
+        if (isset($data['password']) && !empty($data['password'])) {
+            $data['password'] = sha1($data['password']);
+        } else {
+            unset($data['password']);
+        }
         $data['active'] = isset($data['active']) ? 1 : 0;
+
+        $user->updated_by = Users::findFirst($this->session->get('auth')['id'])->id;
+        $user->updated_at = new Phalcon\Db\RawValue('now()');
 
         if (!$form->isValid($data, $user)) {
             foreach ($form->getMessages() as $message) {
-                $this->flash->error($message);
+                $this->view->setVar($message->getField(), $message);
             }
 
             return $this->dispatcher->forward(
