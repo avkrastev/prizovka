@@ -73,8 +73,8 @@ class EmployeesController extends ControllerBase
             $user->type = $data['type'];
             $user->active = $active = isset($data['active']) ? 1 : 0;
             $user->created_at = new Phalcon\Db\RawValue('now()');
-            $user->created_by = $auth['id'];
-            
+            $user->created_by = $this->session->get('auth')['id'];
+
             if ($user->save() == false) {
                 if (!$form->isValid($data, $user)) {
                     foreach ($form->getMessages() as $message) {
@@ -84,7 +84,7 @@ class EmployeesController extends ControllerBase
             } else {
                 $this->flash->success('Служителят беше добавен успешно!');
                 $this->view->userId = $user->id; // TODO get record position
-                
+
                 return $this->dispatcher->forward(
                     [
                         "controller" => "employees",
@@ -97,7 +97,7 @@ class EmployeesController extends ControllerBase
         $this->view->form = $form;
     }
 
-    public function viewAction() 
+    public function viewAction()
     {
         $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
 
@@ -131,7 +131,7 @@ class EmployeesController extends ControllerBase
                 );
             }
             $user->password = '';
-            
+
             $this->view->form = new EmployeesForm($user, array('edit' => true));
         }
     }
