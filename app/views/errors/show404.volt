@@ -1,8 +1,17 @@
-
-{{ content() }}
-
-<div class="jumbotron">
-    <h1>Page not found</h1>
-    <p>Sorry, you have accessed a page that does not exist or was moved</p>
-    <p>{{ link_to('index', 'Home', 'class': 'btn btn-primary') }}</p>
-</div>
+<section class="forms error400">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-block">
+                        <h1>Страницата не е намерена</h1>
+                        <p>Достъпихте страница, която не съществува или е преместена.</p>
+                        {{ link_to('/', 'Начална страница', 'class': 'btn btn-primary') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+    

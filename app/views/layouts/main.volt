@@ -46,12 +46,10 @@
             </ul>
         </div>
     </div>
-    <div class="container-fluid">
-        <div class="container-fluid flash-output">
-            {{ flash.output() }}
-        </div>
-        {{ content() }}
+    <div class="container-fluid flash-output">
+        {{ flash.output() }}
     </div>
+    {{ content() }}
     <footer class="main-footer">
         <div class="container-fluid">
         <div class="row">

@@ -50,12 +50,55 @@
                                                 <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                                             </div>
                                             <div class="modal-body">
-                                                <h4 class="name"></h4>
-                                                <p class="name"></p>
-                                                <p class="name"></p>
+                                                <h4 class="name"></h4><br>
+                                                <div class="row">
+                                                    <label class="col-sm-4 col-form-label">Длъжност:</label>
+                                                    <div class="col-sm-8">
+                                                        <p class="form-control-static type"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="col-sm-4 col-form-label">Електронна поща:</label>
+                                                    <div class="col-sm-8">
+                                                        <p class="form-control-static email"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="col-sm-4 col-form-label">Статус на профила:</label>
+                                                    <div class="col-sm-8">
+                                                        <p class="form-control-static active"></p>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="serviceFields">
+                                                    <div class="row">
+                                                        <label class="col-sm-4 col-form-label">Обновен от:</label>
+                                                        <div class="col-sm-8">
+                                                            <p class="form-control-static updated_by"></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="col-sm-4 col-form-label">Обновен на:</label>
+                                                        <div class="col-sm-8">
+                                                            <p class="form-control-static updated_at"></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="col-sm-4 col-form-label">Създаден от:</label>
+                                                        <div class="col-sm-8">
+                                                            <p class="form-control-static created_by"></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="col-sm-4 col-form-label">Създаден на:</label>
+                                                        <div class="col-sm-8">
+                                                            <p class="form-control-static created_at"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                                                <button type="button" data-dismiss="modal" class="btn btn-secondary">Затвори</button>
                                             </div>
                                         </div>
                                         </div>

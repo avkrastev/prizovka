@@ -53,6 +53,33 @@
                         {% endif %}
                     {% endfor %}
                     <div class="line"></div>
+                    <div class="serviceFields">
+                        <div class="row">
+                            <label class="col-sm-3 col-form-label">Обновен от:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-static updated_by">{{ user.updated_by }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-3 col-form-label">Обновен на:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-static updated_at">{{ user.updated_at }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-3 col-form-label">Създаден от:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-static created_by">{{ user.created_by }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-3 col-form-label">Създаден на:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-static created_at">{{ user.created_at }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line"></div>
                     <div class="form-group row">
                         <div class="col-sm-4 offset-sm-3">
                         {{ submit_button('Запази', 'class': 'btn btn-primary') }}

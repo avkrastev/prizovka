@@ -44,6 +44,16 @@ nav.side-navbar a {
 a[href="#"] {
     outline: none;
 }
-.flash-output {
-    padding-top: 2rem;
+.flash-output > div {
+    margin-top: 2rem;
+}
+#viewUserModal div[class*="col-"] {
+    margin-bottom: 10px;
+}
+div.serviceFields div[class*="col-"] {
+    margin-bottom: 0px;
+    font-size: 0.75rem;
+}
+section.error400 {
+    margin-top: 2rem;
 }

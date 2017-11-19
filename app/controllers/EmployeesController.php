@@ -110,6 +110,8 @@ class EmployeesController extends ControllerBase
             return;
         }
 
+        $this->serviceFields($user);
+
         echo json_encode($user);
     }
 
@@ -131,9 +133,23 @@ class EmployeesController extends ControllerBase
                 );
             }
             $user->password = '';
+            $this->serviceFields($user);
 
             $this->view->form = new EmployeesForm($user, array('edit' => true));
+            $this->view->user = $user;
         }
+    }
+
+    private function serviceFields(&$user) 
+    {
+        $user->type = Users::getUserTypes()[$user->type];
+        $user->active = $user->active ? 'Активен' : 'Неактивен';
+        $updated = Users::findFirstById($user->updated_by);
+        $user->updated_by = !is_null($user->updated_by) ? $updated->first_name.' '.$updated->last_name : '-';
+        $user->updated_at = !is_null($user->updated_at) ? date('d.m.Y H:i', strtotime($user->updated_at)) : '-';
+        $created = Users::findFirstById($user->created_by);
+        $user->created_by = !is_null($user->created_by) ? $created->first_name.' '.$created->last_name : '-';
+        $user->created_at = !is_null($user->created_at) ? date('d.m.Y H:i', strtotime($user->created_at)) : '-';
     }
 
     /**
@@ -261,31 +277,5 @@ class EmployeesController extends ControllerBase
                 "action"     => "index",
             ]
         );
-    }
-
-    /**
-     * Edit the active user profile
-     *
-     */
-    public function profileAction()
-    {
-        if (!$this->request->isPost()) {
-            $this->tag->setDefault('name', $user->name);
-            $this->tag->setDefault('email', $user->email);
-        } else {
-
-            $name = $this->request->getPost('name', array('string', 'striptags'));
-            $email = $this->request->getPost('email', 'email');
-
-            $user->name = $name;
-            $user->email = $email;
-            if ($user->save() == false) {
-                foreach ($user->getMessages() as $message) {
-                    $this->flash->error((string) $message);
-                }
-            } else {
-                $this->flash->success('Your profile information was updated successfully');
-            }
-        }
     }
 }

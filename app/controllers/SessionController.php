@@ -28,7 +28,7 @@ class SessionController extends ControllerBase
     {
         $this->session->set('auth', array(
             'id' => $user->id,
-            'name' => $user->email
+            'type' => $user->type
         ));
     }
 

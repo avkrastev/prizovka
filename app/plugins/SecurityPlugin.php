@@ -34,6 +34,10 @@ class SecurityPlugin extends Plugin
 					'Users',
 					'Member privileges, granted after sign in.'
 				),
+				'admin'  => new Role(
+					'Admin',
+					'Admin privileges, granted after sign in.'
+				),
 				'guests' => new Role(
 					'Guests',
 					'Anyone browsing the site who is not signed in is considered to be a "Guest".'
@@ -50,9 +54,16 @@ class SecurityPlugin extends Plugin
 				'products'     => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'producttypes' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'invoices'     => array('index', 'profile'),
-				'employees'    => array('index', 'create', 'edit', 'save', 'view', 'delete'),
 			);
 			foreach ($privateResources as $resource => $actions) {
+				$acl->addResource(new Resource($resource), $actions);
+			}
+
+			//Admin area resources
+			$adminResources = array(
+				'employees'    => array('index', 'create', 'edit', 'save', 'view', 'delete'),
+			);
+			foreach ($adminResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);
 			}
 
@@ -85,6 +96,13 @@ class SecurityPlugin extends Plugin
 				}
 			}
 
+			//Grant access to private area to role Admin
+			foreach ($adminResources as $resource => $actions) {
+				foreach ($actions as $action){
+					$acl->allow('Admin', $resource, $action);
+				}
+			}
+
 			//The acl is stored in session, APC would be useful here too
 			$this->persistent->acl = $acl;
 		}
@@ -103,10 +121,11 @@ class SecurityPlugin extends Plugin
 	{
 
 		$auth = $this->session->get('auth');
+
 		if (!$auth){
 			$role = 'Guests';
 		} else {
-			$role = 'Users';
+			$role = $auth['type'] == '1' ? 'Admin' : 'Users';
 		}
 
 		$controller = $dispatcher->getControllerName();
@@ -130,7 +149,7 @@ class SecurityPlugin extends Plugin
 				'controller' => 'errors',
 				'action'     => 'show401'
 			));
-        	$this->session->destroy();
+        	//$this->session->destroy();
 			return false;
 		}
 	}
