@@ -13,12 +13,13 @@
         </div>
         </div>
         <div class="main-menu">
-        <ul id="side-main-menu" class="side-menu list-unstyled">                  
-            <li class="active"><a href="/employees"><i class="icon ion-ios-people-outline"></i><span>Служители</span></a></li>
-            <li> <a href="forms.html"><i class="icon ion-ios-paper-outline"></i><span>Призовки</span></a></li>
-            <li> <a href="charts.html"><i class="icon ion-arrow-graph-up-right"></i><span>Статистика</span></a></li>
-            <li> <a href="tables.html"> <i class="icon ion-ios-box-outline"> </i><span>История</span></a></li>
-            <li> <a href="login.html"> <i class="icon ion-map"></i><span>Адреси</span></a></li>
+        <ul id="side-main-menu" class="side-menu list-unstyled">    
+            {% set activePage = router.getControllerName() %} 
+            {% for menu in menus %} 
+                <li {{ activePage == menu.controller ? 'class="active"' : '' }}>
+                    <a href="/{{menu.controller}}"><i class="icon {{ menu.icon }}"></i><span>{{ menu.name }}</span></a>
+                </li>
+            {% endfor %}
         </ul>
         </div>
     </div>
@@ -41,8 +42,13 @@
     <div class="breadcrumb-holder">   
         <div class="container-fluid">
             <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Система за следене и управление на призовки</a></li>
-            <li class="breadcrumb-item active">Служители</li>
+                <li class="breadcrumb-item"><a href="/">Система за следене и управление на призовки</a></li>
+                {% set activeSubpage = router.getActionName() %} 
+                {% for menu in menus %} 
+                    {% if (activePage == menu.controller) %}
+                        <li class="breadcrumb-item active">{{ menu.name }}</li>
+                    {% endif %}
+                {% endfor %}   
             </ul>
         </div>
     </div>

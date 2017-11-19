@@ -29,4 +29,12 @@ $router->add(
     ]
 );
 
+$router->add(
+    '/addresses',
+    [
+        'controller' => 'addresses',
+        'action'     => 'index',
+    ]
+);
+
 $router->handle();

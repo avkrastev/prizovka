@@ -1,6 +1,7 @@
 <?php
 
 use Phalcon\Mvc\Controller;
+use Phalcon\Config\Adapter\Ini as ConfigIni;
 
 class ControllerBase extends Controller
 {
@@ -17,7 +18,10 @@ class ControllerBase extends Controller
             return;
         } else {
             $user = Users::findFirst($auth['id']);
+            $menus = new ConfigIni(APP_PATH . 'app/config/menus/menu.ini');
+
             $this->view->user = $user;
+            $this->view->menus = $menus;
         }
     }
 }

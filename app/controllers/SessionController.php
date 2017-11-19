@@ -58,9 +58,6 @@ class SessionController extends ControllerBase
                         "action"     => "index",
                     ]
                 );
-
-                /*$this->response->redirect("index/index"); 
-                return;*/
             }
 
             $this->flash->error('Грешен имейл или парола');

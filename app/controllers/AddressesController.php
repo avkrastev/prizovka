@@ -5,47 +5,20 @@ use Phalcon\Session;
 use Phalcon\Mvc\View;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
-class EmployeesController extends ControllerBase
+class AddressesController extends ControllerBase
 {
     public function initialize()
     {
-        $this->tag->setTitle('Служители');
+        $this->tag->setTitle('Адреси');
         parent::initialize();
     }
 
     /**
-    * Search employees based on current criteria
+    * Address form for creating QR codes
     */
     public function indexAction()
     {
-        $numberPage = 1;
-        $numberPage = $this->request->getQuery("page", "int");
-
-        $parameters = array();
-
-        $parameters['order'] = 'type ASC'; //TODO get order dinamically
-        $employees = Users::find($parameters);
-
-        if (count($employees) == 0) {
-            $this->flash->notice("Няма намерени служители по зададените критерии");
-
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "employee",
-                    "action"     => "index"
-                ]
-            );
-        }
-
-        $paginator = new Paginator(array(
-            "data"  => $employees,
-            "limit" => 10,
-            "page"  => $numberPage
-        ));
-
-        $this->view->users = $employees;
-        $this->view->userTypes = Users::getUserTypes();
-        $this->view->page = $paginator->getPaginate();
+        
     }
 
     /**
