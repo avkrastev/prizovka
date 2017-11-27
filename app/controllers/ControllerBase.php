@@ -20,6 +20,14 @@ class ControllerBase extends Controller
             $user = Users::findFirst($auth['id']);
             $menus = new ConfigIni(APP_PATH . 'app/config/menus/menu.ini');
 
+            foreach($menus as $menu) {
+                if (isset($menu['submenu'])) {
+                    foreach($menu['submenu'] as $sub) {
+                        $menu['submenu'] = new ConfigIni(APP_PATH . 'app/config/menus/'.$menu->controller.'.ini');   
+                    }
+                }
+            }
+
             $this->view->user = $user;
             $this->view->menus = $menus;
         }

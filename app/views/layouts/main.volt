@@ -46,9 +46,22 @@
                 {% set activeSubpage = router.getActionName() %} 
                 {% for menu in menus %} 
                     {% if (activePage == menu.controller) %}
-                        <li class="breadcrumb-item active">{{ menu.name }}</li>
+                        <li class="breadcrumb-item active">
+                            {% if (activeSubpage != 'index') %}
+                                <a href="/{{ menu.controller }}">{{ menu.name }}</a>
+                            {% else %}
+                                {{ menu.name }}
+                            {% endif %}
+                        </li>
+                        {% if menu.submenu is defined %}
+                            {% for sub in menu.submenu %} 
+                                {% if (activeSubpage == sub.action) %}
+                                    <li class="breadcrumb-item active">{{ sub.name }}</li>
+                                {% endif %}
+                            {% endfor %} 
+                        {% endif %}
                     {% endif %}
-                {% endfor %}   
+                {% endfor %} 
             </ul>
         </div>
     </div>
