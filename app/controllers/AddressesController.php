@@ -21,6 +21,18 @@ class AddressesController extends ControllerBase
         
     }
 
+    public function createQRAction() 
+    {
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+        $number = $this->request->getPost('number');
+        $address = $this->request->getPost('address');
+
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?address=".$address."&key=AIzaSyAtCnmwX45uhYbzCjNI7a5FRl4PbthO2LU";
+        $json_result = json_decode(file_get_contents($url));
+        
+
+    }
+
     /**
      * Creates a new employee (if the user has rights)
      */
