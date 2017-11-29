@@ -1,16 +1,51 @@
-<div class="container-fluid">
-    <div class="pac-card" id="pac-card">
-        <div id="pac-container">
-            <input id="pac-input" type="text" placeholder="Въведете адрес">
+
+<section class="forms">
+    <div class="container-fluid">
+        <header> 
+            <h1 class="h3 display">Създаване на QR кодове</h1>
+        </header>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-block">
+                        <div class="container-fluid ">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Номер на дело</label>
+                                    <input type="text" name="number" placeholder="Номер на дело" class="form-control">
+                                </div>
+                                <div class="form-group">       
+                                    <label>Дата на издаване</label>
+                                    <input type="text" name="date" placeholder="Дата на издаване" class="form-control" value="<?php echo date('d.m.Y');?>">
+                                </div>
+                                <div class="form-group">       
+                                    <label>Адрес</label>
+                                    <input type="text" name="address" id="pac-input" placeholder="Въведете адрес" class="form-control">
+                                </div>
+                                <div class="form-group">       
+                                    <input type="submit" id="createQR" value="Създай QR код" class="btn btn-primary">
+                                </div>
+                                <div id="qrcode">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?data=HelloWorld&amp;size=100x100" alt="" title="" />
+                                </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div id="map"></div>
+                                    <div id="infowindow-content">
+                                        <img src="" width="16" height="16" id="place-icon">
+                                        <span id="place-name" class="title"></span><br>
+                                        <span id="place-address"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div id="map"></div>
-    <div id="infowindow-content">
-        <img src="" width="16" height="16" id="place-icon">
-        <span id="place-name"  class="title"></span><br>
-        <span id="place-address"></span>
-    </div>
-</div>
+</section>
 <script>
     // This example requires the Places library. Include the libraries=places
     // parameter when you first load the API. For example:
@@ -21,12 +56,9 @@
         center: {lat: 42.135408, lng: 24.745290},
         zoom: 14
     });
-    var card = document.getElementById('pac-card');
     var input = document.getElementById('pac-input');
     var types = document.getElementById('type-selector');
     var strictBounds = document.getElementById('strict-bounds-selector');
-
-    //map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
 
     var autocomplete = new google.maps.places.Autocomplete(input);
 

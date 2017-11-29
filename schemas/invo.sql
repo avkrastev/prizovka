@@ -168,3 +168,18 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2012-04-10 20:53:38
+--
+-- Table structure for table `addresses`
+--
+CREATE TABLE `addresses` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`number` INT(10) UNSIGNED NULL DEFAULT '0',
+	`latitude` FLOAT UNSIGNED NOT NULL DEFAULT '0',
+	`longitude` FLOAT UNSIGNED NOT NULL DEFAULT '0',
+	`date` DATE NULL DEFAULT NULL,
+	`created_by` INT(11) NULL DEFAULT NULL,
+	`created_at` DATETIME NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB;
+

@@ -27,10 +27,33 @@ class AddressesController extends ControllerBase
         $number = $this->request->getPost('number');
         $address = $this->request->getPost('address');
 
+        $address = preg_replace('/\s+/', '+', $address);
+
         $url = "https://maps.googleapis.com/maps/api/geocode/json?address=".$address."&key=AIzaSyAtCnmwX45uhYbzCjNI7a5FRl4PbthO2LU";
         $json_result = json_decode(file_get_contents($url));
-        
 
+        $lat = $json_result->results[0]->geometry->location->lat;
+        $lng = $json_result->results[0]->geometry->location->lng;
+        
+        $coords = 'latlng='.$lat.','.$lng;
+
+        $image = 'https://api.qrserver.com/v1/create-qr-code/?data="latlng=42.1444448,24.7411227"&amp;size=100x100';
+
+        //$image = 'http://images.itracki.com/2011/06/favicon.png';
+        // Read image path, convert to base64 encoding
+        $imageData = base64_encode(file_get_contents($image));
+
+        // Format the image SRC:  data:{mime};base64,{data};
+        $src = 'data: png; base64,'.$imageData;
+
+        // Echo out a sample image
+        $img = '<img src="' . $src . '">';
+
+        error_log(var_export($img, true));   
+
+        $qrcode = '<img src="https://api.qrserver.com/v1/create-qr-code/?data="'.$coords.'"&amp;size=100x100" alt="" title="" />';
+
+        echo json_encode($img);
     }
 
     /**
