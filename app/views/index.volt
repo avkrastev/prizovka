@@ -9,6 +9,8 @@
     <meta name="robots" content="all,follow">
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}" type="text/css" />
+    <!-- Bootstrap Datepicker CSS-->
+    <link rel="stylesheet" href="{{ static_url('css/bootstrap-datepicker.min.css') }}" type="text/css" />
     <!-- Google fonts - Roboto -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <!-- theme stylesheet-->
@@ -35,6 +37,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     {{ javascript_include('js/tether.min.js') }}
     {{ javascript_include('js/bootstrap.min.js') }}
+    {{ javascript_include('js/bootstrap-datepicker.min.js') }}
+    {{ javascript_include('locales/bootstrap-datepicker.bg.min.js') }}
     {{ javascript_include('js/jquery.cookie.js') }}
     {{ javascript_include('js/grasp_mobile_progress_circle-1.0.0.min.js') }}
     {{ javascript_include('js/jquery.nicescroll.min.js') }}

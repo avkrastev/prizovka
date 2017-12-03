@@ -171,15 +171,29 @@ UNLOCK TABLES;
 --
 -- Table structure for table `addresses`
 --
+
 CREATE TABLE `addresses` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`firm` SMALLINT(3) UNSIGNED NOT NULL,
 	`number` INT(10) UNSIGNED NULL DEFAULT '0',
-	`latitude` FLOAT UNSIGNED NOT NULL DEFAULT '0',
-	`longitude` FLOAT UNSIGNED NOT NULL DEFAULT '0',
+	`latitude` DOUBLE UNSIGNED NOT NULL DEFAULT '0',
+	`longitude` DOUBLE UNSIGNED NOT NULL DEFAULT '0',
+	`assigned_to` INT(10) UNSIGNED NULL DEFAULT NULL,
 	`date` DATE NULL DEFAULT NULL,
-	`created_by` INT(11) NULL DEFAULT NULL,
+	`updated_by` INT(10) UNSIGNED NULL DEFAULT NULL,
+	`updated_at` DATETIME NULL DEFAULT NULL,
+	`created_by` INT(10) UNSIGNED NULL DEFAULT NULL,
 	`created_at` DATETIME NULL DEFAULT NULL,
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	INDEX `FK_addresses_users` (`assigned_to`),
+	INDEX `FK_addresses_users_2` (`updated_by`),
+	INDEX `FK_addresses_users_3` (`created_by`),
+	CONSTRAINT `FK_addresses_users` FOREIGN KEY (`assigned_to`) REFERENCES `users` (`id`),
+	CONSTRAINT `FK_addresses_users_2` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`),
+	CONSTRAINT `FK_addresses_users_3` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`)
 )
+COLLATE='utf8_general_ci'
 ENGINE=InnoDB;
+
+
 

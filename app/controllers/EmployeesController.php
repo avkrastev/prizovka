@@ -67,7 +67,7 @@ class EmployeesController extends ControllerBase
             $user = new Users();
             $user->first_name = $data['first_name'];
             $user->last_name = $data['last_name'];
-            $user->number = $loggedUser->number;
+            $user->firm = $loggedUser->firm;
             $user->password = sha1($data['password']);
             $user->email = $data['email'];
             $user->type = $data['type'];
