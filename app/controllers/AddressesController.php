@@ -27,7 +27,37 @@ class AddressesController extends ControllerBase
 
     public function listAction() 
     {
-        
+        $numberPage = 1;
+        $numberPage = $this->request->getQuery("page", "int");
+
+        $parameters = array();
+
+        $parameters['order'] = 'date ASC'; //TODO get order dinamically
+        $addresses = Addresses::find($parameters);
+
+        foreach($addresses as $address) {
+            $address->date = date('d.m.Y', strtotime($address->date));     
+        }
+
+        if (count($addresses) == 0) {
+            $this->flash->notice("Няма намерени адреси по зададените критерии!");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "addresses",
+                    "action"     => "index"
+                ]
+            );
+        }
+
+        $paginator = new Paginator(array(
+            "data"  => $addresses,
+            "limit" => 10,
+            "page"  => $numberPage
+        ));
+
+        $this->view->users = $addresses;
+        $this->view->page = $paginator->getPaginate();
     }
 
     public function createQRAction() 
@@ -36,6 +66,16 @@ class AddressesController extends ControllerBase
         $number = $this->request->getPost('number');
         $address = $this->request->getPost('address');
         $date = $this->request->getPost('date');
+
+        if (empty($googleAddress)) {
+            $this->view->setVar('address', 'Адресът е задължително поле');
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "addresses",
+                    "action"     => "index",
+                ]
+            );
+        }
 
         $this->getAddressCoords($address);
         
@@ -55,12 +95,24 @@ class AddressesController extends ControllerBase
         if ($this->request->isPost()) {
             $loggedUser = Users::findFirst($this->session->get('auth')['id']); // TODO set firm to session
 
-            $address = $this->request->getPost('address');
-            $this->getAddressCoords($address);
+            $googleAddress = $this->request->getPost('address');
+            
+            if (empty($googleAddress)) {
+                $this->view->setVar('address', 'Адресът е задължително поле');
+                return $this->dispatcher->forward(
+                    [
+                        "controller" => "addresses",
+                        "action"     => "index",
+                    ]
+                );
+            }
+
+            $this->getAddressCoords($googleAddress);
 
             $address = new Addresses();
             $address->firm = $loggedUser->firm;
-            $address->number = $this->request->getPost('number');
+            $address->case_number = $this->request->getPost('number');
+            $address->address = $googleAddress;
             $address->date = date('Y-m-d', strtotime($this->request->getPost('date')));
             $address->latitude = $this->lat;
             $address->longitude = $this->lng;
@@ -68,11 +120,7 @@ class AddressesController extends ControllerBase
             $address->created_by = $this->session->get('auth')['id'];
 
             if ($address->save() == false) {
-                /*if (!$form->isValid($data, $address)) {
-                    foreach ($form->getMessages() as $message) {
-                        $this->view->setVar($message->getField(), $message);
-                    }
-                }*/
+                $this->flash->error("Възникна грешки повреме на запазването на данните!");
             } else {
                 $this->flash->success('Призовката беше зачислена успешно!');
                 
@@ -84,6 +132,8 @@ class AddressesController extends ControllerBase
                 );
             }
         }
+
+        $this->view->form = $form;
     }
 
     private function getAddressCoords($address) 

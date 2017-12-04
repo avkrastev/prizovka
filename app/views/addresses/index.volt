@@ -19,9 +19,18 @@
                                         {{ form.label('date') }}
                                         {{ form.render('date', ['class': 'form-control hasDatepicker']) }}
                                     </div>
-                                    <div class="form-group">
+                                    {% set addressformClass = '' %}
+                                    {% set addressformControlClass = '' %}
+                                    {% set addressMessage = '' %}
+                                    {% if address is defined %}
+                                        {% set addressformClass = 'has-danger' %}
+                                        {% set addressformControlClass = 'form-control-danger' %}
+                                        {% set addressMessage = address %}
+                                    {% endif %}   
+                                    <div class="form-group {{ addressformClass }}">
                                         {{ form.label('address') }}
-                                        {{ form.render('address', ['class': 'form-control', 'id': 'pac-input']) }}
+                                        {{ form.render('address', ['class': 'form-control ' ~ addressformControlClass, 'id': 'pac-input']) }}
+                                        <span class="help-block-none form-control-feedback">{{ addressMessage }}</span>
                                     </div>
                                     <div class="form-group">
                                             {{ form.label('assign', ['for': 'assign']) }}

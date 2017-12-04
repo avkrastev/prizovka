@@ -20,6 +20,10 @@ $('.hasDatepicker').datepicker({
     todayHighlight: true
 });
 
+if ($('#assign').val() != '') {
+    $('#createQR').val('Зачисли призовка');
+}
+
 $('#assign').on('change', function () {
     if ($(this).val() == '') {
         $('#createQR').val('Създай QR код');

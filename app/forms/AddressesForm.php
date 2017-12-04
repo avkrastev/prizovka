@@ -37,11 +37,6 @@ class AddressesForm extends Form
         $address->setAttributes([
             'placeholder' => 'Въведете адрес'
         ]);
-        $address->addValidators(array(
-            new PresenceOf(array(
-                'message' => 'Адресът е задължително поле'
-            ))
-        ));
         $this->add($address);
 
         $employee_params =  [
