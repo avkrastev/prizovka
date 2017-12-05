@@ -8,7 +8,16 @@ class Addresses extends Model
 
 	public $id;
 
+	public $assigned_to;
+
 	public $created_at;
+
+	public function initialize()
+    {
+        $this->belongsTo('assigned_to', 'Users', 'id', [
+			'alias' => 'address'
+		]);
+    }
 
 	public function beforeCreate()
 	{

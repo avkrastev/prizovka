@@ -12,6 +12,14 @@ class Users extends Model
 	const EMPLOYEE = 3;
     const SUMMON = 4;
     const CLERK = 5;
+
+    public function initialize()
+    {
+        $this->hasMany('id', 'Addresses', 'assigned_to', [
+            'alias' => 'user',
+            'reusable' => true
+        ]);
+    }
     
     public function validation()
     {

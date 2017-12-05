@@ -72,6 +72,7 @@ class Services extends \Base\Services
 
         $compiler = $volt->getCompiler();
         $compiler->addFunction('is_a', 'is_a');
+        $compiler->addFunction('strtotime', 'strtotime');
 
         return $volt;
     }

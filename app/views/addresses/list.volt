@@ -26,8 +26,8 @@
                             {% endif %}
                                 <tr>
                                     <td>{{ address.case_number }}</td>
-                                    <td>{{ address.date }}</td>
-                                    <td>{{ address.assigned_to }}</td>
+                                    <td>{{ date('d.m.Y', strtotime(address.date)) }}</td>
+                                    <td>{{ address.getAddress().first_name ~' '~ address.getAddress().last_name }}</td>
                                     <td>{{ address.address }}</td>
                                     <td class="operations">
                                         {{ link_to("employees/edit/" ~ user.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}

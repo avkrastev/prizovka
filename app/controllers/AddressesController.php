@@ -35,10 +35,6 @@ class AddressesController extends ControllerBase
         $parameters['order'] = 'date ASC'; //TODO get order dinamically
         $addresses = Addresses::find($parameters);
 
-        foreach($addresses as $address) {
-            $address->date = date('d.m.Y', strtotime($address->date));     
-        }
-
         if (count($addresses) == 0) {
             $this->flash->notice("Няма намерени адреси по зададените критерии!");
 
