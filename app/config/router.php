@@ -37,4 +37,12 @@ $router->add(
     ]
 );
 
+$router->add(
+    '/subpoenas',
+    [
+        'controller' => 'subpoenas',
+        'action'     => 'index',
+    ]
+);
+
 $router->handle();

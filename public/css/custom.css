@@ -63,6 +63,9 @@ section.error400 {
 #map {
     height: 580px;
 }
+#map2 {
+    height: 240px;
+}
 #description {
     font-family: Roboto;
     font-size: 15px;
@@ -77,7 +80,7 @@ section.error400 {
     display: none;
 }
 
-#map #infowindow-content {
+#map #infowindow-content, #map2 #infowindow-content {
     display: inline;
     font-size: 1.1rem;
 }
@@ -147,4 +150,8 @@ section.error400 {
 
 #qrcode {
     margin-top: 2rem;
+}
+ 
+table.table-hover tr td:not(:last-child) {
+    cursor: pointer;
 }
