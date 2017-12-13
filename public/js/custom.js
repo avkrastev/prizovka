@@ -80,12 +80,11 @@ $('table td.operations a.viewUser').on('click', function () {
 
 $('table td.operations a.viewAddress').on('click', function () {
     var root = location.protocol + '//' + location.host;
-    console.log($(this).attr('addressId'));
     $.post(root+'/subpoenas/view', {addressId: $(this).attr('addressId')},
         function (resp) {          
             if (resp['error']) {
                 return;
-            }
+            }    
             var myLatLng = {lat: parseFloat(resp['latitude']), lng: parseFloat(resp['longitude'])};
 
             var map = new google.maps.Map(document.getElementById('map2'), {
@@ -96,10 +95,13 @@ $('table td.operations a.viewAddress').on('click', function () {
             var marker = new google.maps.Marker({
                 position: myLatLng,
                 map: map,
-                title: 'Hello World!'
+                title: resp['address']
             });
 
-            google.maps.event.trigger(map, 'resize');
+            google.maps.event.addListener(map, 'idle', function(){
+                google.maps.event.trigger(map, 'resize');
+                map.setCenter(marker.getPosition());
+            });
         }, 'json'
     );
 });
