@@ -119,13 +119,8 @@ class AddressesController extends ControllerBase
                 $this->flash->error("Възникна грешки повреме на запазването на данните!");
             } else {
                 $this->flash->success('Призовката беше зачислена успешно!');
-                
-                return $this->dispatcher->forward(
-                    [
-                        "controller" => "addresses",
-                        "action"     => "list",
-                    ]
-                );
+
+                return $this->response->redirect('/subpoenas');
             }
         }
 

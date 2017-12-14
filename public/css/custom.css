@@ -1,4 +1,7 @@
 /* your styles go here */
+a:hover, a:active, a:link, a:visited {
+    text-decoration: none;
+}
 img.logo {
     width: 100px;
     height: auto;
@@ -46,13 +49,6 @@ a[href="#"] {
 }
 .flash-output > div {
     margin-top: 2rem;
-}
-#viewUserModal div[class*="col-"] {
-    margin-bottom: 10px;
-}
-div.serviceFields div[class*="col-"] {
-    margin-bottom: 0px;
-    font-size: 0.75rem;
 }
 section.error400 {
     margin-top: 2rem;
@@ -154,4 +150,19 @@ section.error400 {
  
 table.table-hover tr td:not(:last-child) {
     cursor: pointer;
+}
+/*Modal styles*/
+.modal div[class*="col-"] {
+    margin-bottom: 5px !important;
+}
+.modal div.serviceFields div[class*="col-"],
+.modal div.serviceFields label {
+    margin-bottom: 0px;
+    font-size: 0.75rem;
+}
+.modal .form-control-static {
+    padding-bottom: 0px;
+}
+table td[data-toggle="modal"]:hover {
+    background-color: #33b35a;
 }

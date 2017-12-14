@@ -92,13 +92,13 @@ class SubpoenasController extends ControllerBase
 
     private function serviceFields(&$address) 
     {
-        $updated = Users::findFirstById($address->updated_by);
-        $created = Users::findFirstById($address->created_by);
+        $address->assigned_to = $address->getAssigned_to()->first_name.' '.$address->getAssigned_to()->last_name;
+        $address->date = date('d.m.Y', strtotime($address->date));
 
-        $address->updated_by = !is_null($address->updated_by) ? $updated->first_name.' '.$updated->last_name : '-';
+        $address->updated_by = !empty($address->getUpdated_by()) ? $address->getUpdated_by()->first_name.' '.$address->getUpdated_by()->last_name : '-';
         $address->updated_at = !is_null($address->updated_at) ? date('d.m.Y H:i', strtotime($address->updated_at)) : '-';
         
-        $address->created_by = !is_null($address->created_by) ? $created->first_name.' '.$created->last_name : '-';
+        $address->created_by = !empty($address->getCreated_by()) ? $address->getCreated_by()->first_name.' '.$address->getCreated_by()->last_name : '-';
         $address->created_at = !is_null($address->created_at) ? date('d.m.Y H:i', strtotime($address->created_at)) : '-';
     }
 }

@@ -15,7 +15,15 @@ class Addresses extends Model
 	public function initialize()
     {
         $this->belongsTo('assigned_to', 'Users', 'id', [
-			'alias' => 'address'
+			'alias' => 'assigned_to'
+		]);
+
+		$this->belongsTo('updated_by', 'Users', 'id', [
+			'alias' => 'updated_by'
+		]);
+
+		$this->belongsTo('created_by', 'Users', 'id', [
+			'alias' => 'created_by'
 		]);
     }
 

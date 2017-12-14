@@ -144,6 +144,7 @@ class EmployeesController extends ControllerBase
     {
         $user->type = $edit == false ? Users::getUserTypes()[$user->type] : $user->type;
         $user->active = $user->active ? 'Активен' : 'Неактивен';
+        
         $updated = Users::findFirstById($user->updated_by);
         $user->updated_by = !is_null($user->updated_by) ? $updated->first_name.' '.$updated->last_name : '-';
         $user->updated_at = !is_null($user->updated_at) ? date('d.m.Y H:i', strtotime($user->updated_at)) : '-';

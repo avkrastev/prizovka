@@ -20,30 +20,32 @@
                                 <th>Зачислена на</th>
                                 <th>Адрес</th>
                                 <th>Връчена</th>
-                                <th>Операции</th>
+                                <!--<th>Операции</th>-->
                             </tr>
                         </thead>
                         <tbody>
                         {% endif %}
                             <tr addressId="{{ address.id }}">
-                                <td>{{ address.case_number }}</td>
+                                <td># {{ address.case_number }}</td>
                                 <td>{{ date('d.m.Y', strtotime(address.date)) }}</td>
-                                <td>{{ address.getAddress().first_name ~' '~ address.getAddress().last_name }}</td>
-                                <td>{{ address.address }}</td>
+                                <td>{{ address.getAssigned_to().first_name ~' '~ address.getAssigned_to().last_name }}</td>
+                                <td class="address">
+                                    <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal">{{ address.address }}</a>
+                                </td>
                                 {% if(address.delivered == 1) %}
                                     <td>Да</td>
                                 {% else %}
                                     <td>Не</td>
                                 {% endif %}
-                                <td class="operations">
+                                <!--<td class="operations">
                                     {{ link_to("subpoenas/edit/" ~ address.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
-                                    <a href="#" class="viewAddress" addressId="{{ address.id }}" data-toggle="modal" data-target="#viewAddressModal" title="Преглед"><i class="icon ion-eye"></i></a>
+                                    <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal" title="Преглед"><i class="icon ion-eye"></i></a>
                                     {% if(address.delivered == 1) %}
                                         {{ link_to("subpoenas/reject/" ~ address.id, '<i class="icon ion-close-round"></i>', "title": "Отмени връчването") }}
                                     {% else %}
                                         {{ link_to("subpoenas/deliver/" ~ address.id, '<i class="icon ion-checkmark-round"></i>', "title": "Маркирай като връчена") }}
                                     {% endif %}
-                                </td>
+                                </td>-->
                             </tr>
                         {% if loop.last %}
                         </tbody>
@@ -99,24 +101,23 @@
                 <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <h4 class="name"></h4><br>
                 <div id="map2"></div>
                 <div class="row">
                     <label class="col-sm-4 col-form-label">Адрес:</label>
                     <div class="col-sm-8">
-                        <p class="form-control-static type"></p>
+                        <p class="form-control-static address"></p>
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-sm-4 col-form-label">Електронна поща:</label>
+                    <label class="col-sm-4 col-form-label">Дата:</label>
                     <div class="col-sm-8">
-                        <p class="form-control-static email"></p>
+                        <p class="form-control-static date"></p>
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-sm-4 col-form-label">Статус на профила:</label>
+                    <label class="col-sm-4 col-form-label">Зачислена на:</label>
                     <div class="col-sm-8">
-                        <p class="form-control-static active"></p>
+                        <p class="form-control-static assigned_to"></p>
                     </div>
                 </div>
                 <hr>

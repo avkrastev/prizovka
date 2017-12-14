@@ -19,6 +19,16 @@ class Users extends Model
             'alias' => 'user',
             'reusable' => true
         ]);
+
+        $this->hasMany('id', 'Addresses', 'updated_by', [
+            'alias' => 'user',
+            'reusable' => true
+        ]);
+
+        $this->hasMany('id', 'Addresses', 'created_by', [
+            'alias' => 'user',
+            'reusable' => true
+        ]);
     }
     
     public function validation()
