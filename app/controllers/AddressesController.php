@@ -25,64 +25,15 @@ class AddressesController extends ControllerBase
         $this->view->form = $form;
     }
 
-    public function listAction() 
-    {
-        $numberPage = 1;
-        $numberPage = $this->request->getQuery("page", "int");
-
-        $parameters = array();
-
-        $parameters['order'] = 'date ASC'; //TODO get order dinamically
-        $addresses = Addresses::find($parameters);
-
-        if (count($addresses) == 0) {
-            $this->flash->notice("Няма намерени адреси по зададените критерии!");
-
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "addresses",
-                    "action"     => "index"
-                ]
-            );
-        }
-
-        $paginator = new Paginator(array(
-            "data"  => $addresses,
-            "limit" => 10,
-            "page"  => $numberPage
-        ));
-
-        $this->view->users = $addresses;
-        $this->view->page = $paginator->getPaginate();
-    }
-
     public function createQRAction() 
     {
         $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
-        $number = $this->request->getPost('number');
-        $address = $this->request->getPost('address');
-        $date = $this->request->getPost('date');
+        $url = $this->request->getPost('url');
 
-        if (empty($googleAddress)) {
-            $this->view->setVar('address', 'Адресът е задължително поле');
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "addresses",
-                    "action"     => "index",
-                ]
-            );
-        }
-
-        $this->getAddressCoords($address);
-        
-        $data = 'latlng='.$this->lat.','.$this->lng.',date='.strtotime($date).',number='.$number;
-
-        $image = 'https://api.qrserver.com/v1/create-qr-code/?data="'.$data.'"&amp;size=150x150';
-
-        $imageData = base64_encode(file_get_contents($image));
+        $imageData = base64_encode(file_get_contents($url));
         $src = 'data: image/x-png; base64,'.$imageData;
 
-        echo json_encode(['data' => $data, 'src' => $src]);
+        echo json_encode($src);
     }
 
     public function assignAction() 
@@ -90,51 +41,32 @@ class AddressesController extends ControllerBase
         $form = new AddressesForm;
         if ($this->request->isPost()) {
             $loggedUser = Users::findFirst($this->session->get('auth')['id']); // TODO set firm to session
-
-            $googleAddress = $this->request->getPost('address');
             
-            if (empty($googleAddress)) {
-                $this->view->setVar('address', 'Адресът е задължително поле');
-                return $this->dispatcher->forward(
-                    [
-                        "controller" => "addresses",
-                        "action"     => "index",
-                    ]
-                );
-            }
-
-            $this->getAddressCoords($googleAddress);
 
             $address = new Addresses();
             $address->firm = $loggedUser->firm;
-            $address->case_number = $this->request->getPost('number');
-            $address->address = $googleAddress;
-            $address->date = date('Y-m-d', strtotime($this->request->getPost('date')));
-            $address->latitude = $this->lat;
-            $address->longitude = $this->lng;
+            $address->case_number = $this->request->getPost('case_number');
+            $address->reference_number = $this->request->getPost('reference_number');
+            $address->address = $this->request->getPost('address');
+            $address->latitude = $this->request->getPost('latitude');
+            $address->longitude = $this->request->getPost('longitude');
             $address->assigned_to = $this->request->getPost('assign');
             $address->created_by = $this->session->get('auth')['id'];
+            $address->created_at = new Phalcon\Db\RawValue('now()');
 
             if ($address->save() == false) {
                 $this->flash->error("Възникна грешки повреме на запазването на данните!");
             } else {
                 $this->flash->success('Призовката беше зачислена успешно!');
 
-                return $this->response->redirect('/subpoenas');
+                $addresses = Addresses::find();
+                $lastPage = intval(ceil(count($addresses)*0.1));
+                $this->view->pick('subpoenas/index')->setVar('addressId', $address->id);
+
+                return $this->response->redirect('/subpoenas/index?page='.$lastPage.'&addressid='.$address->id);
             }
         }
 
         $this->view->form = $form;
-    }
-
-    private function getAddressCoords($address) 
-    {
-        $address = preg_replace('/\s+/', '+', $address);
-
-        $url = "https://maps.googleapis.com/maps/api/geocode/json?address=".$address."&key=AIzaSyAtCnmwX45uhYbzCjNI7a5FRl4PbthO2LU";
-        $json_result = json_decode(file_get_contents($url));
-
-        $this->lat = $json_result->results[0]->geometry->location->lat;
-        $this->lng = $json_result->results[0]->geometry->location->lng;
     }
 }

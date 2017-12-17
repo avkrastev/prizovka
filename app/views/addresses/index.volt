@@ -11,26 +11,19 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 {{ form('addresses/assign', 'id': 'addressesForm', 'onbeforesubmit': 'return false') }}
+                                    {{ form.render('latitude') }}
+                                    {{ form.render('longitude') }}
                                     <div class="form-group">
-                                        {{ form.label('number') }}
-                                        {{ form.render('number', ['class': 'form-control']) }}
+                                        {{ form.label('case_number') }}
+                                        {{ form.render('case_number', ['class': 'form-control']) }}
                                     </div>
                                     <div class="form-group">
-                                        {{ form.label('date') }}
-                                        {{ form.render('date', ['class': 'form-control hasDatepicker']) }}
-                                    </div>
-                                    {% set addressformClass = '' %}
-                                    {% set addressformControlClass = '' %}
-                                    {% set addressMessage = '' %}
-                                    {% if address is defined %}
-                                        {% set addressformClass = 'has-danger' %}
-                                        {% set addressformControlClass = 'form-control-danger' %}
-                                        {% set addressMessage = address %}
-                                    {% endif %}   
-                                    <div class="form-group {{ addressformClass }}">
+                                        {{ form.label('reference_number') }}
+                                        {{ form.render('reference_number', ['class': 'form-control']) }}
+                                    </div>  
+                                    <div class="form-group">
                                         {{ form.label('address') }}
-                                        {{ form.render('address', ['class': 'form-control ' ~ addressformControlClass, 'id': 'pac-input']) }}
-                                        <span class="help-block-none form-control-feedback">{{ addressMessage }}</span>
+                                        {{ form.render('address', ['class': 'form-control', 'id': 'pac-input']) }}
                                     </div>
                                     <div class="form-group">
                                             {{ form.label('assign', ['for': 'assign']) }}
@@ -39,10 +32,10 @@
                                             </div>
                                         </div>
                                     <div class="form-group">       
-                                        <input type="submit" id="createQR" value="Създай QR код" class="btn btn-primary">
+                                        <input type="submit" id="assign" value="Зачисли призовка" class="btn btn-primary">
                                     </div>
                                     <div id="qrcode">
-                                        <a href="" id="downloadQR" download>
+                                        <a href="#" id="downloadQR" download="">
                                             <img src="" alt="" title="QR код" /><br>
                                         </a>
                                     </div>

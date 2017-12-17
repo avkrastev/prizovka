@@ -15,21 +15,20 @@ class AddressesForm extends Form
     public function initialize($entity = null, $options = null)
     {
         // Number
-        $number = new Text('number');
+        $number = new Text('case_number');
         $number->setLabel('Номер на дело');
         $number->setAttributes([
             'placeholder' => 'Номер на дело'
         ]);
         $this->add($number);
 
-        // Date
-        $date = new Text('date');
-        $date->setLabel('Дата');
-        $date->setAttributes([
-            'value' => date('d.m.Y'),
-            'placeholder' => 'Дата на издаване'
+        // Reference number
+        $refNumber = new Text('reference_number');
+        $refNumber->setLabel('Изходящ номер');
+        $refNumber->setAttributes([
+            'placeholder' => 'Изходящ номер'
         ]);
-        $this->add($date);
+        $this->add($refNumber);
 
         // Address
         $address = new Text('address');
@@ -37,7 +36,18 @@ class AddressesForm extends Form
         $address->setAttributes([
             'placeholder' => 'Въведете адрес'
         ]);
+        $address->addValidators(array(
+            new PresenceOf(array(
+                'message' => 'Адресът е задължително поле'
+            ))
+        ));
         $this->add($address);
+
+        // Latitude
+        $this->add(new Hidden('latitude'));
+
+        // Longitude
+        $this->add(new Hidden('longitude'));
 
         $employee_params =  [
             'conditions'  => 'type = "'.Users::SUMMON.'"',
@@ -53,6 +63,11 @@ class AddressesForm extends Form
             'emptyValue' => ''
         ));
         $assign->setLabel('Призовкар');
+        $assign->addValidators(array(
+            new PresenceOf(array(
+                'message' => 'Служителят е задължително поле'
+            ))
+        ));
         $this->add($assign);
     }
 }

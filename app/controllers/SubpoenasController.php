@@ -21,9 +21,7 @@ class SubpoenasController extends ControllerBase
         $numberPage = 1;
         $numberPage = $this->request->getQuery("page", "int");
 
-        $parameters = array();
-
-        $parameters['order'] = 'date ASC'; //TODO get order dinamically
+        $parameters['order'] = 'id ASC'; //TODO get order dinamically
         $addresses = Addresses::find($parameters);
 
         if (count($addresses) == 0) {
@@ -93,7 +91,6 @@ class SubpoenasController extends ControllerBase
     private function serviceFields(&$address) 
     {
         $address->assigned_to = $address->getAssigned_to()->first_name.' '.$address->getAssigned_to()->last_name;
-        $address->date = date('d.m.Y', strtotime($address->date));
 
         $address->updated_by = !empty($address->getUpdated_by()) ? $address->getUpdated_by()->first_name.' '.$address->getUpdated_by()->last_name : '-';
         $address->updated_at = !is_null($address->updated_at) ? date('d.m.Y H:i', strtotime($address->updated_at)) : '-';

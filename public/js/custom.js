@@ -1,8 +1,10 @@
 $(window).load(function() {
 
 function initMap() {
+    var plovdiv = {lat: 42.135408, lng: 24.745290};
+
     var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 42.135408, lng: 24.745290},
+        center: plovdiv,
         zoom: 14
     });
     var input = document.getElementById('pac-input');
@@ -19,19 +21,28 @@ function initMap() {
     infowindow.setContent(infowindowContent);
     var marker = new google.maps.Marker({
         map: map,
-        anchorPoint: new google.maps.Point(0, -29)
+        anchorPoint: new google.maps.Point(0, -29),
     });
+
+    google.maps.event.addDomListener(input, 'keydown', function(event) { 
+      if (event.keyCode === 13) { 
+          event.preventDefault(); 
+      }
+    }); 
 
     autocomplete.addListener('place_changed', function() {
         infowindow.close();
         marker.setVisible(false);
         var place = autocomplete.getPlace();
         if (!place.geometry) {
-        // User entered the name of a Place that was not suggested and
-        // pressed the Enter key, or the Place Details request failed.
-        window.alert("No details available for input: '" + place.name + "'");
-        return;
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+            window.alert("Няма данни за въведения адрес: '" + place.name + "'");
+            return;
         }
+        // set place coordinates
+        document.getElementById('latitude').value = place.geometry.location.lat();
+        document.getElementById('longitude').value = place.geometry.location.lng();
 
         // If the place has a geometry, then present it on a map.
         if (place.geometry.viewport) {
@@ -56,14 +67,44 @@ function initMap() {
         infowindowContent.children['place-name'].textContent = place.name;
         infowindowContent.children['place-address'].textContent = address;
         infowindow.open(map, marker);
+
+        createQR();
     });
+}
+
+$('#case_number, #reference_number').on('change', function() {
+    if ($('#pac-input').val() != '') {
+        createQR();
+    }
+});
+
+function createQR() {
+    $('span.download').remove();
+    var number = $('#case_number').val();
+    var refNumber = $('#reference_number').val();
+    var lat = $('#latitude').val();
+    var lng = $('#longitude').val();
+
+    var data = 'latlng='+lat+','+lng+',number='+number+',refNumber='+refNumber;
+    var url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+data;
+
+    $('#qrcode img').attr('src', url);
+    $('#downloadQR').append('<span class="help-block-none form-control-feedback download">За да свалите кода, кликнете върху него!</span>');
+
+    var root = location.protocol + '//' + location.host;
+    $.post(root+'/addresses/createQR', 
+        {url: url},
+        function (resp) {
+            $('#downloadQR').attr('href', resp);
+        }, 'json'
+    );
 }
 
 if ($('#map').length > 0) {
     initMap();
 } 
 
-$('div.flash-output .alert-success').fadeOut(1000);
+$('div.flash-output .alert-success').fadeOut(2000);
 
 $('table td.operations a.viewUser').on('click', function () {
     var root = location.protocol + '//' + location.host;
@@ -87,7 +128,6 @@ $('table.subpoenas td a.viewAddress').on('click', function () {
             if (resp['error']) {
                 return; // TODO error show
             }
-            $('#viewAddressLabel').text('# '+resp['case_number']);
             for (var i in resp) {
                 $('.modal-body p.'+i).text(resp[i]);
             }       
@@ -112,6 +152,12 @@ $('table.subpoenas td a.viewAddress').on('click', function () {
     );
 });
 
+$('table.subpoenas tr td:not(.address)').on('click', function() {
+    var addressId = $(this).parent().attr('addressId');
+    var root = location.protocol + '//' + location.host;
+    window.location.replace(root+'/subpoenas/edit/'+addressId);
+});
+
 $('.hasDatepicker').datepicker({
     format: "dd.mm.yyyy",
     weekStart: 1,
@@ -119,36 +165,7 @@ $('.hasDatepicker').datepicker({
     todayHighlight: true
 });
 
-if ($('#assign').val() != '') {
-    $('#createQR').val('Зачисли призовка');
-}
-
-$('#assign').on('change', function () {
-    if ($(this).val() == '') {
-        $('#createQR').val('Създай QR код');
-    } else {
-        $('#createQR').val('Зачисли призовка');
-    }
-});
-
-$('#createQR').on('click', function (e) {
-    if ($('#assign').val() == '') {
-        e.preventDefault();
-        $('span.download').remove();
-        var root = location.protocol + '//' + location.host;
-        $.post(root+'/addresses/createQR', 
-            {address: $('[name="address"]').val(),
-             date: $('[name="date"]').val(),
-             number: $('[name="number"]').val()},
-            function (resp) {
-                $('#qrcode img').attr('src','https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+resp['data']);
-                $('#downloadQR').attr('href', resp['src']).append('<span class="help-block-none form-control-feedback download">За да свалите кода просто кликнете върху него!</span>');
-            }, 'json'
-        );
-    } else {
-        $('#addressesForm').submit();
-    }
-});
+$('form .form-group').eq(0).find('input[type="text"]').focus();
 
 function urlobj(url) {
     if (url[0]=='/') url = '/' + url;

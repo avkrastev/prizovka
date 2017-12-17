@@ -16,7 +16,7 @@
                         <thead>
                             <tr>
                                 <th>Номер на дело</th>
-                                <th>Дата</th>
+                                <th>Изходящ номер</th>
                                 <th>Зачислена на</th>
                                 <th>Адрес</th>
                                 <th>Връчена</th>
@@ -24,10 +24,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% endif %}
-                            <tr addressId="{{ address.id }}">
+                        {% endif %}                       
+                            <tr addressId="{{ address.id }}" {{ request.getQuery('addressid') == address.id ? 'class="activeRow"' : '' }} title="Редактирай призовката">
                                 <td># {{ address.case_number }}</td>
-                                <td>{{ date('d.m.Y', strtotime(address.date)) }}</td>
+                                <td>{{ address.reference_number }}</td>
                                 <td>{{ address.getAssigned_to().first_name ~' '~ address.getAssigned_to().last_name }}</td>
                                 <td class="address">
                                     <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal">{{ address.address }}</a>
@@ -109,12 +109,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-sm-4 col-form-label">Дата:</label>
-                    <div class="col-sm-8">
-                        <p class="form-control-static date"></p>
-                    </div>
-                </div>
-                <div class="row">
                     <label class="col-sm-4 col-form-label">Зачислена на:</label>
                     <div class="col-sm-8">
                         <p class="form-control-static assigned_to"></p>
@@ -123,25 +117,25 @@
                 <hr>
                 <div class="serviceFields">
                     <div class="row">
-                        <label class="col-sm-4 col-form-label">Обновен от:</label>
+                        <label class="col-sm-4 col-form-label">Обновена от:</label>
                         <div class="col-sm-8">
                             <p class="form-control-static updated_by"></p>
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-sm-4 col-form-label">Обновен на:</label>
+                        <label class="col-sm-4 col-form-label">Обновена на:</label>
                         <div class="col-sm-8">
                             <p class="form-control-static updated_at"></p>
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-sm-4 col-form-label">Създаден от:</label>
+                        <label class="col-sm-4 col-form-label">Създадена от:</label>
                         <div class="col-sm-8">
                             <p class="form-control-static created_by"></p>
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-sm-4 col-form-label">Създаден на:</label>
+                        <label class="col-sm-4 col-form-label">Създадена на:</label>
                         <div class="col-sm-8">
                             <p class="form-control-static created_at"></p>
                         </div>

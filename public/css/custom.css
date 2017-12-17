@@ -166,3 +166,9 @@ table.table-hover tr td:not(:last-child) {
 table td[data-toggle="modal"]:hover {
     background-color: #33b35a;
 }
+.form-group label.has-danger {
+    color: #d9534f;
+}
+.table-hover tbody tr.activeRow {
+    background-color: rgba(0,0,0,.075);
+}
