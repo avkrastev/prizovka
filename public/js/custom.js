@@ -72,6 +72,34 @@ function initMap() {
     });
 }
 
+if ($('#addressesForm').length > 0) {
+    var form = document.getElementById('addressesForm');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        $('.form-group .has-danger').removeClass('has-danger');
+        $('.form-group input').removeClass('form-control-danger');
+        $('.form-control-feedback').css('visibility', 'hidden');
+
+        var valid = true;
+        if ($('#pac-input').val() == '') {
+            valid = false;
+            $('#pac-input').parent().addClass('has-danger');
+            $('#pac-input').addClass('form-control-danger');
+            $('#pac-input').next('.form-control-feedback').css('visibility', 'visible');
+        }
+
+        if ($('#assign').val() == '') {
+            valid = false;
+            $('#assign').parent().addClass('has-danger');
+            $('#assign').parent().next('.form-control-feedback').addClass('has-danger').css('visibility', 'visible');
+        }
+        if (valid !== false) {
+            form.submit();
+        }
+    });
+}
+
 $('#case_number, #reference_number').on('change', function() {
     if ($('#pac-input').val() != '') {
         createQR();
@@ -89,7 +117,7 @@ function createQR() {
     var url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+data;
 
     $('#qrcode img').attr('src', url);
-    $('#downloadQR').append('<span class="help-block-none form-control-feedback download">За да свалите кода, кликнете върху него!</span>');
+    $('#downloadQR').append('<span class="help-block-none form-control-feedback">За да свалите кода, кликнете върху него!</span>');
 
     var root = location.protocol + '//' + location.host;
     $.post(root+'/addresses/createQR', 
@@ -104,7 +132,9 @@ if ($('#map').length > 0) {
     initMap();
 } 
 
-$('div.flash-output .alert-success').fadeOut(2000);
+$('div.flash-output .alert-success').on('click', function() {
+    $(this).fadeOut(1000);
+});
 
 $('table td.operations a.viewUser').on('click', function () {
     var root = location.protocol + '//' + location.host;

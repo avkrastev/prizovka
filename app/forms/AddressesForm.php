@@ -32,7 +32,7 @@ class AddressesForm extends Form
 
         // Address
         $address = new Text('address');
-        $address->setLabel('Адрес');
+        $address->setLabel('Адрес*');
         $address->setAttributes([
             'placeholder' => 'Въведете адрес'
         ]);
@@ -62,7 +62,7 @@ class AddressesForm extends Form
             'emptyText'  => 'Изберете...',
             'emptyValue' => ''
         ));
-        $assign->setLabel('Призовкар');
+        $assign->setLabel('Призовкар*');
         $assign->addValidators(array(
             new PresenceOf(array(
                 'message' => 'Служителят е задължително поле'

@@ -42,9 +42,6 @@
     {{ javascript_include('locales/bootstrap-datepicker.bg.min.js') }}
     {{ javascript_include('js/jquery.cookie.js') }}
     {{ javascript_include('js/grasp_mobile_progress_circle-1.0.0.min.js') }}
-    {{ javascript_include('js/jquery.nicescroll.min.js') }}
-    {{ javascript_include('js/jquery.validate.min.js') }}
-    {{ javascript_include('js/front.js') }}  
     {{ javascript_include('js/custom.js') }}
   </body>
 </html>

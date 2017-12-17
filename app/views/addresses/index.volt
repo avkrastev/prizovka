@@ -10,7 +10,7 @@
                     <div class="card-block">
                         <div class="row">
                             <div class="col-sm-4">
-                                {{ form('addresses/assign', 'id': 'addressesForm', 'onbeforesubmit': 'return false') }}
+                                {{ form('addresses/assign', 'id': 'addressesForm') }}
                                     {{ form.render('latitude') }}
                                     {{ form.render('longitude') }}
                                     <div class="form-group">
@@ -24,15 +24,17 @@
                                     <div class="form-group">
                                         {{ form.label('address') }}
                                         {{ form.render('address', ['class': 'form-control', 'id': 'pac-input']) }}
+                                        <span class="help-block-none form-control-feedback">Адресът е задължително поле</span>
                                     </div>
                                     <div class="form-group">
-                                            {{ form.label('assign', ['for': 'assign']) }}
-                                            <div class="select">
-                                                {{ form.render('assign', ['class': 'form-control']) }}
-                                            </div>
+                                        {{ form.label('assign', ['for': 'assign']) }}
+                                        <div class="select">
+                                            {{ form.render('assign', ['class': 'form-control']) }}
                                         </div>
+                                        <span class="help-block-none form-control-feedback">Служителят е задължително поле</span>
+                                    </div>
                                     <div class="form-group">       
-                                        <input type="submit" id="assign" value="Зачисли призовка" class="btn btn-primary">
+                                        <input type="submit" id="assignAddress" value="Зачисли призовка" class="btn btn-primary">
                                     </div>
                                     <div id="qrcode">
                                         <a href="#" id="downloadQR" download="">

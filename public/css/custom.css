@@ -155,8 +155,8 @@ table.table-hover tr td:not(:last-child) {
 .modal div[class*="col-"] {
     margin-bottom: 5px !important;
 }
-.modal div.serviceFields div[class*="col-"],
-.modal div.serviceFields label {
+div.serviceFields div[class*="col-"],
+div.serviceFields label {
     margin-bottom: 0px;
     font-size: 0.75rem;
 }
@@ -166,9 +166,12 @@ table.table-hover tr td:not(:last-child) {
 table td[data-toggle="modal"]:hover {
     background-color: #33b35a;
 }
-.form-group label.has-danger {
+.form-group label.has-danger, span.form-control-feedback.has-danger {
     color: #d9534f;
 }
 .table-hover tbody tr.activeRow {
     background-color: rgba(0,0,0,.075);
+}
+.form-group span.form-control-feedback {
+    visibility: hidden;
 }
