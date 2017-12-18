@@ -7,7 +7,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-block">
-                    {{ form('employees/create', 'id': 'employeesForm', 'class': 'form-horizontal', 'onbeforesubmit': 'return false', 'autocomplete': 'off') }}
+                    {{ form('employees/create', 'id': 'employeesForm', 'class': 'form-horizontal', 'autocomplete': 'off') }}
                     <div class="form-group row">
                         {{ form.label('first_name', ['class': 'col-sm-3 form-control-label']) }}
                         <div class="col-sm-9">
@@ -20,34 +20,18 @@
                             {{ form.render('last_name', ['class': 'form-control']) }}
                         </div>
                     </div>
-                    {% set emailformClass = '' %}
-                    {% set emailformControlClass = '' %}
-                    {% set emailMessage = '' %}
-                    {% if email is defined %}
-                        {% set emailformClass = 'has-danger' %}
-                        {% set emailformControlClass = 'form-control-danger' %}
-                        {% set emailMessage = email %}
-                    {% endif %}   
-                    <div class="form-group row {{ emailformClass }}">
+                    <div class="form-group row">
                         {{ form.label('email', ['class': 'col-sm-3 form-control-label', 'autocomplete': 'off']) }}
                         <div class="col-sm-9">
-                            {{ form.render('email', ['class': 'form-control ' ~ emailformControlClass]) }}
-                            <span class="help-block-none form-control-feedback">{{ emailMessage }}</span>
+                            {{ form.render('email', ['class': 'form-control']) }}
+                            <span class="help-block-none form-control-feedback">Електронната поща е задължително поле</span>
                         </div>
                     </div>
-                    {% set passformClass = '' %}
-                    {% set passformControlClass = '' %}
-                    {% set passMessage = '' %}
-                    {% if password is defined %}
-                        {% set passformClass = 'has-danger' %}
-                        {% set passformControlClass = 'form-control-danger' %}
-                        {% set passMessage = password %}
-                    {% endif %}   
-                    <div class="form-group row {{ passformClass }}">
+                    <div class="form-group row">
                         {{ form.label('password', ['class': 'col-sm-3 form-control-label']) }}
                         <div class="col-sm-9">
-                            {{ form.render('password', ['class': 'form-control ' ~ passformControlClass]) }}
-                            <span class="help-block-none form-control-feedback">{{ passMessage }}</span>
+                            {{ form.render('password', ['class': 'form-control']) }}
+                            <span class="help-block-none form-control-feedback">Паролата е задължително поле</span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -67,7 +51,7 @@
                     <div class="line"></div>
                     <div class="form-group row">
                         <div class="col-sm-4 offset-sm-3">
-                        {{ submit_button('Запази', 'class': 'btn btn-primary', 'onclick': 'return Employee.validate();') }}
+                        {{ submit_button('Запази', 'class': 'btn btn-primary') }}
                         </div>
                     </div>
                     </form>

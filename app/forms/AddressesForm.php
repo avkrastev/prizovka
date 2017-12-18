@@ -14,6 +14,9 @@ class AddressesForm extends Form
 
     public function initialize($entity = null, $options = null)
     {
+        if (isset($options['edit'])) {
+            $this->add(new Hidden("id"));
+        }
         // Number
         $number = new Text('case_number');
         $number->setLabel('Номер на дело');
@@ -56,7 +59,7 @@ class AddressesForm extends Form
         ];  
 
         // Assigned employee
-        $assign = new Select('assign',  Users::find($employee_params), array(
+        $assign = new Select('assigned_to',  Users::find($employee_params), array(
             'using' => array('id', 'name'),
             'useEmpty'   => true,
             'emptyText'  => 'Изберете...',

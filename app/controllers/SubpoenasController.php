@@ -19,7 +19,7 @@ class SubpoenasController extends ControllerBase
     public function indexAction() 
     {
         $numberPage = 1;
-        $numberPage = $this->request->getQuery("page", "int");
+        $numberPage = $this->request->getQuery('page','int');
 
         $parameters['order'] = 'id ASC'; //TODO get order dinamically
         $addresses = Addresses::find($parameters);
@@ -64,33 +64,97 @@ class SubpoenasController extends ControllerBase
     }
 
     /**
-    * Edits an user based on its id
+    * Edits an address based on its id
     */
     public function editAction($id)
     {
-        /*if (!$this->request->isPost()) {
-            $user = Users::findFirstById($id);
-            if (!$user) {
-                $this->flash->error("Служителят не беше намерен!");
+        if (!$this->request->isPost()) {
+            $address = Addresses::findFirstById($id);
+            if (!$address) {
+                $this->flash->error("Призовката не беше намерена!");
 
                 return $this->dispatcher->forward(
                     [
-                        "controller" => "employees",
+                        "controller" => "subpoenas",
                         "action"     => "index",
                     ]
                 );
             }
-            $user->password = '';
-            $this->serviceFields($user, true);
+            $this->serviceFields($address, true);
 
-            $this->view->form = new EmployeesForm($user, array('edit' => true));
-            $this->view->user = $user;
-        }*/
+            $this->view->form = new AddressesForm($address, array('edit' => true));
+            $this->view->address = $address;
+        }
     }
 
-    private function serviceFields(&$address) 
+    /**
+    * Saves current subpoena in screen
+    *
+    * @param string $id
+    */
+    public function saveAction()
     {
-        $address->assigned_to = $address->getAssigned_to()->first_name.' '.$address->getAssigned_to()->last_name;
+        if (!$this->request->isPost()) {
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "subpoenas",
+                    "action"     => "index",
+                ]
+            );
+        }
+
+        $id = $this->request->getPost("id", "int");
+
+        $address = Addresses::findFirstById($id);
+        if (!$address) {
+            $this->flash->error("Призовката не съществува!");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "subpoenas",
+                    "action"     => "index",
+                ]
+            );
+        }
+
+        $form = new AddressesForm(null, array('edit' => true));
+        $this->view->form = $form;
+
+        $data = $this->request->getPost();
+        $address->reference_number = $data['reference_number'];
+
+        $address->updated_by = Users::findFirst($this->session->get('auth')['id'])->id;
+        $address->updated_at = new Phalcon\Db\RawValue('now()');
+
+        if ($address->save() == false) {
+            $this->flash->error("Възникна грешки повреме на запазването на данните!");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "subpoenas",
+                    "action"     => "edit",
+                    "params"     => [$id]
+                ]
+            );
+        }
+
+        $form->clear();
+
+        $this->flash->success("Информацията беше редактирана успешно!");
+
+        return $this->dispatcher->forward(
+            [
+                "controller" => "subpoenas",
+                "action"     => "index",
+            ]
+        );
+    }
+
+    private function serviceFields(&$address, $edit = false) 
+    {
+        if ($edit === false) {
+            $address->assigned_to = $address->getAssigned_to()->first_name.' '.$address->getAssigned_to()->last_name;
+        }
 
         $address->updated_by = !empty($address->getUpdated_by()) ? $address->getUpdated_by()->first_name.' '.$address->getUpdated_by()->last_name : '-';
         $address->updated_at = !is_null($address->updated_at) ? date('d.m.Y H:i', strtotime($address->updated_at)) : '-';

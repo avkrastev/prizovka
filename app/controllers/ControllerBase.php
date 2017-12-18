@@ -14,10 +14,11 @@ class ControllerBase extends Controller
         $auth = $this->session->get('auth');
 
         if (!isset($auth)) {
-            $this->response->redirect("session/index"); 
+            $this->response->redirect('session/index'); 
             return;
         } else {
             $user = Users::findFirst($auth['id']);
+
             $menus = new ConfigIni(APP_PATH . 'app/config/menus/menu.ini');
 
             foreach($menus as $menu) {

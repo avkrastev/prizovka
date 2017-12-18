@@ -2,15 +2,16 @@
 <section class="forms">
     <div class="container-fluid">
         <header> 
-            <h1 class="h3 display">Създаване на QR кодове</h1>
+            <h1 class="h3 display">Редактиране на призовка</h1>
         </header>
-        <div class="row">
+        <div class="row editSubpoenas">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-block">
                         <div class="row">
                             <div class="col-sm-4">
-                                {{ form('addresses/assign', 'id': 'addressesForm') }}
+                                {{ form('subpoenas/save', 'role': 'form', 'id': 'addressesForm') }}
+                                    {{ form.render('id') }}
                                     {{ form.render('latitude') }}
                                     {{ form.render('longitude') }}
                                     <div class="form-group">
@@ -49,6 +50,33 @@
                                     <img src="" width="16" height="16" id="place-icon">
                                     <span id="place-name" class="title"></span><br>
                                     <span id="place-address"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line"></div>
+                        <div class="serviceFields">
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Обновенa от:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static updated_by">{{ address.updated_by }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Обновенa на:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static updated_at">{{ address.updated_at }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Създаденa от:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static created_by">{{ address.created_by }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-4 col-form-label">Създаденa на:</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static created_at">{{ address.created_at }}</p>
                                 </div>
                             </div>
                         </div>

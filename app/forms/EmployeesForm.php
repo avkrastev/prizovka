@@ -31,7 +31,7 @@ class EmployeesForm extends Form
 
         // Email
         $email = new Text('email');
-        $email->setLabel('Електронна поща');
+        $email->setLabel('Електронна поща*');
         $email->setFilters('email');
         $email->setAttribute('autocomplete', 'off');
         $email->addValidators(array(
@@ -46,7 +46,10 @@ class EmployeesForm extends Form
 
         // Password
         $password = new Password('password');
-        $password->setLabel('Парола');
+        $password->setLabel('Парола*');
+        if (isset($options['edit'])) {
+            $password->setLabel('Парола');
+        }
         $password->setDefault('');
         $password->setAttribute('autocomplete', 'off');
         $password->addValidators(array(

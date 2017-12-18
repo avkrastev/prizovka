@@ -15,6 +15,10 @@ class Users extends Model
 
     public function initialize()
     {
+        $this->belongsTo('org', 'Organisations', 'id', [
+			'alias' => 'org'
+        ]);
+        
         $this->hasMany('id', 'Addresses', 'assigned_to', [
             'alias' => 'user',
             'reusable' => true

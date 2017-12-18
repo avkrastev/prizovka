@@ -49,6 +49,7 @@ a[href="#"] {
 }
 .flash-output > div {
     margin-top: 2rem;
+    cursor: pointer;
 }
 section.error400 {
     margin-top: 2rem;

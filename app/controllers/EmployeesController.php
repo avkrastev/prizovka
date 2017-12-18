@@ -67,7 +67,6 @@ class EmployeesController extends ControllerBase
             $user = new Users();
             $user->first_name = $data['first_name'];
             $user->last_name = $data['last_name'];
-            $user->firm = $loggedUser->firm;
             $user->password = sha1($data['password']);
             $user->email = $data['email'];
             $user->type = $data['type'];
@@ -76,11 +75,14 @@ class EmployeesController extends ControllerBase
             $user->created_by = $this->session->get('auth')['id'];
 
             if ($user->save() == false) {
-                if (!$form->isValid($data, $user)) {
-                    foreach ($form->getMessages() as $message) {
-                        $this->view->setVar($message->getField(), $message);
-                    }
-                }
+                $this->flash->error("Възникна грешки повреме на запазването на данните!");
+                
+                return $this->dispatcher->forward(
+                    [
+                        "controller" => "employees",
+                        "action"     => "index",
+                    ]
+                );
             } else {
                 $this->flash->success('Служителят беше добавен успешно!');
                 $this->view->userId = $user->id; // TODO get record position
@@ -144,7 +146,7 @@ class EmployeesController extends ControllerBase
     {
         $user->type = $edit == false ? Users::getUserTypes()[$user->type] : $user->type;
         $user->active = $user->active ? 'Активен' : 'Неактивен';
-        
+
         $updated = Users::findFirstById($user->updated_by);
         $user->updated_by = !is_null($user->updated_by) ? $updated->first_name.' '.$updated->last_name : '-';
         $user->updated_at = !is_null($user->updated_at) ? date('d.m.Y H:i', strtotime($user->updated_at)) : '-';
