@@ -19,7 +19,7 @@ class Users extends Model
 			'alias' => 'org'
         ]);
         
-        $this->hasMany('id', 'Addresses', 'assigned_to', [
+        $this->hasMany('id', 'Subpoenas', 'assigned_to', [
             'alias' => 'user',
             'reusable' => true
         ]);
@@ -30,6 +30,16 @@ class Users extends Model
         ]);
 
         $this->hasMany('id', 'Addresses', 'created_by', [
+            'alias' => 'user',
+            'reusable' => true
+        ]);
+
+        $this->hasMany('id', 'Subpoenas', 'updated_by', [
+            'alias' => 'user',
+            'reusable' => true
+        ]);
+
+        $this->hasMany('id', 'Subpoenas', 'created_by', [
             'alias' => 'user',
             'reusable' => true
         ]);

@@ -48,7 +48,6 @@ class AddressesController extends ControllerBase
             $address->address = $this->request->getPost('address');
             $address->latitude = $this->request->getPost('latitude');
             $address->longitude = $this->request->getPost('longitude');
-            $address->assigned_to = $this->request->getPost('assigned_to');
             $address->created_by = $this->session->get('auth')['id'];
             $address->created_at = new Phalcon\Db\RawValue('now()');
 
@@ -62,17 +61,49 @@ class AddressesController extends ControllerBase
                     ]
                 );
             } else {
-                $this->flash->success('Призовката беше зачислена успешно!');
+                $assigned_to = $this->request->getPost('assigned_to');
+                $delivered = $this->request->getPost('delivered', 0);
+                $subpoena = $this->assignSubpoena($address->id, $assigned_to, $delivered, Subpoenas::ISSUED);
 
-                $addresses = Addresses::find();
-                $lastPage = intval(ceil(count($addresses)*0.1));
-                $this->view->pick('subpoenas/index')->setVar('addressId', $address->id);
-
-                return $this->response->redirect('/subpoenas/index?page='.$lastPage.'&addressid='.$address->id);
+                if ($subpoena !== false) {
+                    $this->flash->success('Призовката беше зачислена успешно!');
+                    
+                    $addresses = Addresses::find();
+                    $lastPage = intval(ceil(count($addresses)*0.1));
+    
+                    return $this->response->redirect('/subpoenas/index?page='.$lastPage.'&addressid='.$address->id);
+                } else {
+                    $this->flash->error("Възникна грешки повреме на запазването на данните!");
+                    
+                    return $this->dispatcher->forward(
+                        [
+                            "controller" => "addresses",
+                            "action"     => "index",
+                        ]
+                    );
+                }
             }
         }
 
         $this->view->form = $form;
+    }
+
+    private function assignSubpoena($addressId, $assigned_to, $delivered, $action = Subpoenas::VISITED) {
+        $subpoena = new Subpoenas();
+      
+        $subpoena->address = $addressId;
+        $subpoena->assigned_to = $assigned_to;
+        $subpoena->date = new Phalcon\Db\RawValue('now()');
+        $subpoena->delivered = $delivered;
+        $subpoena->action = $action;
+        $subpoena->created_by = $this->session->get('auth')['id'];
+        $subpoena->created_at = new Phalcon\Db\RawValue('now()');
+
+        if ($subpoena->save() == false) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function qrAction() 
@@ -95,7 +126,6 @@ class AddressesController extends ControllerBase
                 $address->address = $this->getAddressByCoords($coords[0], $coords[1]);
                 $address->latitude = $coords[0];
                 $address->longitude = $coords[1];
-                $address->assigned_to = $this->session->get('auth')['id'];
                 $address->created_by = $this->session->get('auth')['id'];
                 $address->created_at = new Phalcon\Db\RawValue('now()');
 
@@ -148,7 +178,7 @@ class AddressesController extends ControllerBase
 
     private function getAddressByCoords($lat, $lng) 
     {
-        $url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=".$lat.",".$lng."&sensor=true";
+        $url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=".$lat.",".$lng."&sensor=true&language=bg&region=BG";
         $json_result = json_decode(file_get_contents($url));
 
         return $json_result->results[0]->formatted_address;

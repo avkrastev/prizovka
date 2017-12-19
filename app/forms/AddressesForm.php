@@ -20,25 +20,16 @@ class AddressesForm extends Form
         // Number
         $number = new Text('case_number');
         $number->setLabel('Номер на дело');
-        $number->setAttributes([
-            'placeholder' => 'Номер на дело'
-        ]);
         $this->add($number);
 
         // Reference number
         $refNumber = new Text('reference_number');
         $refNumber->setLabel('Изходящ номер');
-        $refNumber->setAttributes([
-            'placeholder' => 'Изходящ номер'
-        ]);
         $this->add($refNumber);
 
         // Address
         $address = new Text('address');
         $address->setLabel('Адрес*');
-        $address->setAttributes([
-            'placeholder' => 'Въведете адрес'
-        ]);
         $address->addValidators(array(
             new PresenceOf(array(
                 'message' => 'Адресът е задължително поле'

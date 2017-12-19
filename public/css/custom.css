@@ -63,6 +63,10 @@ section.error400 {
 #map2 {
     height: 240px;
 }
+#subpoenaMap {
+    height: 240px;
+    margin-bottom: 20px;
+}
 #description {
     font-family: Roboto;
     font-size: 15px;
@@ -147,10 +151,6 @@ section.error400 {
 
 #qrcode {
     margin-top: 2rem;
-}
- 
-table.table-hover tr td:not(:last-child) {
-    cursor: pointer;
 }
 /*Modal styles*/
 .modal div[class*="col-"] {

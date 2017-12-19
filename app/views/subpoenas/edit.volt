@@ -2,7 +2,11 @@
 <section class="forms">
     <div class="container-fluid">
         <header> 
-            <h1 class="h3 display">Редактиране на призовка</h1>
+            <h1 class="h3 display">Редактиране на призовка
+            <a href="{{ url('subpoenas') }}" class="btn btn-primary float-right">
+                <i class="icon ion-chevron-left"></i>Обратно към списъка с призовки
+            </a>
+        </h1>
         </header>
         <div class="row editSubpoenas">
             <div class="col-lg-12">

@@ -186,7 +186,7 @@ $(window).load(function() {
     $('table td.operations a.viewUser').on('click', function () {
         var root = location.protocol + '//' + location.host;
         $.post(root+'/employees/view', {userId: $(this).attr('user-id')},
-            function (resp) {          
+            function (resp) {        
                 if (resp['error']) {
                     return;
                 }
@@ -201,14 +201,16 @@ $(window).load(function() {
     $('table.subpoenas td a.viewAddress').on('click', function () {
         var root = location.protocol + '//' + location.host;
         $.post(root+'/subpoenas/view', {addressId: $(this).parents('tr').attr('addressId')},
-            function (resp) {       
+            function (resp) {             
                 if (resp['error']) {
                     return; // TODO error show
                 }
-                for (var i in resp) {
-                    $('.modal-body p.'+i).text(resp[i]);
-                }       
-                var myLatLng = {lat: parseFloat(resp['latitude']), lng: parseFloat(resp['longitude'])};
+                for (var i in resp['address']) {
+                    $('.modal-body p.'+i).text(resp['address'][i]);
+                }
+                $('.modal-body p.assigned_to').text(resp['assigned_to']);    
+
+                var myLatLng = {lat: parseFloat(resp['address']['latitude']), lng: parseFloat(resp['address']['longitude'])};
 
                 var map = new google.maps.Map(document.getElementById('map2'), {
                     zoom: 17,
@@ -218,7 +220,7 @@ $(window).load(function() {
                 var marker = new google.maps.Marker({
                     position: myLatLng,
                     map: map,
-                    title: resp['address']
+                    title: resp[0]['a']['address']
                 });
 
                 google.maps.event.addListenerOnce(map, 'idle', function(){
@@ -229,11 +231,19 @@ $(window).load(function() {
         );
     });
 
-    $('table.subpoenas tr td:not(.address)').on('click', function() {
-        var addressId = $(this).parent().attr('addressId');
-        var root = location.protocol + '//' + location.host;
-        window.location.replace(root+'/subpoenas/edit/'+addressId);
-    });
+    if ($('#subpoenaMap').length > 0) {
+        var myLatLng = {lat: parseFloat($('#subpoenaMap').attr('lat')), lng: parseFloat($('#subpoenaMap').attr('lng'))};
+    
+        var map = new google.maps.Map(document.getElementById('subpoenaMap'), {
+            zoom: 17,
+            center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map
+        });
+    }
 
     $('.hasDatepicker').datepicker({
         format: "dd.mm.yyyy",

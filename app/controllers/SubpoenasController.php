@@ -41,7 +41,7 @@ class SubpoenasController extends ControllerBase
             "page"  => $numberPage
         ));
 
-        $this->view->users = $addresses;
+        $this->view->address = $addresses;
         $this->view->page = $paginator->getPaginate();
     }
 
@@ -51,16 +51,19 @@ class SubpoenasController extends ControllerBase
 
         $addressId = $this->request->getPost('addressId');
 
-        $address = Addresses::findFirstById($addressId);
+        $addresses = new Addresses();
+        $address = $addresses->getAddressesWithDetails($addressId);
 
         if (!$address) {
             echo json_encode(['error' => 'Адресът не беше намерен!']);
             return;
         }
 
-        $this->serviceFields($address);
+        $user = Users::findFirstById($address[0]->s->assigned_to);
+        $assigned_to = $user->first_name.' '.$user->last_name;
+        $this->serviceFields($address[0]->a);
 
-        echo json_encode($address);
+        echo json_encode(['address' => $address[0]->a, 'assigned_to' => $assigned_to]);
     }
 
     /**
@@ -121,7 +124,11 @@ class SubpoenasController extends ControllerBase
         $this->view->form = $form;
 
         $data = $this->request->getPost();
+        $address->case_number = $data['case_number'];
         $address->reference_number = $data['reference_number'];
+        $address->address = $data['address'];
+        $address->latitude = $data['latitude'];
+        $address->longitude = $data['longitude'];
 
         $address->updated_by = Users::findFirst($this->session->get('auth')['id'])->id;
         $address->updated_at = new Phalcon\Db\RawValue('now()');
@@ -150,12 +157,45 @@ class SubpoenasController extends ControllerBase
         );
     }
 
+    public function detailsAction($id)
+    {
+        if (!$this->request->isPost()) {
+            $numberPage = 1;
+            $numberPage = $this->request->getQuery('page','int');
+            
+            $subpoenas = Subpoenas::query()
+                                    ->where('address = :id:')
+                                    ->bind(['id' => $id])
+                                    ->execute();
+
+            if (!$subpoenas || count($subpoenas) == 0) {
+                $this->flash->error("Няма детайли за избраната призовка!");
+
+                return $this->dispatcher->forward(
+                    [
+                        "controller" => "subpoenas",
+                        "action"     => "index",
+                    ]
+                );
+            }
+
+            $paginator = new Paginator(array(
+                "data"  => $subpoenas,
+                "limit" => 5,
+                "page"  => $numberPage
+            ));
+
+            $daysOfWeek = ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'];
+    
+            $this->view->subpoena = $subpoenas;
+            $this->view->daysOfWeek = $daysOfWeek;
+            $this->view->actions = Subpoenas::getSubpoenaActions();
+            $this->view->page = $paginator->getPaginate();
+        }
+    }
+
     private function serviceFields(&$address, $edit = false) 
     {
-        if ($edit === false) {
-            $address->assigned_to = $address->getAssigned_to()->first_name.' '.$address->getAssigned_to()->last_name;
-        }
-
         $address->updated_by = !empty($address->getUpdated_by()) ? $address->getUpdated_by()->first_name.' '.$address->getUpdated_by()->last_name : '-';
         $address->updated_at = !is_null($address->updated_at) ? date('d.m.Y H:i', strtotime($address->updated_at)) : '-';
         

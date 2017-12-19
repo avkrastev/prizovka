@@ -17,10 +17,8 @@
                             <tr>
                                 <th>Номер на дело</th>
                                 <th>Изходящ номер</th>
-                                <th>Зачислена на</th>
                                 <th>Адрес</th>
-                                <th>Връчена</th>
-                                <!--<th>Операции</th>-->
+                                <th>Операции</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,24 +26,13 @@
                             <tr addressId="{{ address.id }}" {{ request.getQuery('addressid') == address.id ? 'class="activeRow"' : '' }} title="Редактирай призовката">
                                 <td># {{ address.case_number }}</td>
                                 <td>{{ address.reference_number }}</td>
-                                <td>{{ address.getAssigned_to().first_name ~' '~ address.getAssigned_to().last_name }}</td>
                                 <td class="address">
                                     <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal">{{ address.address }}</a>
                                 </td>
-                                {% if(address.delivered == 1) %}
-                                    <td>Да</td>
-                                {% else %}
-                                    <td>Не</td>
-                                {% endif %}
-                                <!--<td class="operations">
+                                <td class="operations">
                                     {{ link_to("subpoenas/edit/" ~ address.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
-                                    <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal" title="Преглед"><i class="icon ion-eye"></i></a>
-                                    {% if(address.delivered == 1) %}
-                                        {{ link_to("subpoenas/reject/" ~ address.id, '<i class="icon ion-close-round"></i>', "title": "Отмени връчването") }}
-                                    {% else %}
-                                        {{ link_to("subpoenas/deliver/" ~ address.id, '<i class="icon ion-checkmark-round"></i>', "title": "Маркирай като връчена") }}
-                                    {% endif %}
-                                </td>-->
+                                    {{ link_to("subpoenas/details/" ~ address.id, '<i class="icon ion-eye"></i>', "title": "Преглед") }}
+                                </td>
                             </tr>
                         {% if loop.last %}
                         </tbody>
