@@ -1,12 +1,11 @@
 
-<section class="forms">
+<section class="charts">
     <div class="container-fluid">
-        <header> 
-            <h1 class="h3 display">Редактиране на призовка
+        <header class="clearfix"> 
+            <h1 class="h3 float-left">Редактиране на призовка</h1>
             <a href="{{ url('subpoenas') }}" class="btn btn-primary float-right">
                 <i class="icon ion-chevron-left"></i>Обратно към списъка с призовки
             </a>
-        </h1>
         </header>
         <div class="row editSubpoenas">
             <div class="col-lg-12">
@@ -18,6 +17,7 @@
                                     {{ form.render('id') }}
                                     {{ form.render('latitude') }}
                                     {{ form.render('longitude') }}
+                                    <input type="hidden" id="old_assignment" name="old_assignment" value="{{ address.assigned_to }}"/>
                                     <div class="form-group">
                                         {{ form.label('case_number') }}
                                         {{ form.render('case_number', ['class': 'form-control']) }}
@@ -39,7 +39,7 @@
                                         <span class="help-block-none form-control-feedback">Служителят е задължително поле</span>
                                     </div>
                                     <div class="form-group">       
-                                        <input type="submit" id="assignAddress" value="Зачисли призовка" class="btn btn-primary">
+                                        <input type="submit" id="assignAddress" value="Запази промените" class="btn btn-primary">
                                     </div>
                                     <div id="qrcode">
                                         <a href="#" id="downloadQR" download="">

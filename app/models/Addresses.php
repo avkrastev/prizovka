@@ -44,4 +44,13 @@ class Addresses extends Model
 		return $query->execute();
 	}
 
+	public function getAddressesPerEmployee($id) 
+	{
+		$query = $this->modelsManager->createQuery('SELECT a.*, s.*
+													FROM addresses a
+													JOIN subpoenas s ON (a.id = s.address)
+													LEFT OUTER JOIN subpoenas s2 ON (a.id = s2.address AND (s.id < s2.id))
+													WHERE s2.id IS NULL AND s.assigned_to = '.$id.' AND a.delivered = "N"');
+		return $query->execute();
+	}
 }

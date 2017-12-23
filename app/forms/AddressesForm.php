@@ -15,21 +15,39 @@ class AddressesForm extends Form
     public function initialize($entity = null, $options = null)
     {
         if (isset($options['edit'])) {
-            $this->add(new Hidden("id"));
+            $this->add(new Hidden('id'));
+            $this->add(new Hidden('employee'));
+
         }
+
         // Number
         $number = new Text('case_number');
         $number->setLabel('Номер на дело');
+        if (isset($options['search'])) {
+            $number->setAttributes([
+                'placeholder' => 'Номер на дело'
+            ]);
+        }
         $this->add($number);
 
         // Reference number
         $refNumber = new Text('reference_number');
         $refNumber->setLabel('Изходящ номер');
+        if (isset($options['search'])) {
+            $refNumber->setAttributes([
+                'placeholder' => 'Изходящ номер'
+            ]);
+        }
         $this->add($refNumber);
 
         // Address
         $address = new Text('address');
         $address->setLabel('Адрес*');
+        if (isset($options['search'])) {
+            $address->setAttributes([
+                'placeholder' => 'Адрес'
+            ]);
+        }
         $address->addValidators(array(
             new PresenceOf(array(
                 'message' => 'Адресът е задължително поле'
@@ -49,19 +67,21 @@ class AddressesForm extends Form
             'order'       => 'name'
         ];  
 
-        // Assigned employee
-        $assign = new Select('assigned_to',  Users::find($employee_params), array(
-            'using' => array('id', 'name'),
-            'useEmpty'   => true,
-            'emptyText'  => 'Изберете...',
-            'emptyValue' => ''
-        ));
-        $assign->setLabel('Призовкар*');
-        $assign->addValidators(array(
-            new PresenceOf(array(
-                'message' => 'Служителят е задължително поле'
-            ))
-        ));
-        $this->add($assign);
+        if (!isset($options['search'])) {
+            // Assigned employee
+            $assign = new Select('assigned_to',  Users::find($employee_params), array(
+                'using' => array('id', 'name'),
+                'useEmpty'   => true,
+                'emptyText'  => 'Изберете...',
+                'emptyValue' => ''
+            ));
+            $assign->setLabel('Призовкар*');
+            $assign->addValidators(array(
+                new PresenceOf(array(
+                    'message' => 'Служителят е задължително поле'
+                ))
+            ));
+            $this->add($assign);
+        }
     }
 }

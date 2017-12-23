@@ -7,76 +7,96 @@
             </a>
         </header>
         <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-block">
-                    {% for key, address in page.items %}
-                    {% if loop.first %}
-                    <table class="table table-hover subpoenas">
-                        <thead>
-                            <tr>
-                                <th>Номер на дело</th>
-                                <th>Изходящ номер</th>
-                                <th>Адрес</th>
-                                <th>Операции</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% endif %}                       
-                            <tr addressId="{{ address.id }}" {{ request.getQuery('addressid') == address.id ? 'class="activeRow"' : '' }} title="Редактирай призовката">
-                                <td># {{ address.case_number }}</td>
-                                <td>{{ address.reference_number }}</td>
-                                <td class="address">
-                                    <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal">{{ address.address }}</a>
-                                </td>
-                                <td class="operations">
-                                    {{ link_to("subpoenas/edit/" ~ address.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
-                                    {{ link_to("subpoenas/details/" ~ address.id, '<i class="icon ion-eye"></i>', "title": "Преглед") }}
-                                </td>
-                            </tr>
-                        {% if loop.last %}
-                        </tbody>
-                    </table>
-                    <nav>
-                        <ul class="pagination justify-content-center">
-                            {% if page.before == page.current %}
-                                <li class="page-item disabled">
-                                    {{ link_to("subpoenas/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
-                                </li>
-                            {% else %}
-                                <li class="page-item">
-                                    {{ link_to("subpoenas/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
-                                </li>
-                            {% endif %}
-                            {% for i in 1..page.total_pages %}
-                                {% if i == page.current %}
-                                    <li class="page-item active">
-                                        {{ link_to("subpoenas/index?page=" ~ i, i, "class": "page-link") }}
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-block">
+                        {{ form("subpoenas/index", "class": "form-inline") }}
+                            {% for element in form %}
+                                {% if is_a(element, 'Phalcon\Forms\Element\Hidden') %}
+                                    {{ element }}
+                                {% else %}
+                                <div class="form-group">
+                                    {{ element.render(['class': 'mx-sm-3 form-control']) }}
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="form-group">
+                                {{ submit_button("Търсене", "class": "mx-sm-3 btn btn-primary") }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card">                
+                    <div class="card-block">
+                        {% for key, address in page.items %}
+                        {% if loop.first %}
+                        <table class="table subpoenas">
+                            <thead>
+                                <tr>
+                                    <th>Номер на дело</th>
+                                    <th>Изходящ номер</th>
+                                    <th>Адрес</th>
+                                    <th>Операции</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% endif %}                       
+                                <tr addressId="{{ address.id }}" {{ request.getQuery('addressid') == address.id ? 'class="activeRow"' : '' }}>
+                                    <td># {{ address.case_number }}</td>
+                                    <td>{{ address.reference_number }}</td>
+                                    <td class="address">
+                                        <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal">{{ address.address }}</a>
+                                    </td>
+                                    <td class="operations">
+                                        {{ link_to("subpoenas/edit/" ~ address.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
+                                        {{ link_to("subpoenas/details/" ~ address.id, '<i class="icon ion-clipboard"></i>', "title": "Преглед") }}
+                                    </td>
+                                </tr>
+                            {% if loop.last %}
+                            </tbody>
+                        </table>
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                {% if page.before == page.current %}
+                                    <li class="page-item disabled">
+                                        {{ link_to("subpoenas/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
                                     </li>
                                 {% else %}
                                     <li class="page-item">
-                                        {{ link_to("subpoenas/index?page=" ~ i, i, "class": "page-link") }}
+                                        {{ link_to("subpoenas/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
                                     </li>
                                 {% endif %}
-                            {% endfor %}
-                            {% if page.next == page.current %}
-                                <li class="page-item disabled">
-                                    {{ link_to("subpoenas/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
-                                </li>
-                            {% else %}
-                                <li class="page-item">
-                                    {{ link_to("subpoenas/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                    {% endif %}
-                    {% else %}
-                        Няма намерени призовки
-                    {% endfor  %}
+                                {% for i in 1..page.total_pages %}
+                                    {% if i == page.current %}
+                                        <li class="page-item active">
+                                            {{ link_to("subpoenas/index?page=" ~ i, i, "class": "page-link") }}
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item">
+                                            {{ link_to("subpoenas/index?page=" ~ i, i, "class": "page-link") }}
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page.next == page.current %}
+                                    <li class="page-item disabled">
+                                        {{ link_to("subpoenas/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        {{ link_to("subpoenas/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        {% endif %}
+                        {% else %}
+                            Няма намерени призовки
+                        {% endfor  %}
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     </div>
     <!-- Modal-->

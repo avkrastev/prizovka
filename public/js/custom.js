@@ -220,7 +220,7 @@ $(window).load(function() {
                 var marker = new google.maps.Marker({
                     position: myLatLng,
                     map: map,
-                    title: resp[0]['a']['address']
+                    title: resp['address']
                 });
 
                 google.maps.event.addListenerOnce(map, 'idle', function(){

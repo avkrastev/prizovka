@@ -1,0 +1,145 @@
+body {
+    font-family: "Roboto", sans-serif;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #292b2c;
+    background-color: #fff;
+}
+.ui-bar-a, 
+.ui-page-theme-a .ui-bar-inherit, 
+html .ui-bar-a .ui-bar-inherit, 
+html .ui-body-a .ui-bar-inherit, 
+html body .ui-group-theme-a .ui-bar-inherit {
+    background-color: #393836;
+    color: #fff;
+    text-shadow: none;
+}
+.ui-page-theme-a .ui-btn.ui-btn-active, 
+html .ui-bar-a .ui-btn.ui-btn-active, 
+html .ui-body-a .ui-btn.ui-btn-active, 
+html body .ui-group-theme-a .ui-btn.ui-btn-active, 
+html head+body .ui-btn.ui-btn-a.ui-btn-active, 
+.ui-page-theme-a .ui-checkbox-on:after, 
+html .ui-bar-a .ui-checkbox-on:after, 
+html .ui-body-a .ui-checkbox-on:after, 
+html body .ui-group-theme-a .ui-checkbox-on:after, 
+.ui-btn.ui-checkbox-on.ui-btn-a:after, 
+.ui-page-theme-a .ui-flipswitch-active, 
+html .ui-bar-a .ui-flipswitch-active, 
+html .ui-body-a .ui-flipswitch-active, 
+html body .ui-group-theme-a .ui-flipswitch-active, 
+html body .ui-flipswitch.ui-bar-a.ui-flipswitch-active, 
+.ui-page-theme-a .ui-slider-track .ui-btn-active, 
+html .ui-bar-a .ui-slider-track .ui-btn-active, 
+html .ui-body-a .ui-slider-track .ui-btn-active, 
+html body .ui-group-theme-a .ui-slider-track .ui-btn-active, 
+html body div.ui-slider-track.ui-body-a .ui-btn-active {
+    background-color: #33b35a;
+    border-color: #33b35a;
+    text-shadow: none;
+}
+.ui-page-theme-a .ui-btn:focus, 
+html .ui-bar-a .ui-btn:focus, 
+html .ui-body-a .ui-btn:focus, 
+html body .ui-group-theme-a .ui-btn:focus, 
+html head+body .ui-btn.ui-btn-a:focus, 
+.ui-page-theme-a .ui-focus, 
+html .ui-bar-a .ui-focus, 
+html .ui-body-a .ui-focus, 
+html body .ui-group-theme-a .ui-focus, 
+html head+body .ui-btn-a.ui-focus, 
+html head+body .ui-body-a.ui-focus {
+    box-shadow: none;
+}
+.ui-bar-a, 
+.ui-page-theme-a .ui-bar-inherit, 
+html .ui-bar-a .ui-bar-inherit, 
+html .ui-body-a .ui-bar-inherit, 
+html body .ui-group-theme-a .ui-bar-inherit {
+    border: none;
+}
+#subpoenaMap {
+    height: 240px;
+}
+#map-page, 
+#map-canvas { 
+    width: 100%; 
+    height:200px; 
+    padding: 0; 
+}
+#map {
+    width: 100%;
+    height: 200px;
+}
+#directions-panel {
+    margin-top: 10px;
+    background-color: #eceeef;
+    padding: 10px;
+    overflow: scroll;
+    height: 174px;
+}
+	
+/* Left transition */
+li.left {
+    -webkit-transition: -webkit-transform 250ms ease;
+    -webkit-transform: translateX(-100%);
+    -moz-transition: -moz-transform 250ms ease;
+    -moz-transform: translateX(-100%);
+    -o-transition: -o-transform 250ms ease;
+    -o-transform: translateX(-100%);
+    transition: transform 250ms ease;
+    transform: translateX(-100%);
+}
+/* Right transition */
+li.right {
+    -webkit-transition: -webkit-transform 250ms ease;
+    -webkit-transform: translateX(100%);
+    -moz-transition: -moz-transform 250ms ease;
+    -moz-transform: translateX(100%);
+    -o-transition: -o-transform 250ms ease;
+    -o-transform: translateX(100%);
+    transition: transform 250ms ease;
+    transform: translateX(100%);
+}
+/* Border bottom for the previous button during the transition*/
+li.left a.ui-btn,
+li.right a.ui-btn {
+    border-top-width: 0;
+    border-left-width: 1px;
+    border-right-width: 1px;
+}
+li a.ui-btn.border-bottom {
+    border-bottom-width: 1px;
+}
+/* Hide the delete button on touch devices */
+ul.touch li.ui-li-has-alt a.delete {
+    display: none;
+}
+ul.touch li.ui-li-has-alt a.ui-btn {
+    margin-right:0;
+}
+/* Styling for the popup */
+#confirm p {
+    text-align: center;
+    font-size: inherit;
+    margin-bottom: .75em;
+}
+#mapDialog-popup {
+    width: 100%;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.text-right {
+    text-align: right;
+}
+.text-left {
+    text-align: left;
+}
+.text-center {
+    text-align: center;
+}

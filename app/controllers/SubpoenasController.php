@@ -3,13 +3,11 @@
 use Phalcon\Flash;
 use Phalcon\Session;
 use Phalcon\Mvc\View;
+use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class SubpoenasController extends ControllerBase
 {
-    public $lat = null;
-    public $lng = null;
-
     public function initialize()
     {
         $this->tag->setTitle('Призовки');
@@ -18,8 +16,19 @@ class SubpoenasController extends ControllerBase
 
     public function indexAction() 
     {
+        $this->session->conditions = null;
         $numberPage = 1;
-        $numberPage = $this->request->getQuery('page','int');
+        if ($this->request->isPost()) {
+            $query = Criteria::fromInput($this->di, 'Addresses', $this->request->getPost());
+            $this->persistent->searchParams = $query->getParams();
+        } else {
+            $numberPage = $this->request->getQuery('page','int');
+        }
+
+        $parameters = array();
+        if ($this->persistent->searchParams) {
+            //$parameters = $this->persistent->searchParams;
+        }
 
         $parameters['order'] = 'id ASC'; //TODO get order dinamically
         $addresses = Addresses::find($parameters);
@@ -43,6 +52,47 @@ class SubpoenasController extends ControllerBase
 
         $this->view->address = $addresses;
         $this->view->page = $paginator->getPaginate();
+        $this->view->form = new AddressesForm($addresses, array('search' => true));
+    }
+
+    public function searchAction() 
+    {
+        $numberPage = 1;
+        if ($this->request->isPost()) {
+            $query = Criteria::fromInput($this->di, 'Addresses', $this->request->getPost());
+            $this->persistent->searchParams = $query->getParams();
+        } else {
+            $numberPage = $this->request->getQuery('page','int');
+        }
+
+        $parameters = array();
+        if ($this->persistent->searchParams) {
+            $parameters = $this->persistent->searchParams;
+        }
+
+        $parameters['order'] = 'id ASC'; //TODO get order dinamically
+        $addresses = Addresses::find($parameters);
+
+        if (count($addresses) == 0) {
+            $this->flash->notice("Няма намерени адреси по зададените критерии!");
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "subpoenas",
+                    "action"     => "index"
+                ]
+            );
+        }
+
+        $paginator = new Paginator(array(
+            "data"  => $addresses,
+            "limit" => 10,
+            "page"  => $numberPage
+        ));
+
+        $this->view->address = $addresses;
+        $this->view->page = $paginator->getPaginate();
+        $this->view->form = new AddressesForm($addresses, array('search' => true));
     }
 
     public function viewAction()
@@ -72,7 +122,9 @@ class SubpoenasController extends ControllerBase
     public function editAction($id)
     {
         if (!$this->request->isPost()) {
-            $address = Addresses::findFirstById($id);
+            $addresses = new Addresses();
+            $address = $addresses->getAddressesWithDetails($id);
+
             if (!$address) {
                 $this->flash->error("Призовката не беше намерена!");
 
@@ -83,7 +135,10 @@ class SubpoenasController extends ControllerBase
                     ]
                 );
             }
-            $this->serviceFields($address, true);
+
+            $address[0]->a->assigned_to = $address[0]->s->assigned_to;
+            $address = $address[0]->a;
+            $this->serviceFields($address);
 
             $this->view->form = new AddressesForm($address, array('edit' => true));
             $this->view->address = $address;
@@ -124,6 +179,7 @@ class SubpoenasController extends ControllerBase
         $this->view->form = $form;
 
         $data = $this->request->getPost();
+
         $address->case_number = $data['case_number'];
         $address->reference_number = $data['reference_number'];
         $address->address = $data['address'];
@@ -133,7 +189,11 @@ class SubpoenasController extends ControllerBase
         $address->updated_by = Users::findFirst($this->session->get('auth')['id'])->id;
         $address->updated_at = new Phalcon\Db\RawValue('now()');
 
-        if ($address->save() == false) {
+        if ($data['old_assignment'] != $data['assigned_to']) {
+            $subpoena = $this->assignSubpoena($id, $data['assigned_to'], Subpoenas::CHANGED);
+        }
+
+        if ($address->save() == false && $subpoena === false) {
             $this->flash->error("Възникна грешки повреме на запазването на данните!");
 
             return $this->dispatcher->forward(
@@ -194,7 +254,7 @@ class SubpoenasController extends ControllerBase
         }
     }
 
-    private function serviceFields(&$address, $edit = false) 
+    private function serviceFields(&$address) 
     {
         $address->updated_by = !empty($address->getUpdated_by()) ? $address->getUpdated_by()->first_name.' '.$address->getUpdated_by()->last_name : '-';
         $address->updated_at = !is_null($address->updated_at) ? date('d.m.Y H:i', strtotime($address->updated_at)) : '-';

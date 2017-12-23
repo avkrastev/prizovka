@@ -197,7 +197,7 @@ class EmployeesController extends ControllerBase
         }
         $data['active'] = isset($data['active']) ? 1 : 0;
 
-        $user->updated_by = Users::findFirst($this->session->get('auth')['id'])->id;
+        $user->updated_by = $this->session->get('auth')['id'];
         $user->updated_at = new Phalcon\Db\RawValue('now()');
 
         if (!$form->isValid($data, $user)) {

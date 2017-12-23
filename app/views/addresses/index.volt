@@ -1,8 +1,8 @@
 
-<section class="forms">
+<section class="charts">
     <div class="container-fluid">
-        <header> 
-            <h1 class="h3 display">Създаване на QR кодове</h1>
+        <header class="clearfix"> 
+            <h1 class="h3 float-left">Създаване на QR кодове</h1>
         </header>
         <div class="row">
             <div class="col-lg-12">

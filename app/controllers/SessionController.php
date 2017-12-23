@@ -5,13 +5,12 @@
  *
  * Allows to authenticate users
  */
-class SessionController extends ControllerBase
+class SessionController extends CommonController
 {
     public function initialize()
     {
         $this->view->setTemplateAfter('session');
         $this->tag->setTitle('Вход');
-        //parent::initialize();
     }
 
     public function indexAction()
@@ -40,7 +39,6 @@ class SessionController extends ControllerBase
     public function startAction()
     {
         if ($this->request->isPost()) {
-
             $email = $this->request->getPost('email');
             $password = $this->request->getPost('password');
 
@@ -53,10 +51,28 @@ class SessionController extends ControllerBase
                 $this->_registerSession($user);
 
                 $this->view->user = $user;
+
+                switch ($user->type) {
+                    case Users::ADMIN: // ЧСИ
+                        $controller = 'employees';
+                        $action = 'index';
+                        break;
+                    case Users::COADMIN: // ПЧСИ
+                    case Users::EMPLOYEE: // Служител
+                    case Users::CLERK: // Деловодител
+                        $controller = 'addresses';
+                        $action = 'index';
+                        break;
+                    case Users::SUMMON: // Призовкар
+                        $controller = 'app';
+                        $action = 'index';
+                        break;
+                }
+
                 return $this->dispatcher->forward(
                     [
-                        "controller" => "index",
-                        "action"     => "index",
+                        "controller" => $controller,
+                        "action"     => $action
                     ]
                 );
             }
@@ -66,8 +82,8 @@ class SessionController extends ControllerBase
 
         return $this->dispatcher->forward(
             [
-                "controller" => "session",
-                "action"     => "index",
+                "controller" => 'session',
+                "action"     => 'index'
             ]
         );
     }

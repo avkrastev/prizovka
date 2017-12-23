@@ -55,7 +55,8 @@ class SecurityPlugin extends Plugin
 				'producttypes' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
 				'invoices'     => array('index', 'profile'),
 				'addresses'	   => array('index', 'createQR', 'download', 'assign', 'list', 'qr'),
-				'subpoenas'	   => array('index', 'edit', 'save', 'view', 'delete', 'details')
+				'subpoenas'	   => array('index', 'edit', 'save', 'view', 'delete', 'details', 'search'),
+				'app'		   => array('index', 'logout', 'address', 'routes', 'scan', 'deliver')
 			);
 			foreach ($privateResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);
@@ -65,7 +66,8 @@ class SecurityPlugin extends Plugin
 			$adminResources = array(
 				'employees'    => array('index', 'create', 'edit', 'save', 'view', 'delete'),
 				'addresses'	   => array('index', 'createQR', 'download', 'assign', 'list', 'qr'),
-				'subpoenas'	   => array('index', 'edit', 'save', 'view', 'delete', 'details')
+				'subpoenas'	   => array('index', 'edit', 'save', 'view', 'delete', 'details', 'search'),
+				'app'		   => array('index', 'logout', 'address', 'routes', 'scan', 'deliver')
 			);
 			foreach ($adminResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);

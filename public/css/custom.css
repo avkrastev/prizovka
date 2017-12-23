@@ -54,7 +54,9 @@ a[href="#"] {
 section.error400 {
     margin-top: 2rem;
 }
-
+a span.form-control-feedback {
+    color: #999 !important;
+}
 /* Always set the map height explicitly to define the size of the div
 * element that contains the map. */
 #map {

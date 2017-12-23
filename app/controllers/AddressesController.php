@@ -7,9 +7,6 @@ use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class AddressesController extends ControllerBase
 {
-    public $lat = null;
-    public $lng = null;
-
     public function initialize()
     {
         $this->tag->setTitle('Адреси');
@@ -39,10 +36,9 @@ class AddressesController extends ControllerBase
     public function assignAction() 
     {
         $form = new AddressesForm;
-        if ($this->request->isPost()) {
-            $loggedUser = Users::findFirst($this->session->get('auth')['id']);
-            
+        if ($this->request->isPost()) {            
             $address = new Addresses();
+            
             $address->case_number = $this->request->getPost('case_number');
             $address->reference_number = $this->request->getPost('reference_number');
             $address->address = $this->request->getPost('address');
@@ -62,8 +58,7 @@ class AddressesController extends ControllerBase
                 );
             } else {
                 $assigned_to = $this->request->getPost('assigned_to');
-                $delivered = $this->request->getPost('delivered', 0);
-                $subpoena = $this->assignSubpoena($address->id, $assigned_to, $delivered, Subpoenas::ISSUED);
+                $subpoena = $this->assignSubpoena($address->id, $assigned_to, Subpoenas::ISSUED);
 
                 if ($subpoena !== false) {
                     $this->flash->success('Призовката беше зачислена успешно!');
@@ -88,24 +83,6 @@ class AddressesController extends ControllerBase
         $this->view->form = $form;
     }
 
-    private function assignSubpoena($addressId, $assigned_to, $delivered, $action = Subpoenas::VISITED) {
-        $subpoena = new Subpoenas();
-      
-        $subpoena->address = $addressId;
-        $subpoena->assigned_to = $assigned_to;
-        $subpoena->date = new Phalcon\Db\RawValue('now()');
-        $subpoena->delivered = $delivered;
-        $subpoena->action = $action;
-        $subpoena->created_by = $this->session->get('auth')['id'];
-        $subpoena->created_at = new Phalcon\Db\RawValue('now()');
-
-        if ($subpoena->save() == false) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     public function qrAction() 
     {
         $subpoena = $this->request->get('subpoena');
@@ -114,10 +91,10 @@ class AddressesController extends ControllerBase
             $coords = explode(',', $subpoena[0]);
 
             $existingSubpoena = Addresses::query()
-                                        ->where('latitude = :lat: and longitude = :lng: and case_number = :case: and reference_number = :refNumber:')
-                                        ->bind(['lat' => $coords[0], 'lng' => $coords[1], 'case' => $subpoena[1], 'refNumber' => $subpoena[2]])
-                                        ->execute()
-                                        ->getFirst();
+                                            ->where('case_number = :case: and reference_number = :refNumber:')
+                                            ->bind(['case' => $subpoena[1], 'refNumber' => $subpoena[2]])
+                                            ->execute()
+                                            ->getFirst();
 
             if (!$existingSubpoena) {
                 $address = new Addresses();
@@ -143,16 +120,21 @@ class AddressesController extends ControllerBase
     
                     $addresses = Addresses::find();
                     $lastPage = intval(ceil(count($addresses)*0.1));
-                    $this->view->pick('subpoenas/index')->setVar('addressId', $address->id);
     
                     return $this->response->redirect('/subpoenas/index?page='.$lastPage.'&addressid='.$address->id);
                 }
             } else {
-                $existingSubpoena->assigned_to = $this->session->get('auth')['id'];
-                $existingSubpoena->updated_by = Users::findFirst($this->session->get('auth')['id'])->id;
-                $existingSubpoena->updated_at = new Phalcon\Db\RawValue('now()');
+                $subpoena = $this->assignSubpoena($existingSubpoena->id, $this->session->get('auth')['id'], Subpoenas::CHANGED);
 
-                if ($existingSubpoena->save() == false) {
+                if ($existingSubpoena->latitude != $coords[0] || $existingSubpoena->longitude != $coords[1]) {
+                    $existingSubpoena->latitude = $coords[0];
+                    $existingSubpoena->longitude = $coords[1];
+                    $existingSubpoena->address = $this->getAddressByCoords($coords[0], $coords[1]);
+                    $existingSubpoena->updated_by = $this->session->get('auth')['id'];
+                    $existingSubpoena->updated_at = new Phalcon\Db\RawValue('now()');    
+                }
+
+                if ($existingSubpoena->save() == false && $subpoena === false) {
                     $this->flash->error("Възникна грешки повреме на запазването на данните!");
         
                     return $this->dispatcher->forward(
