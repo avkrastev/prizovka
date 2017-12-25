@@ -18,7 +18,7 @@ class Subpoenas extends Model
         ]);
 
         $this->belongsTo('address', 'Addresses', 'id', [
-			      'alias' => 'address'
+			'alias' => 'address'
         ]);
 
         $this->belongsTo('updated_by', 'Users', 'id', [

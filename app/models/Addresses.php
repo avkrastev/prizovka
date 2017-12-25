@@ -53,4 +53,15 @@ class Addresses extends Model
 													WHERE s2.id IS NULL AND s.assigned_to = '.$id.' AND a.delivered = "N"');
 		return $query->execute();
 	}
+
+	public function getNotAssignedAddresses($case_number, $reference_number) 
+	{
+		$query = $this->modelsManager->createQuery('SELECT a.*
+													FROM addresses a
+													LEFT JOIN subpoenas s ON (a.id = s.address)
+													WHERE s.assigned_to IS NULL 
+													AND a.case_number like "%'.$case_number.'%" 
+													AND a.reference_number like "%'.$reference_number.'%"');
+		return $query->execute();
+	}
 }

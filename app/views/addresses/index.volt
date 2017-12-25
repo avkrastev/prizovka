@@ -16,10 +16,12 @@
                                     <div class="form-group">
                                         {{ form.label('case_number') }}
                                         {{ form.render('case_number', ['class': 'form-control']) }}
+                                        <span class="help-block-none form-control-feedback">Номерът на делото е задължително поле</span>
                                     </div>
                                     <div class="form-group">
                                         {{ form.label('reference_number') }}
                                         {{ form.render('reference_number', ['class': 'form-control']) }}
+                                        <span class="help-block-none form-control-feedback">Изходящият номер е задължително поле</span>
                                     </div>  
                                     <div class="form-group">
                                         {{ form.label('address') }}
@@ -31,7 +33,6 @@
                                         <div class="select">
                                             {{ form.render('assigned_to', ['class': 'form-control']) }}
                                         </div>
-                                        <span class="help-block-none form-control-feedback">Служителят е задължително поле</span>
                                     </div>
                                     <div class="form-group">       
                                         <input type="submit" id="assignAddress" value="Зачисли призовка" class="btn btn-primary">

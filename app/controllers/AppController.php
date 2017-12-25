@@ -1,5 +1,7 @@
 <?php
+
 use Phalcon\Mvc\View;
+use Phalcon\Mvc\Model\Criteria;
 /**
  * AppController
  *
@@ -17,47 +19,74 @@ class AppController extends AppControllerBase
 
     public function indexAction()
     {
-        $this->view->disableLevel([View::LEVEL_LAYOUT => true]);
-
-        $auth = $this->session->get('auth');
-
-        $addressesModel = new Addresses;
-        $addresses = $addressesModel->getAddressesPerEmployee($auth['id']);
-
-        $this->view->addresses = $addresses;
+        $this->view->addresses = $this->allAddressesPerEmployee();
     }
 
-    public function addressAction($id) 
+    public function statusAction()
     {
-        $subpoena = Subpoenas::findFirstById($id);
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+        $auth = $this->session->get('auth');
+        $addressId = $this->request->getPost('addressId');
+        $status = $this->request->getPost('status');
 
-        $this->view->subpoena = $subpoena;
+        $subpoena = $this->assignSubpoena($addressId, $auth['id'], $status);
+
+        if ($status == Subpoenas::DELIVERED) {
+            $address = Addresses::findFirstById($addressId);
+
+            $address->delivered = 'Y';
+            $address->updated_at = new Phalcon\Db\RawValue('now()');
+            $address->updated_by = $auth['id'];
+
+            if ($address->save() == false) {
+                echo json_encode(['error' => 'Възникна грешка повреме на запазването на данните. Моля, опитайте отновно!']);
+                return;
+            }
+        }
+
+        if ($subpoena !== false) {
+            echo json_encode(['status' => $status]);
+            return;
+        } else {
+            echo json_encode(['error' => 'Възникна грешка повреме на запазването на данните. Моля, опитайте отновно!']);
+            return;
+        }
     }
 
     public function routesAction()
     {
-        $auth = $this->session->get('auth');
-        $addressesModel = new Addresses;
-        $addresses = $addressesModel->getAddressesPerEmployee($auth['id']);
-
-        $this->view->addresses = $addresses;
+        $this->view->addresses = $this->allAddressesPerEmployee();
     }
 
-    public function logoutAction()
+    public function assignAction()
     {
-        $this->session->remove('auth');
+        $postData = ['case_number' => '', 'reference_number' => ''];
+        $addresses = [];
+        if ($this->request->isPost()) {
+            $addressesModel = new Addresses;
+            $postData = $this->request->getPost();
+            $addresses = $addressesModel->getNotAssignedAddresses($postData['case_number'], $postData['reference_number']); // TODO limit results
+        }
         
-        return $this->dispatcher->forward(
-            [
-                "controller" => "session",
-                "action"     => "index",
-            ]
-        );
+        $this->view->addresses = $addresses;
+        $this->view->postData = $postData;
     }
-
-    public function scanAction()
+    
+    public function assignSubpoenaAction()
     {
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+        $auth = $this->session->get('auth');
+        $id = $this->request->getPost('id');
 
+        $addressDetails = $this->assignSubpoena($id, $auth['id'], Subpoenas::CHANGED);
+
+        if ($addressDetails !== false) {
+            echo json_encode(true); // TODO show errors
+            return;
+        } else {
+            echo json_encode(false);
+            return;
+        }
     }
 
     public function deliverAction() {
@@ -73,11 +102,19 @@ class AppController extends AppControllerBase
         $addressDetails = $this->assignSubpoena($id, $auth['id'], $action = Subpoenas::DELIVERED);
 
         if ($address->save() !== false && $addressDetails !== false) {
-            echo json_encode(true);
+            echo json_encode(true); // TODO show errors
             return;
         } else {
             echo json_encode(false);
             return;
         }
+    }
+
+    private function allAddressesPerEmployee() {
+        $auth = $this->session->get('auth');
+        $addressesModel = new Addresses;
+        $addresses = $addressesModel->getAddressesPerEmployee($auth['id']);
+
+        return $addresses;
     }
 }

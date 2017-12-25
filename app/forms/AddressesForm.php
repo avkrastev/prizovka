@@ -22,7 +22,7 @@ class AddressesForm extends Form
 
         // Number
         $number = new Text('case_number');
-        $number->setLabel('Номер на дело');
+        $number->setLabel('Номер на дело*');
         if (isset($options['search'])) {
             $number->setAttributes([
                 'placeholder' => 'Номер на дело'
@@ -32,7 +32,7 @@ class AddressesForm extends Form
 
         // Reference number
         $refNumber = new Text('reference_number');
-        $refNumber->setLabel('Изходящ номер');
+        $refNumber->setLabel('Изходящ номер*');
         if (isset($options['search'])) {
             $refNumber->setAttributes([
                 'placeholder' => 'Изходящ номер'
@@ -73,9 +73,9 @@ class AddressesForm extends Form
                 'using' => array('id', 'name'),
                 'useEmpty'   => true,
                 'emptyText'  => 'Изберете...',
-                'emptyValue' => ''
+                'emptyValue' => 0
             ));
-            $assign->setLabel('Призовкар*');
+            $assign->setLabel('Призовкар');
             $assign->addValidators(array(
                 new PresenceOf(array(
                     'message' => 'Служителят е задължително поле'

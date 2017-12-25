@@ -51,6 +51,8 @@ html body .ui-group-theme-a .ui-focus,
 html head+body .ui-btn-a.ui-focus, 
 html head+body .ui-body-a.ui-focus {
     box-shadow: none;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none;
 }
 .ui-bar-a, 
 .ui-page-theme-a .ui-bar-inherit, 
@@ -58,6 +60,25 @@ html .ui-bar-a .ui-bar-inherit,
 html .ui-body-a .ui-bar-inherit, 
 html body .ui-group-theme-a .ui-bar-inherit {
     border: none;
+}
+.ui-page-theme-a .ui-radio-on:after, 
+html .ui-bar-a .ui-radio-on:after, 
+html .ui-body-a .ui-radio-on:after, 
+html body .ui-group-theme-a .ui-radio-on:after, 
+.ui-btn.ui-radio-on.ui-btn-a:after {
+    border-color: #33b35a;
+}
+.ui-header, .ui-footer {
+    border-color: #ddd !important;
+}
+div[data-role="navbar"] ul li a:not(.ui-btn-active) {
+    background-color: #fff !important;
+    color: #333 !important;
+    text-shadow: none !important;
+    border-color: #ddd !important;
+}
+div[data-role="navbar"] ul li a.ui-btn-active {
+    background-color: #33b35a !important;
 }
 #subpoenaMap {
     height: 240px;
@@ -142,4 +163,20 @@ ul.touch li.ui-li-has-alt a.ui-btn {
 }
 .text-center {
     text-align: center;
+}
+.initials {
+    background-color: #1d1d1d !important;
+    text-shadow: none !important;
+    padding: 0.5em !important;
+    font-size: 16px !important;
+}
+.text-primary {
+    color: #33b35a !important;
+}
+p.error {
+    background-color: #f2dede;
+    border-color: #ebcccc;
+    color: #a94442;
+    padding: 0.5em;
+    border-radius: 0.25em;
 }

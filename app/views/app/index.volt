@@ -1,19 +1,19 @@
-<div data-role="page" id="demo-page" data-title="Призовка.бг" data-url="demo-page">
+<div data-role="page" id="index-page" data-title="Призовка.бг" data-url="index">
     <div data-role="header" data-position="fixed" data-theme="b">
         <h1>Призовкар.бг</h1>
         <a href="#" data-rel="back" class="initials">
             <strong><?php echo mb_substr($user->first_name, 0, 1); ?></strong>
             <strong class="text-primary"><?php echo mb_substr($user->last_name, 0, 1); ?></strong>
         </a>
-        <a href="{{ url('app/logout') }}" data-icon="back" data-iconpos="notext">Излез</a>
-    </div><!-- /header -->
-    <div data-role="navbar">
+        <a href="#" data-url="logout" data-icon="action" data-iconpos="notext">Излез</a>
+        <div data-role="navbar" data-position="fixed">
             <ul>
-                <li><a href="{{ url('app/index') }}" class="ui-btn-active">Призовки</a></li>
-                <li><a href="{{ url('app/routes') }}">Маршрут</a></li>
-                <li><a href="{{ url('app/scan') }}">Сканиране</a></li>
+                <li><a href="#" data-url="index" class="ui-btn-active">Призовки</a></li>
+                <li><a href="#" data-url="routes">Маршрут</a></li>
+                <li><a href="#" data-url="assign">Зачисляване</a></li>
             </ul>
         </div><!-- /navbar -->
+    </div><!-- /header -->
     <div role="main" class="ui-content">
         <ul id="list" class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-filter="true" data-filter-placeholder="Търсене по адрес">
             {% for key, address in addresses %}
@@ -22,7 +22,6 @@
                         <h3 class="topic">{{ address.a.address }}</h3>
                         <p><strong>Номер на делото: {{ address.a.case_number }}</strong></p>
                         <p>Изходящ номер: {{ address.a.reference_number }}</p>
-                        <p class="ui-li-aside"><strong>{{ date('d.m.y', strtotime(address.s.date))}}</strong>г.</p>
                     </a>
                     <a href="#" class="delete">Delete</a>
                 </li>
@@ -44,5 +43,14 @@
         <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Затвори</a>
         <p id="address"></p>
         <div id="map"></div>
+        <fieldset data-role="controlgroup">
+            <input name="action" id="visited" value="2" checked="checked" type="radio">
+            <label for="visited">Посетен адрес</label>
+            <input name="action" id="delivered" value="3" type="radio">
+            <label for="delivered">Връчена призовка</label>
+            <input name="action" id="not_delivered" value="5" type="radio">
+            <label for="not_delivered">Невръчена призовка</label>
+        </fieldset><br>
+        <input type="button" id="submit" value="Запази"/>
     </div><!-- /popup -->
 </div>

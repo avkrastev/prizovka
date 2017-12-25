@@ -104,16 +104,23 @@ class SubpoenasController extends ControllerBase
         $addresses = new Addresses();
         $address = $addresses->getAddressesWithDetails($addressId);
 
+        if (count($address) > 0) {
+            $user = Users::findFirstById($address[0]->s->assigned_to);
+            $assigned_to = $user->first_name.' '.$user->last_name;
+            $address = $address[0]->a;    
+        } else {
+            $address = Addresses::findFirstById($addressId);
+            $assigned_to = '';
+        }
+
         if (!$address) {
             echo json_encode(['error' => 'Адресът не беше намерен!']);
             return;
         }
 
-        $user = Users::findFirstById($address[0]->s->assigned_to);
-        $assigned_to = $user->first_name.' '.$user->last_name;
-        $this->serviceFields($address[0]->a);
+        $this->serviceFields($address);
 
-        echo json_encode(['address' => $address[0]->a, 'assigned_to' => $assigned_to]);
+        echo json_encode(['address' => $address, 'assigned_to' => $assigned_to]);
     }
 
     /**
@@ -124,6 +131,14 @@ class SubpoenasController extends ControllerBase
         if (!$this->request->isPost()) {
             $addresses = new Addresses();
             $address = $addresses->getAddressesWithDetails($id);
+
+            if (count($address) > 0) {
+                $address[0]->a->assigned_to = $address[0]->s->assigned_to;
+                $address = $address[0]->a;
+            } else {
+                $address = Addresses::findFirstById($id);
+                $address->assigned_to = null;
+            }
 
             if (!$address) {
                 $this->flash->error("Призовката не беше намерена!");
@@ -136,8 +151,6 @@ class SubpoenasController extends ControllerBase
                 );
             }
 
-            $address[0]->a->assigned_to = $address[0]->s->assigned_to;
-            $address = $address[0]->a;
             $this->serviceFields($address);
 
             $this->view->form = new AddressesForm($address, array('edit' => true));
@@ -189,7 +202,7 @@ class SubpoenasController extends ControllerBase
         $address->updated_by = Users::findFirst($this->session->get('auth')['id'])->id;
         $address->updated_at = new Phalcon\Db\RawValue('now()');
 
-        if ($data['old_assignment'] != $data['assigned_to']) {
+        if (!empty($data['assigned_to']) && $data['old_assignment'] != $data['assigned_to']) {
             $subpoena = $this->assignSubpoena($id, $data['assigned_to'], Subpoenas::CHANGED);
         }
 

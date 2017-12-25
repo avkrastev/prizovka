@@ -176,5 +176,5 @@ table td[data-toggle="modal"]:hover {
     background-color: rgba(0,0,0,.075);
 }
 .form-group span.form-control-feedback {
-    visibility: hidden;
+    display: none;
 }

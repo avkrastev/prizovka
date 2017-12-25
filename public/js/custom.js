@@ -89,23 +89,32 @@ $(window).load(function() {
         form.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            $('.form-group .has-danger').removeClass('has-danger');
+            $('.form-group .has-danger, .has-danger').removeClass('has-danger');
             $('.form-group input').removeClass('form-control-danger');
-            $('.form-control-feedback').css('visibility', 'hidden');
+            $('.form-control-feedback').hide();
 
             var valid = true;
             if ($('#pac-input').val() == '') {
                 valid = false;
                 $('#pac-input').parent().addClass('has-danger');
                 $('#pac-input').addClass('form-control-danger');
-                $('#pac-input').next('.form-control-feedback').css('visibility', 'visible');
+                $('#pac-input').next('.form-control-feedback').show();
             }
 
-            if ($('#assigned_to').val() == '') {
+            if ($('#case_number').val() == '') {
                 valid = false;
-                $('#assigned_to').parent().addClass('has-danger');
-                $('#assigned_to').parent().next('.form-control-feedback').addClass('has-danger').css('visibility', 'visible');
+                $('#case_number').parent().addClass('has-danger');
+                $('#case_number').addClass('form-control-danger');
+                $('#case_number').next('.form-control-feedback').show();
             }
+
+            if ($('#reference_number').val() == '') {
+                valid = false;
+                $('#reference_number').parent().addClass('has-danger');
+                $('#reference_number').addClass('form-control-danger');
+                $('#reference_number').next('.form-control-feedback').show();
+            }
+
             if (valid !== false) {
                 form.submit();
             }
@@ -117,23 +126,23 @@ $(window).load(function() {
         form.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            $('.form-group .has-danger').removeClass('has-danger');
+            $('.form-group .has-danger, .has-danger').removeClass('has-danger');
             $('.form-group input').removeClass('form-control-danger');
-            $('.form-control-feedback').css('visibility', 'hidden');
+            $('.form-control-feedback').hide();
 
             var valid = true;
             if ($('#email').val() == '') {
                 valid = false;
                 $('#email').parent().addClass('has-danger');
                 $('#email').addClass('form-control-danger');
-                $('#email').next('.form-control-feedback').css('visibility', 'visible');
+                $('#email').next('.form-control-feedback').show();
             }
 
             if ($('#password').val() == '' && !$('#employeesForm').hasClass('edit')) {
                 valid = false;
                 $('#password').parent().addClass('has-danger');
                 $('#password').addClass('form-control-danger');
-                $('#password').next('.form-control-feedback').css('visibility', 'visible');
+                $('#password').next('.form-control-feedback').show();
             }
 
             if (valid !== false) {

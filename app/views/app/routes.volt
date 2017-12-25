@@ -3,20 +3,19 @@
 <div data-role="page" id="routes-page" data-title="Призовка.бг" data-url="routes">
 <div data-role="header" data-position="fixed" data-theme="b">
         <h1>Призовкар.бг</h1>
-        <a href="#" data-rel="back">
+        <a href="#" data-rel="back" class="initials">
             <strong><?php echo mb_substr($user->first_name, 0, 1); ?></strong>
             <strong class="text-primary"><?php echo mb_substr($user->last_name, 0, 1); ?></strong>
         </a>
-        <a href="{{ url('app/logout') }}" data-icon="back" data-iconpos="notext">Излез</a>
-    </div><!-- /header -->
-    <div data-role="navbar">
+        <a href="#" data-url="logout" data-icon="action" data-iconpos="notext">Излез</a>
+        <div data-role="navbar" data-position="fixed">
             <ul>
-                <li><a href="{{ url('app/index') }}" >Призовки</a></li>
-                <li><a href="#" class="ui-btn-active">Маршрут</a></li>
-                <li><a href="{{ url('app/scan') }}">Сканиране</a></li>
+                <li><a href="#" data-url="index">Призовки</a></li>
+                <li><a href="#" data-url="routes" class="ui-btn-active">Маршрут</a></li>
+                <li><a href="#" data-url="assign">Зачисляване</a></li>
             </ul>
-        </div><!-- /navbar -->
-            
+        </div><!-- /navbar -->    
+    </div><!-- /header -->
     <div role="main" class="ui-content">                
         <form id="routes">
             <div class="ui-field-contain">

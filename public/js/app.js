@@ -1,43 +1,47 @@
 
 $(window).load(function() {
-    $(document).on('pagebeforecreate', function() {
-        if ($('#subpoenaMap').length > 0) {
-            var myLatLng = {lat: parseFloat($('#subpoenaMap').attr('lat')), lng: parseFloat($('#subpoenaMap').attr('lng'))};
-            //if ( navigator.geolocation ) {
-            if ( false ) {
-                function success(pos) {
-                    // Location found, show map with these coordinates
-                    drawMap(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-                }
-                function fail(error) {
-                    drawMap(myLatLng);  // Failed to find location, show default map
-                }
-                // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
-                navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
-            } else {
-                drawMap(myLatLng);  // No geolocation support, show default map
-            }
-    
-            function drawMap(latlng) {
-                var myOptions = {
-                    zoom: 17,
-                    center: latlng,
-                    //mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                var map = new google.maps.Map(document.getElementById("subpoenaMap"), myOptions);
-                // Add an overlay to the map of current lat/lng
-                var marker = new google.maps.Marker({
-                    position: latlng,
-                    map: map,
-                });
-    
-                google.maps.event.addListenerOnce(map, 'idle', function(){
-                    google.maps.event.trigger(map, 'resize');
-                    map.setCenter(marker.getPosition());
-                });
-            }
-        }
+    $('[data-role="navbar"] li a').on('click', function() {
+        var root = location.protocol + '//' + location.host;
+        window.location.href = root + '/app/' + $(this).attr('data-url');
     });
+
+    $('[data-url="logout"]').on('click', function() {
+        var root = location.protocol + '//' + location.host;
+        window.location.href = root + '/session/end';
+    });
+
+    /*if ( navigator.geolocation ) {
+        function success(pos) {
+            // Location found, show map with these coordinates
+            drawMap(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+        }
+        function fail(error) {
+            drawMap(myLatLng);  // Failed to find location, show default map
+        }
+        // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
+        navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
+    } else {
+        drawMap(myLatLng);  // No geolocation support, show default map
+    }
+
+    function drawMap(latlng) {
+        var myOptions = {
+            zoom: 17,
+            center: latlng,
+            //mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("subpoenaMap"), myOptions);
+        // Add an overlay to the map of current lat/lng
+        var marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+        });
+
+        google.maps.event.addListenerOnce(map, 'idle', function(){
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(marker.getPosition());
+        });
+    }*/
 });
 
 $( document ).on( "pagecreate", "#routes-page", function() {
@@ -98,9 +102,8 @@ $( document ).on( "pagecreate", "#routes-page", function() {
         });
     }
 });
-
         
-$( document ).on( "pagecreate", "#demo-page", function() {
+$( document ).on( "pagecreate", "#index-page", function() {
     // Swipe to remove list item
     $( document ).on( "swipeleft swiperight", "#list li", function( event ) {
         var listitem = $( this ),
@@ -111,14 +114,15 @@ $( document ).on( "pagecreate", "#demo-page", function() {
         confirmAndDelete( listitem, transition );
     });
     $( "#list li .address" ).on( "click", function( event ) {
+        var self = $(this);
         var latlng = {lat: parseFloat($(this).attr('lat')), lng: parseFloat($(this).attr('lng'))};
-        $( "#mapDialog .topic" ).remove();
+        $( "#mapDialog .topic, #mapDialog .error" ).remove();
         $(this).find( ".topic" ).clone().insertAfter( "#address" );
 
         $( "#mapDialog" ).popup( "open" );
 
         var myOptions = {
-            zoom: 17,
+            zoom: 16,
             center: latlng,
             //mapTypeId: google.maps.MapTypeId.ROADMAP
         };
@@ -134,6 +138,28 @@ $( document ).on( "pagecreate", "#demo-page", function() {
             map.setCenter(marker.getPosition());
         });
 
+        $( "#mapDialog #submit" ).on( "click", function() {
+            $( "#mapDialog #submit" ).off();
+            var addressId = self.parent().attr('subpoena');
+            var status = $('input[name="action"]:checked').val();
+
+            var root = location.protocol + '//' + location.host;
+            $.post(root+'/app/status', 
+                {status: status, addressId: addressId},
+                function (resp) {
+                    if (resp['error']) {
+                        $('p#address').prepend('<p class="error text-center">'+resp['error']+'</p>');
+                    } else {
+                        $( "#mapDialog" ).popup( "close" );
+                        if (resp['status'] == '3') {
+                            self.remove();
+                            $( "#list" ).listview( "refresh" ).find( ".border-bottom" ).removeClass( "border-bottom" );
+                        }
+                    }
+                }, 'json'
+            );
+            
+        });
     });
     // If it's not a touch device...
     if ( ! $.mobile.support.touch ) {
@@ -150,7 +176,7 @@ $( document ).on( "pagecreate", "#demo-page", function() {
         listitem.children( ".ui-btn" ).addClass( "ui-btn-active" );
         // Inject topic in confirmation popup after removing any previous injected topics
         $( "#confirm .topic" ).remove();
-        listitem.find( ".topic" ).clone().insertAfter( "#question" );
+        listitem.find( ".topic" ).clone().insertAfter( "#question" ).addClass('text-center');
         // Show the confirmation popup
         $( "#confirm" ).popup( "open" );
         // Proceed when the user confirms
@@ -192,4 +218,30 @@ $( document ).on( "pagecreate", "#demo-page", function() {
             $( "#confirm #yes" ).off();
         });
     }
+});
+
+$( document ).on( "pagecreate", "#assign-page", function() {
+    $( "#list li .address" ).on( "click", function( event ) {
+        var self = $(this);
+
+        $( "#confirm" ).popup( "open" );
+        $( "#confirm #yes" ).on( "click", function() {
+            $( "#confirm #yes" ).off();
+            var root = location.protocol + '//' + location.host;
+            $.post(root+'/app/assignSubpoena', 
+                {id: self.parent().attr('subpoena')},
+                function (resp) {
+                    if (resp != false) {
+                        self.parent().remove();
+                        $( "#list" ).listview( "refresh" ).find( ".border-bottom" ).removeClass( "border-bottom" );
+                    }
+                }, 'json'
+            );
+        });
+        // Remove active state and unbind when the cancel button is clicked
+        $( "#confirm #cancel" ).on( "click", function() {
+            self.children( ".ui-btn" ).removeClass( "ui-btn-active" );
+            $( "#confirm #yes" ).off();
+        });
+    });
 });
