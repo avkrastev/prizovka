@@ -85,45 +85,18 @@ $(window).load(function() {
     }
 
     if ($('#addressesForm').length > 0) {
-        var form = document.getElementById('addressesForm');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            $('.form-group .has-danger, .has-danger').removeClass('has-danger');
-            $('.form-group input').removeClass('form-control-danger');
-            $('.form-control-feedback').hide();
-
-            var valid = true;
-            if ($('#pac-input').val() == '') {
-                valid = false;
-                $('#pac-input').parent().addClass('has-danger');
-                $('#pac-input').addClass('form-control-danger');
-                $('#pac-input').next('.form-control-feedback').show();
-            }
-
-            if ($('#case_number').val() == '') {
-                valid = false;
-                $('#case_number').parent().addClass('has-danger');
-                $('#case_number').addClass('form-control-danger');
-                $('#case_number').next('.form-control-feedback').show();
-            }
-
-            if ($('#reference_number').val() == '') {
-                valid = false;
-                $('#reference_number').parent().addClass('has-danger');
-                $('#reference_number').addClass('form-control-danger');
-                $('#reference_number').next('.form-control-feedback').show();
-            }
-
-            if (valid !== false) {
-                form.submit();
-            }
-        });
+        var fields = ['pac-input', 'case_number', 'reference_number'];
+        validation($('#addressesForm'), fields);
     }
 
     if ($('#employeesForm').length > 0) {
-        var form = document.getElementById('employeesForm');
-        form.addEventListener('submit', function(event) {
+        var fields = ['first_name', 'last_name', 'email', 'password'];
+        validation($('#employeesForm'), fields);
+    }
+
+    function validation(form, fields) {
+        form.on('submit', function(event) {
+            form.off();
             event.preventDefault();
 
             $('.form-group .has-danger, .has-danger').removeClass('has-danger');
@@ -131,23 +104,16 @@ $(window).load(function() {
             $('.form-control-feedback').hide();
 
             var valid = true;
-            if ($('#email').val() == '') {
-                valid = false;
-                $('#email').parent().addClass('has-danger');
-                $('#email').addClass('form-control-danger');
-                $('#email').next('.form-control-feedback').show();
-            }
+            $.each(fields, function(k, v) {
+                if ($('#'+v).val() == '') {
+                    valid = false;
+                    $('#'+v).parent().addClass('has-danger');
+                    $('#'+v).addClass('form-control-danger');
+                    $('#'+v).next('.form-control-feedback').show();
+                }
+            });
 
-            if ($('#password').val() == '' && !$('#employeesForm').hasClass('edit')) {
-                valid = false;
-                $('#password').parent().addClass('has-danger');
-                $('#password').addClass('form-control-danger');
-                $('#password').next('.form-control-feedback').show();
-            }
-
-            if (valid !== false) {
-                form.submit();
-            }
+            if (valid !== false) form.submit();
         });
     }
 
@@ -238,6 +204,18 @@ $(window).load(function() {
                 });
             }, 'json'
         );
+    });
+
+    $('table.users td a.delUser').on('click', function () {
+        var self = $(this);
+        $('#deleteUserModal #yes').on('click', function() {
+            $('#deleteUserModal #yes').off();
+            var root = location.protocol + '//' + location.host;
+            window.location.href = root + '/employees/delete/'+self.attr('user-id');
+        }); 
+        $('#deleteUserModal #cancel').on('click', function() {
+            $('#deleteUserModal #yes').off();
+        });      
     });
 
     if ($('#subpoenaMap').length > 0) {

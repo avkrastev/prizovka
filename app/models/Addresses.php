@@ -64,4 +64,13 @@ class Addresses extends Model
 													AND a.reference_number like "%'.$reference_number.'%"');
 		return $query->execute();
 	}
+
+	public function getAllNotDeliveredAddresses() {
+		$query = $this->modelsManager->createQuery('SELECT a.*, s.*
+													FROM addresses a
+													LEFT JOIN subpoenas s ON (a.id = s.address)
+													WHERE a.delivered = "N"
+													GROUP BY a.id');
+		return $query->execute();
+	}
 }

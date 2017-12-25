@@ -12,7 +12,7 @@
                     <div class="card-block">
                         {% for key, user in page.items %}
                         {% if loop.first %}
-                        <table class="table">
+                        <table class="table users">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -41,7 +41,7 @@
                                     <td class="operations">
                                         {{ link_to("employees/edit/" ~ user.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
                                         <a href="#" class="viewUser" user-id="{{ user.id }}" data-toggle="modal" data-target="#viewUserModal" title="Преглед"><i class="icon ion-eye"></i></a>
-                                        {{ link_to("employees/delete/" ~ user.id, '<i class="icon ion-android-delete"></i>', "title": "Изтриване") }}
+                                        <a href="#" class="delUser" user-id="{{ user.id }}" data-toggle="modal" data-target="#deleteUserModal" title="Изтриване"><i class="icon ion-android-delete"></i></a>
                                     </td>
                                 </tr>
                             {% if loop.last %}
@@ -147,6 +147,20 @@
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-secondary">Затвори</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Modal-->
+    <div id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserLabel" aria-hidden="true" class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h2>Сигурни ли сте, че искате да изтриете данните за служителя?</h2>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel" data-dismiss="modal" class="btn btn-secondary">Откажи</button>
+                <button type="button" id="yes" data-dismiss="modal" class="btn btn-primary">Изтрий</button>
             </div>
         </div>
         </div>

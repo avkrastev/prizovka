@@ -17,7 +17,7 @@
             </div>
             {{ submit_button('Влез', 'class': 'btn btn-primary', 'id': 'login') }}
             </form>
-            <a href="#" class="forgot-pass">Забравена парола</a><small>
+            <!-- <a href="#" class="forgot-pass">Забравена парола</a><small> -->
         </div>
         </div>
     </div>

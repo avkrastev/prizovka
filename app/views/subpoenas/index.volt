@@ -10,7 +10,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-block">
-                        {{ form("subpoenas/index", "class": "form-inline") }}
+                        {{ form("subpoenas/search", "class": "form-inline") }}
                             {% for element in form %}
                                 {% if is_a(element, 'Phalcon\Forms\Element\Hidden') %}
                                     {{ element }}
@@ -38,20 +38,26 @@
                                     <th>Номер на дело</th>
                                     <th>Изходящ номер</th>
                                     <th>Адрес</th>
+                                    <th>Зачислена</th>
                                     <th>Операции</th>
                                 </tr>
                             </thead>
                             <tbody>
                             {% endif %}                       
-                                <tr addressId="{{ address.id }}" {{ request.getQuery('addressid') == address.id ? 'class="activeRow"' : '' }}>
-                                    <td># {{ address.case_number }}</td>
-                                    <td>{{ address.reference_number }}</td>
+                                <tr addressId="{{ address.a.id }}" {{ request.getQuery('addressid') == address.a.id ? 'class="activeRow"' : '' }}>
+                                    <td># {{ address.a.case_number }}</td>
+                                    <td>{{ address.a.reference_number }}</td>
                                     <td class="address">
-                                        <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal">{{ address.address }}</a>
+                                        <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal">{{ address.a.address }}</a>
                                     </td>
+                                    {% if (address.s.assigned_to != '') %}
+                                        <td>Да</td>
+                                    {% else %}
+                                        <td>Не</td>
+                                    {% endif %}
                                     <td class="operations">
-                                        {{ link_to("subpoenas/edit/" ~ address.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
-                                        {{ link_to("subpoenas/details/" ~ address.id, '<i class="icon ion-clipboard"></i>', "title": "Преглед") }}
+                                        {{ link_to("subpoenas/edit/" ~ address.a.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
+                                        {{ link_to("subpoenas/details/" ~ address.a.id, '<i class="icon ion-clipboard"></i>', "title": "Преглед") }}
                                     </td>
                                 </tr>
                             {% if loop.last %}

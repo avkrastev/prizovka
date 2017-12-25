@@ -12,13 +12,15 @@
                         {{ form.label('first_name', ['class': 'col-sm-3 form-control-label']) }}
                         <div class="col-sm-9">
                             {{ form.render('first_name', ['class': 'form-control']) }}
-                        </div>
+                            <span class="help-block-none form-control-feedback">Моля въведете име</span>
+                        </div>  
                     </div>
                     <div class="form-group row">
                         {{ form.label('last_name', ['class': 'col-sm-3 form-control-label']) }}
                         <div class="col-sm-9">
                             {{ form.render('last_name', ['class': 'form-control']) }}
-                        </div>
+                            <span class="help-block-none form-control-feedback">Моля въведете фамилия</span>
+                        </div>   
                     </div>
                     <div class="form-group row">
                         {{ form.label('email', ['class': 'col-sm-3 form-control-label', 'autocomplete': 'off']) }}

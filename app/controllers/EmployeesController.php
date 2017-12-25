@@ -62,9 +62,10 @@ class EmployeesController extends ControllerBase
             $data['type'] = $this->request->getPost('type');
             $data['active'] = $this->request->getPost('active');
 
-            $loggedUser = Users::findFirst($this->session->get('auth')['id']);
+            $auth = $this->session->get('auth');
 
             $user = new Users();
+            $user->org = $auth['org'];
             $user->first_name = $data['first_name'];
             $user->last_name = $data['last_name'];
             $user->password = sha1($data['password']);
@@ -72,7 +73,7 @@ class EmployeesController extends ControllerBase
             $user->type = $data['type'];
             $user->active = $active = isset($data['active']) ? 1 : 0;
             $user->created_at = new Phalcon\Db\RawValue('now()');
-            $user->created_by = $this->session->get('auth')['id'];
+            $user->created_by = $auth['id'];
 
             if ($user->save() == false) {
                 $this->flash->error("Възникна грешки повреме на запазването на данните!");

@@ -16,22 +16,9 @@ class SubpoenasController extends ControllerBase
 
     public function indexAction() 
     {
-        $this->session->conditions = null;
         $numberPage = 1;
-        if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, 'Addresses', $this->request->getPost());
-            $this->persistent->searchParams = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery('page','int');
-        }
-
-        $parameters = array();
-        if ($this->persistent->searchParams) {
-            //$parameters = $this->persistent->searchParams;
-        }
-
-        $parameters['order'] = 'id ASC'; //TODO get order dinamically
-        $addresses = Addresses::find($parameters);
+        $addressesModel = new Addresses;
+        $addresses = $addressesModel->getAllNotDeliveredAddresses();
 
         if (count($addresses) == 0) {
             $this->flash->notice("Няма намерени адреси по зададените критерии!");

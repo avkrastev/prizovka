@@ -47,41 +47,54 @@ class AddressesController extends ControllerBase
             $address->created_by = $this->session->get('auth')['id'];
             $address->created_at = new Phalcon\Db\RawValue('now()');
 
-            if ($address->save() == false) {
-                $this->flash->error("Възникна грешки повреме на запазването на данните!");
-
-                return $this->dispatcher->forward(
-                    [
-                        "controller" => "addresses",
-                        "action"     => "index",
-                    ]
-                );
-            } else {
-                $assigned_to = $this->request->getPost('assigned_to');
-                if (!empty($assigned_to)) {
-                    $subpoena = $this->assignSubpoena($address->id, $assigned_to, Subpoenas::ISSUED);
-                    
-                    if ($subpoena !== false) {
-                        $this->flash->success('Призовката беше зачислена успешно!');
-                        
-                        $addresses = Addresses::find();
-                        $lastPage = intval(ceil(count($addresses)*0.1));
-        
-                        return $this->response->redirect('/subpoenas/index?page='.$lastPage.'&addressid='.$address->id);
-                    } else {
-                        $this->flash->error("Възникна грешки повреме на запазването на данните!");
-                        
-                        return $this->dispatcher->forward(
-                            [
-                                "controller" => "addresses",
-                                "action"     => "index",
-                            ]
-                        );
-                    }
+            try {
+                if ($address->save() == false) { 
+                    $this->flash->error("Възникна грешки повреме на запазването на данните!");
+    
+                    return $this->dispatcher->forward(
+                        [
+                            "controller" => "addresses",
+                            "action"     => "index",
+                        ]
+                    );
                 } else {
-                    $this->flash->success('Призовката беше създадена успешно, но не е зачислена към служител!');
+                    $assigned_to = $this->request->getPost('assigned_to');
+                    if (!empty($assigned_to)) {
+                        $subpoena = $this->assignSubpoena($address->id, $assigned_to, Subpoenas::ISSUED);
+                        
+                        if ($subpoena !== false) {
+                            $this->flash->success('Призовката беше зачислена успешно!');
+                            
+                            $addresses = Addresses::find();
+                            $lastPage = intval(ceil(count($addresses)*0.1));
+            
+                            return $this->response->redirect('/subpoenas/index?page='.$lastPage.'&addressid='.$address->id);
+                        } else {
+                            $this->flash->error("Възникна грешки повреме на запазването на данните!");
+                            
+                            return $this->dispatcher->forward(
+                                [
+                                    "controller" => "addresses",
+                                    "action"     => "index",
+                                ]
+                            );
+                        }
+                    } else {
+                        $this->flash->success('Призовката беше създадена успешно, но не е зачислена към служител!');
+    
+                        return $this->response->redirect('/addresses/index');
+                    }
+                }
+            } catch (PDOException $e) {
+                if ($e->getCode() == '23000') {
+                    $this->flash->error("Изходящият номер е уникално поле!");
 
-                    return $this->response->redirect('/addresses/index');
+                    return $this->dispatcher->forward(
+                        [
+                            "controller" => "addresses",
+                            "action"     => "index",
+                        ]
+                    );
                 }
             }
         }
