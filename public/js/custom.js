@@ -239,6 +239,208 @@ $(window).load(function() {
         todayHighlight: true
     });
 
+    if ($('.stats').length > 0) {
+        var root = location.protocol + '//' + location.host;
+        $.getJSON('/statistics/getStats', function (resp) {
+            var brandPrimary = 'rgba(51, 179, 90, 1)';
+
+            var subpoenasCountCurrentMonth = new Chart($('#subpoenasCountCurrentMonth'), {
+                type: 'doughnut',
+                data: {
+                    labels: resp['subpoenasCountCurrentMonth']['name'],
+                    datasets: [
+                        {
+                            data: resp['subpoenasCountCurrentMonth']['count'],
+                            borderWidth: [1, 1, 1],
+                            backgroundColor: [
+                                brandPrimary,
+                                "rgba(75,192,192,1)",
+                                "#FFCE56"
+                            ],
+                            hoverBackgroundColor: [
+                                brandPrimary,
+                                "rgba(75,192,192,1)",
+                                "#FFCE56"
+                            ]
+                        }]
+                    }
+            });
+
+            var subpoenasCountPrevMonth = new Chart($('#subpoenasCountPrevMonth'), {
+                type: 'doughnut',
+                data: {
+                    labels: [resp['subpoenasCountPrevMonth']['name']],
+                    datasets: [
+                        {
+                            data: [resp['subpoenasCountPrevMonth']['count']],
+                            borderWidth: [1, 1, 1],
+                            backgroundColor: [
+                                brandPrimary,
+                                "rgba(75,192,192,1)",
+                                "#FFCE56"
+                            ],
+                            hoverBackgroundColor: [
+                                brandPrimary,
+                                "rgba(75,192,192,1)",
+                                "#FFCE56"
+                            ]
+                        }]
+                    }
+            });
+
+            var subpoenasCountCurrentMonth, subpoenasCountPrevMonth = {
+                responsive: true
+            };
+
+            var allDeliveredByMonths = new Chart($('#allDeliveredByMonths'), {
+                type: 'line',
+                data: {
+                    labels: ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'],
+                    datasets: [
+                        {
+                            label: "Общ брой раздадени призовки по месеци",
+                            fill: true,
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(51, 179, 90, 0.38)",
+                            borderColor: brandPrimary,
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            borderJoinStyle: 'miter',
+                            borderWidth: 1,
+                            pointBorderColor: brandPrimary,
+                            pointBackgroundColor: "#fff",
+                            pointBorderWidth: 1,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: brandPrimary,
+                            pointHoverBorderColor: "rgba(220,220,220,1)",
+                            pointHoverBorderWidth: 2,
+                            pointRadius: 1,
+                            pointHitRadius: 10,
+                            data: resp['allDeliveredByMonths'],
+                            spanGaps: false
+                        }
+                    ]
+                }
+            });
+
+            var barChartExample = new Chart($('#barChartExample'), {
+                type: 'bar',
+                data: {
+                    labels: ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'],
+                    datasets: [
+                        {
+                            label: "Връчени",
+                            backgroundColor: [
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)',
+                                'rgba(51, 179, 90, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                                'rgba(51, 179, 90, 1)',
+                            ],
+                            borderWidth: 1,
+                            data: resp['allSubpoenasActionPerMonths']['delivered']
+                        },
+                        {
+                            label: "Посетени адреси (без връчване)",
+                            backgroundColor: [
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(255, 206, 86, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255, 206, 86, 1)'
+                            ],
+                            borderWidth: 1,
+                            data: resp['allSubpoenasActionPerMonths']['visited']
+                        },
+                        {
+                            label: "Невръчени",
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(255, 99, 132, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 99, 132, 1)'
+                            ],
+                            borderWidth: 1,
+                            data: resp['allSubpoenasActionPerMonths']['not_delivered']
+                        }
+                    ]
+                }
+            });
+        });
+
+    }
+
     function urlobj(url) {
         if (url[0]=='/') url = '/' + url;
         var tmp = url.split('/'), obj = {};

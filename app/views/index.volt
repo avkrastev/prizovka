@@ -44,6 +44,7 @@
     {{ javascript_include('js/grasp_mobile_progress_circle-1.0.0.min.js') }}
     {{ javascript_include('js/jquery.nicescroll.min.js') }}
     {{ javascript_include('js/jquery.validate.min.js') }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     {{ javascript_include('js/front.js') }}  
     {{ javascript_include('js/base64.js') }}
     {{ javascript_include('js/custom.js') }}

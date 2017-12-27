@@ -65,11 +65,12 @@ class Addresses extends Model
 		return $query->execute();
 	}
 
-	public function getAllNotDeliveredAddresses() {
+	public function getAllAddresses($delivered = 'N') 
+	{
 		$query = $this->modelsManager->createQuery('SELECT a.*, s.*
 													FROM addresses a
 													LEFT JOIN subpoenas s ON (a.id = s.address)
-													WHERE a.delivered = "N"
+													WHERE a.delivered = "'.$delivered.'"
 													GROUP BY a.id');
 		return $query->execute();
 	}

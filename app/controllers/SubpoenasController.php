@@ -18,7 +18,7 @@ class SubpoenasController extends ControllerBase
     {
         $numberPage = 1;
         $addressesModel = new Addresses;
-        $addresses = $addressesModel->getAllNotDeliveredAddresses();
+        $addresses = $addressesModel->getAllAddresses();
 
         if (count($addresses) == 0) {
             $this->flash->notice("Няма намерени адреси по зададените критерии!");
