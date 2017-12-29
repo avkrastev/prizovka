@@ -45,4 +45,20 @@ $router->add(
     ]
 );
 
+$router->add(
+    '/statistics',
+    [
+        'controller' => 'statistics',
+        'action'     => 'index',
+    ]
+);
+
+$router->add(
+    '/history',
+    [
+        'controller' => 'history',
+        'action'     => 'index',
+    ]
+);
+
 $router->handle();

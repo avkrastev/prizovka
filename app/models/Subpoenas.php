@@ -55,21 +55,26 @@ class Subpoenas extends Model
     
     public function getDeliveredByMonths()
     {
+        $oneYearAgo = date('Y-m-d', strtotime('-1 year', time()));
+
 		$query = $this->modelsManager->createQuery('SELECT count(*) as delivered, MONTH(date) as month
                                                     FROM Subpoenas
-                                                    WHERE action = 3
+                                                    WHERE action = 3 AND (date BETWEEN "'.$oneYearAgo.'" AND NOW())
                                                     GROUP BY MONTH(date)');
         return $query->execute();
     }
 
     public function getSubpoenasActions() 
     {
+        $oneYearAgo = date('Y-m-d', strtotime('-1 year', time()));
+
         $query = $this->modelsManager->createQuery('SELECT
                                                         MONTH(date) as month, 
                                                         SUM(action = 2) AS visited,
                                                         SUM(action = 3) AS delivered,
                                                         SUM(action = 5) AS not_delivered
                                                     FROM Subpoenas
+                                                    WHERE date BETWEEN "'.$oneYearAgo.'" AND NOW()
                                                     GROUP BY MONTH(date)');
         return $query->execute();
     }

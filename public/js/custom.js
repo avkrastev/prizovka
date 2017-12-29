@@ -154,7 +154,7 @@ $(window).load(function() {
         initMap();
     } 
 
-    $('div.flash-output .alert-success, div.flash-output .alert-danger').on('click', function() {
+    $('div.flash-output .alert-success, div.flash-output .alert-danger, div.flash-output .alert-info').on('click', function() {
         $(this).fadeOut(1000);
     });
 
@@ -173,7 +173,7 @@ $(window).load(function() {
         );
     });
 
-    $('table.subpoenas td a.viewAddress').on('click', function () {
+    $('table.subpoenas td a.viewAddress, table.history td a.viewAddress').on('click', function () {
         var root = location.protocol + '//' + location.host;
         $.post(root+'/subpoenas/view', {addressId: $(this).parents('tr').attr('addressId')},
             function (resp) {             
@@ -232,7 +232,7 @@ $(window).load(function() {
         });
     }
 
-    $('.hasDatepicker').datepicker({
+    $('.hasDatepicker, .input-daterange').datepicker({
         format: "dd.mm.yyyy",
         weekStart: 1,
         language: "bg",

@@ -9,9 +9,26 @@ class Addresses extends Model
 
 	public $id;
 
-	public $assigned_to;
+	public $case_number;
+	
+	public $reference_number;
+
+	public $address;
+
+	public $longitude;
+
+	public $latitude;
+
+	public $delivered;
+
+	public $updated_at;
+
+	public $updated_by;
 
 	public $created_at;
+
+	public $created_by;
+	
 
 	public function initialize()
     {
@@ -37,8 +54,8 @@ class Addresses extends Model
 	public function getAddressesWithDetails($id) 
 	{
 		$query = $this->modelsManager->createQuery('SELECT a.*, s.*
-													FROM addresses a
-													JOIN subpoenas s ON (a.id = s.address)
+													FROM Addresses a
+													JOIN Subpoenas s ON (a.id = s.address)
 													LEFT OUTER JOIN subpoenas s2 ON (a.id = s2.address AND (s.id < s2.id))
 													WHERE s2.id IS NULL AND a.id = '.$id.'');
 		return $query->execute();
@@ -47,8 +64,8 @@ class Addresses extends Model
 	public function getAddressesPerEmployee($id) 
 	{
 		$query = $this->modelsManager->createQuery('SELECT a.*, s.*
-													FROM addresses a
-													JOIN subpoenas s ON (a.id = s.address)
+													FROM Addresses a
+													JOIN Subpoenas s ON (a.id = s.address)
 													LEFT OUTER JOIN subpoenas s2 ON (a.id = s2.address AND (s.id < s2.id))
 													WHERE s2.id IS NULL AND s.assigned_to = '.$id.' AND a.delivered = "N"');
 		return $query->execute();
@@ -57,8 +74,8 @@ class Addresses extends Model
 	public function getNotAssignedAddresses($case_number, $reference_number) 
 	{
 		$query = $this->modelsManager->createQuery('SELECT a.*
-													FROM addresses a
-													LEFT JOIN subpoenas s ON (a.id = s.address)
+													FROM Addresses a
+													LEFT JOIN Subpoenas s ON (a.id = s.address)
 													WHERE s.assigned_to IS NULL 
 													AND a.case_number like "%'.$case_number.'%" 
 													AND a.reference_number like "%'.$reference_number.'%"');
@@ -68,10 +85,35 @@ class Addresses extends Model
 	public function getAllAddresses($delivered = 'N') 
 	{
 		$query = $this->modelsManager->createQuery('SELECT a.*, s.*
-													FROM addresses a
-													LEFT JOIN subpoenas s ON (a.id = s.address)
+													FROM Addresses a
+													LEFT JOIN Subpoenas s ON (a.id = s.address)
 													WHERE a.delivered = "'.$delivered.'"
 													GROUP BY a.id');
 		return $query->execute();
 	}
+
+	public function getAddressesHistory($criteria) 
+	{
+		$where = '';
+		foreach ($criteria as $k=>$v) {
+			if (!empty($v)) {
+				if ($k == 'start') {
+					$where.= ' AND date > "'.date('Y-m-d', strtotime($v)).'"';
+				} elseif ($k == 'end') {
+					$where.= ' AND date < "'.date('Y-m-d', strtotime($v)).'"';
+				} else {
+					$where.= ' AND '.$k.' = "'.$v.'"';
+				}
+			}
+		}
+
+		$query = $this->modelsManager->createQuery('SELECT a.*, s.*
+													FROM Addresses a
+													LEFT JOIN Subpoenas s ON (a.id = s.address)
+													WHERE s.action = 3 '.$where.'
+													GROUP BY a.id');
+		return $query->execute();
+	}
+
+
 }

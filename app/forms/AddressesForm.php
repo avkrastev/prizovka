@@ -17,12 +17,14 @@ class AddressesForm extends Form
         if (isset($options['edit'])) {
             $this->add(new Hidden('id'));
             $this->add(new Hidden('employee'));
-
         }
 
         // Number
         $number = new Text('case_number');
         $number->setLabel('Номер на дело*');
+        if (isset($options['history'])) {
+            $number->setLabel('Номер на дело');
+        }
         if (isset($options['search'])) {
             $number->setAttributes([
                 'placeholder' => 'Номер на дело'
@@ -33,6 +35,9 @@ class AddressesForm extends Form
         // Reference number
         $refNumber = new Text('reference_number');
         $refNumber->setLabel('Изходящ номер*');
+        if (isset($options['history'])) {
+            $refNumber->setLabel('Изходящ номер');
+        }
         if (isset($options['search'])) {
             $refNumber->setAttributes([
                 'placeholder' => 'Изходящ номер'
@@ -41,25 +46,29 @@ class AddressesForm extends Form
         $this->add($refNumber);
 
         // Address
-        $address = new Text('address');
-        $address->setLabel('Адрес*');
-        if (isset($options['search'])) {
-            $address->setAttributes([
-                'placeholder' => 'Адрес'
-            ]);
+        if (!isset($options['history'])) {
+            $address = new Text('address');
+            $address->setLabel('Адрес*');
+            if (isset($options['search'])) {
+                $address->setAttributes([
+                    'placeholder' => 'Адрес'
+                ]);
+            }
+            $address->addValidators(array(
+                new PresenceOf(array(
+                    'message' => 'Адресът е задължително поле'
+                ))
+            ));
+            $this->add($address);
         }
-        $address->addValidators(array(
-            new PresenceOf(array(
-                'message' => 'Адресът е задължително поле'
-            ))
-        ));
-        $this->add($address);
 
-        // Latitude
-        $this->add(new Hidden('latitude'));
+        if (!isset($options['history'])) {
+            // Latitude
+            $this->add(new Hidden('latitude'));
 
-        // Longitude
-        $this->add(new Hidden('longitude'));
+            // Longitude
+            $this->add(new Hidden('longitude'));
+        }
 
         $employee_params =  [
             'conditions'  => 'type = "'.Users::SUMMON.'"',

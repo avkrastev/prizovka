@@ -2,7 +2,7 @@
 
 namespace Base;
 
-class Services extends \Phalcon\Di\FactoryDefault
+class Services extends \Phalcon\DI\FactoryDefault
 {
     public function __construct($config)
     {
