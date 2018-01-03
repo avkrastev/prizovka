@@ -129,20 +129,6 @@ class UsersMigration_100 extends Migration
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
                     new Index('UNIQUE', ['email'], 'UNIQUE'),
-                    new Index('FK_users_organisations', ['org'], null)
-                ],
-                'references' => [
-                    new Reference(
-                        'FK_users_organisations',
-                        [
-                            'referencedTable' => 'organisations',
-                            'referencedSchema' => 'invo',
-                            'columns' => ['org'],
-                            'referencedColumns' => ['id'],
-                            'onUpdate' => 'CASCADE',
-                            'onDelete' => 'RESTRICT'
-                        ]
-                    )
                 ],
                 'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',

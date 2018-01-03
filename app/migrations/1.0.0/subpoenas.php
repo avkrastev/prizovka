@@ -85,7 +85,7 @@ class SubpoenasMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'update_by',
+                        'updated_by',
                         [
                             'type' => Column::TYPE_INTEGER,
                             'unsigned' => true,
@@ -98,63 +98,13 @@ class SubpoenasMigration_100 extends Migration
                         [
                             'type' => Column::TYPE_DATETIME,
                             'size' => 1,
-                            'after' => 'update_by'
+                            'after' => 'updated_by'
                         ]
                     )
                 ],
                 'indexes' => [
-                    new Index('PRIMARY', ['id'], 'PRIMARY'),
-                    //new Index('FK_subpoenas_addresses', ['address'], null),
-                    //new Index('FK_subpoenas_users', ['created_by'], null),
-                    //new Index('FK_subpoenas_users_2', ['update_by'], null),
-                    //new Index('FK_subpoenas_users_3', ['assigned_to'], null)
+                    new Index('PRIMARY', ['id'], 'PRIMARY')
                 ],
-                /*'references' => [
-                    new Reference(
-                        'FK_subpoenas_addresses',
-                        [
-                            'referencedTable' => 'addresses',
-                            'referencedSchema' => 'invo',
-                            'columns' => ['address'],
-                            'referencedColumns' => ['id'],
-                            'onUpdate' => 'RESTRICT',
-                            'onDelete' => 'RESTRICT'
-                        ]
-                    ),
-                    new Reference(
-                        'FK_subpoenas_users',
-                        [
-                            'referencedTable' => 'users',
-                            'referencedSchema' => 'invo',
-                            'columns' => ['created_by'],
-                            'referencedColumns' => ['id'],
-                            'onUpdate' => 'NO ACTION',
-                            'onDelete' => 'CASCADE'
-                        ]
-                    ),
-                    new Reference(
-                        'FK_subpoenas_users_2',
-                        [
-                            'referencedTable' => 'users',
-                            'referencedSchema' => 'invo',
-                            'columns' => ['update_by'],
-                            'referencedColumns' => ['id'],
-                            'onUpdate' => 'NO ACTION',
-                            'onDelete' => 'CASCADE'
-                        ]
-                    ),
-                    new Reference(
-                        'FK_subpoenas_users_3',
-                        [
-                            'referencedTable' => 'users',
-                            'referencedSchema' => 'invo',
-                            'columns' => ['assigned_to'],
-                            'referencedColumns' => ['id'],
-                            'onUpdate' => 'NO ACTION',
-                            'onDelete' => 'CASCADE'
-                        ]
-                    )
-                ],*/
                 'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',
                     'AUTO_INCREMENT' => '1',

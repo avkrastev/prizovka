@@ -110,34 +110,8 @@ class AddressesMigration_100 extends Migration
                 ],
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
-                    new Index('reference_number', ['reference_number'], 'UNIQUE'),
-                    //new Index('FK_addresses_users_2', ['updated_by'], null),
-                    //new Index('FK_addresses_users_3', ['created_by'], null)
+                    new Index('REFERENCE_NUMBER', ['reference_number'], 'UNIQUE'),
                 ],
-                /*'references' => [
-                    new Reference(
-                        'FK_addresses_users_2',
-                        [
-                            'referencedTable' => 'users',
-                            'referencedSchema' => 'invo',
-                            'columns' => ['updated_by'],
-                            'referencedColumns' => ['id'],
-                            'onUpdate' => 'RESTRICT',
-                            'onDelete' => 'RESTRICT'
-                        ]
-                    ),
-                    new Reference(
-                        'FK_addresses_users_3',
-                        [
-                            'referencedTable' => 'users',
-                            'referencedSchema' => 'invo',
-                            'columns' => ['created_by'],
-                            'referencedColumns' => ['id'],
-                            'onUpdate' => 'RESTRICT',
-                            'onDelete' => 'RESTRICT'
-                        ]
-                    )
-                ],*/
                 'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',
                     'AUTO_INCREMENT' => '1',
