@@ -16,8 +16,13 @@
             </div>
             <div class="col-lg-6">
                 <div class="card pie-chart-example">
-                    <div class="card-header d-flex align-items-center">
-                        <h2 class="h5 display">Брой раздадени призовки от отделните служители (предходен м. {{ months[date('m')-2] }})</h2>
+                    <div class="card-header d-flex align-items-center">             
+                        {% if (date('Y') > date('Y', strtotime("first day of previous month"))) %} 
+                            {% set lastMonth = months[date('m', strtotime("first day of previous month"))-1] ~' '~ date('Y', strtotime("first day of previous month")) %}
+                        {% else %}
+                            {% set lastMonth = months[date('m')-2] %}
+                        {% endif %}
+                        <h2 class="h5 display">Брой раздадени призовки от отделните служители (предходен м. {{ lastMonth }})</h2>
                     </div>
                     <div class="card-block">
                         <canvas id="subpoenasCountPrevMonth"></canvas>

@@ -20,17 +20,6 @@ class SubpoenasController extends ControllerBase
         $addressesModel = new Addresses;
         $addresses = $addressesModel->getAllAddresses();
 
-        if (count($addresses) == 0) {
-            $this->flash->notice("Няма намерени адреси по зададените критерии!");
-
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "subpoenas",
-                    "action"     => "index"
-                ]
-            );
-        }
-
         $paginator = new Paginator(array(
             "data"  => $addresses,
             "limit" => 10,

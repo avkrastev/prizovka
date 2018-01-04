@@ -244,49 +244,53 @@ $(window).load(function() {
         $.getJSON('/statistics/getStats', function (resp) {
             var brandPrimary = 'rgba(51, 179, 90, 1)';
 
-            var subpoenasCountCurrentMonth = new Chart($('#subpoenasCountCurrentMonth'), {
-                type: 'doughnut',
-                data: {
-                    labels: resp['subpoenasCountCurrentMonth']['name'],
-                    datasets: [
-                        {
-                            data: resp['subpoenasCountCurrentMonth']['count'],
-                            borderWidth: [1, 1, 1],
-                            backgroundColor: [
-                                brandPrimary,
-                                "rgba(75,192,192,1)",
-                                "#FFCE56"
-                            ],
-                            hoverBackgroundColor: [
-                                brandPrimary,
-                                "rgba(75,192,192,1)",
-                                "#FFCE56"
-                            ]
-                        }]
-                    }
-            });
+            if (resp['subpoenasCountCurrentMonth'].length > 0) {
+                var subpoenasCountCurrentMonth = new Chart($('#subpoenasCountCurrentMonth'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: resp['subpoenasCountCurrentMonth']['name'],
+                        datasets: [
+                            {
+                                data: resp['subpoenasCountCurrentMonth']['count'],
+                                borderWidth: [1, 1, 1],
+                                backgroundColor: [
+                                    brandPrimary,
+                                    "rgba(75,192,192,1)",
+                                    "#FFCE56"
+                                ],
+                                hoverBackgroundColor: [
+                                    brandPrimary,
+                                    "rgba(75,192,192,1)",
+                                    "#FFCE56"
+                                ]
+                            }]
+                        }
+                });
+            }
 
-            var subpoenasCountPrevMonth = new Chart($('#subpoenasCountPrevMonth'), {
-                type: 'doughnut',
-                data: {
-                    labels: [resp['subpoenasCountPrevMonth']['name']],
-                    datasets: [
-                        {
-                            data: [resp['subpoenasCountPrevMonth']['count']],
-                            borderWidth: [1, 1, 1],
-                            backgroundColor: [
-                                brandPrimary,
-                                "rgba(75,192,192,1)",
-                                "#FFCE56"
-                            ],
-                            hoverBackgroundColor: [
-                                brandPrimary,
-                                "rgba(75,192,192,1)",
-                                "#FFCE56"
-                            ]
-                        }]
-                    }
-            });
+            if (resp['subpoenasCountPrevMonth'].length > 0) {
+                var subpoenasCountPrevMonth = new Chart($('#subpoenasCountPrevMonth'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: [resp['subpoenasCountPrevMonth']['name']],
+                        datasets: [
+                            {
+                                data: [resp['subpoenasCountPrevMonth']['count']],
+                                borderWidth: [1, 1, 1],
+                                backgroundColor: [
+                                    brandPrimary,
+                                    "rgba(75,192,192,1)",
+                                    "#FFCE56"
+                                ],
+                                hoverBackgroundColor: [
+                                    brandPrimary,
+                                    "rgba(75,192,192,1)",
+                                    "#FFCE56"
+                                ]
+                            }]
+                        }
+                });
+            }
 
             var subpoenasCountCurrentMonth, subpoenasCountPrevMonth = {
                 responsive: true
