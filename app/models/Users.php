@@ -52,12 +52,12 @@ class Users extends Model
         $validator->add(
             'email',
             new EmailValidator([
-            'message' => 'Invalid email given'
+            'message' => 'Невалиден електронен адрес!'
         ]));
         $validator->add(
             'email',
             new UniquenessValidator([
-            'message' => 'Sorry, The email was registered by another user'
+            'message' => 'Съществува потребител с тази електронна поща!'
         ]));
         
         return $this->validate($validator);

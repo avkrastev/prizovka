@@ -16,7 +16,7 @@ class SubpoenasController extends ControllerBase
 
     public function indexAction() 
     {
-        $numberPage = 1;
+        $numberPage = $this->request->getQuery('page','int', 1);
         $addressesModel = new Addresses;
         $addresses = $addressesModel->getAllAddresses();
 
@@ -182,28 +182,33 @@ class SubpoenasController extends ControllerBase
             $subpoena = $this->assignSubpoena($id, $data['assigned_to'], Subpoenas::CHANGED);
         }
 
-        if ($address->save() == false && $subpoena === false) {
-            $this->flash->error("Възникна грешки повреме на запазването на данните!");
+        try {
+            if ($address->save() == false && $subpoena === false) {
+                $this->flash->error("Възникна грешки повреме на запазването на данните!");
+            }
+
+            $form->clear();
+
+            $this->flash->success("Информацията беше редактирана успешно!");
 
             return $this->dispatcher->forward(
                 [
                     "controller" => "subpoenas",
-                    "action"     => "edit",
-                    "params"     => [$id]
+                    "action"     => "index",
                 ]
             );
+        } catch (PDOException $e) {
+            if ($e->getCode() == '23000') {
+                $this->flash->error("Изходящият номер е уникално поле!");
+
+                return $this->dispatcher->forward(
+                    [
+                        "controller" => "addresses",
+                        "action"     => "index",
+                    ]
+                );
+            }
         }
-
-        $form->clear();
-
-        $this->flash->success("Информацията беше редактирана успешно!");
-
-        return $this->dispatcher->forward(
-            [
-                "controller" => "subpoenas",
-                "action"     => "index",
-            ]
-        );
     }
 
     public function detailsAction($id)

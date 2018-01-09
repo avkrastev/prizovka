@@ -50,13 +50,6 @@ class AddressesController extends ControllerBase
             try {
                 if ($address->save() == false) { 
                     $this->flash->error("Възникна грешки повреме на запазването на данните!");
-    
-                    return $this->dispatcher->forward(
-                        [
-                            "controller" => "addresses",
-                            "action"     => "index",
-                        ]
-                    );
                 } else {
                     $assigned_to = $this->request->getPost('assigned_to');
                     if (!empty($assigned_to)) {
@@ -71,13 +64,6 @@ class AddressesController extends ControllerBase
                             return $this->response->redirect('/subpoenas/index?page='.$lastPage.'&addressid='.$address->id);
                         } else {
                             $this->flash->error("Възникна грешки повреме на запазването на данните!");
-                            
-                            return $this->dispatcher->forward(
-                                [
-                                    "controller" => "addresses",
-                                    "action"     => "index",
-                                ]
-                            );
                         }
                     } else {
                         $this->flash->success('Призовката беше създадена успешно, но не е зачислена към служител!');

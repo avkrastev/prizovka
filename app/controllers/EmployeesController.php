@@ -76,14 +76,9 @@ class EmployeesController extends ControllerBase
             $user->created_by = $auth['id'];
 
             if ($user->save() == false) {
-                $this->flash->error("Възникна грешки повреме на запазването на данните!");
-                
-                return $this->dispatcher->forward(
-                    [
-                        "controller" => "employees",
-                        "action"     => "index",
-                    ]
-                );
+                foreach ($user->getMessages() as $message) {
+                    $this->flash->error((string) $message);
+                }
             } else {
                 $this->flash->success('Служителят беше добавен успешно!');
                 $this->view->userId = $user->id; // TODO get record position
