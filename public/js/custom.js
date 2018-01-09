@@ -91,6 +91,9 @@ $(window).load(function() {
 
     if ($('#employeesForm').length > 0) {
         var fields = ['first_name', 'last_name', 'email', 'password'];
+        if ($('#employeesForm').hasClass('edit')) {
+            fields = ['first_name', 'last_name', 'email'];
+        }
         validation($('#employeesForm'), fields);
     }
 

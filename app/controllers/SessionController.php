@@ -54,27 +54,25 @@ class SessionController extends CommonController
 
                 switch ($user->type) {
                     case Users::ADMIN: // ЧСИ
-                        $controller = 'employees';
-                        $action = 'index';
+                        $controller = '/employees';
+                        $action = '/index';
                         break;
                     case Users::COADMIN: // ПЧСИ
                     case Users::EMPLOYEE: // Служител
                     case Users::CLERK: // Деловодител
-                        $controller = 'addresses';
-                        $action = 'index';
+                        $controller = '/addresses';
+                        $action = '/index';
                         break;
                     case Users::SUMMON: // Призовкар
-                        $controller = 'app';
-                        $action = 'index';
+                        $controller = '/app';
+                        $action = '/index';
                         break;
+                    default:
+                        $controller = '/index';
+                        $action = '/index';
                 }
 
-                return $this->dispatcher->forward(
-                    [
-                        "controller" => $controller,
-                        "action"     => $action
-                    ]
-                );
+                return $this->response->redirect($controller.$action);
             }
 
             $this->flash->error('Грешен имейл или парола');

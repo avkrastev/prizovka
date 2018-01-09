@@ -146,7 +146,7 @@ class EmployeesController extends ControllerBase
     private function serviceFields(&$user, $edit = false) 
     {
         $user->type = $edit == false ? Users::getUserTypes()[$user->type] : $user->type;
-        $user->active = $user->active ? 'Активен' : 'Неактивен';
+        if (!$edit) $user->active = $user->active ? 'Активен' : 'Неактивен';
 
         $updated = Users::findFirstById($user->updated_by);
         $user->updated_by = !is_null($user->updated_by) ? $updated->first_name.' '.$updated->last_name : '-';

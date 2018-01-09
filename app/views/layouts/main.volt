@@ -3,12 +3,12 @@
     <div class="side-navbar-wrapper">
         <div class="sidenav-header d-flex align-items-center justify-content-center">
         <div class="sidenav-header-inner text-center"><img src="{{ static_url('img/logo.jpg') }}" alt="лого" class="img-fluid rounded-circle">
-            <h2 class="h5 text-uppercase">{{ user.getOrg().firm }}</h2><span class="text-uppercase">ЧСИ {{ user.getOrg().name }}</span>
+            <h2 class="h5 text-uppercase">{{ userData.getOrg().firm }}</h2><span class="text-uppercase">ЧСИ {{ userData.getOrg().name }}</span>
         </div>
         <div class="sidenav-header-logo">
             <a href="/" class="brand-small text-center">
-                <strong><?php echo mb_substr($user->first_name, 0, 1); ?></strong>
-                <strong class="text-primary"><?php echo mb_substr($user->last_name, 0, 1); ?></strong>
+                <strong><?php echo mb_substr($userData->first_name, 0, 1); ?></strong>
+                <strong class="text-primary"><?php echo mb_substr($userData->last_name, 0, 1); ?></strong>
             </a>
         </div>
         </div>
@@ -31,9 +31,9 @@
         <div class="container-fluid">
             <div class="navbar-holder d-flex align-items-center justify-content-between">
             <div class="navbar-header"><a id="toggle-btn" href="/" class="menu-btn"><i class="icon ion-android-menu"> </i></a><a href="/" class="navbar-brand">
-            <div class="brand-text hidden-sm-down"><span>{{ user.first_name }}</span>&nbsp;<strong class="text-primary">{{ user.last_name }}</strong></div></a></div>
+            <div class="brand-text hidden-sm-down"><span>{{ userData.first_name }}</span>&nbsp;<strong class="text-primary">{{ userData.last_name }}</strong></div></a></div>
                 <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-                    <li class="nav-item"><a href="/session/end" class="nav-link logout">Излез<i class="fa fa-sign-out"></i></a></li>
+                    <li class="nav-item"><a href="/logout" class="nav-link logout">Излез<i class="fa fa-sign-out"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -73,7 +73,7 @@
         <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 text-right">
-            <p>ЧСИ {{ user.getOrg().name }} &copy; {{ date('Y') }} </p> 
+            <p>ЧСИ {{ userData.getOrg().name }} &copy; {{ date('Y') }} </p> 
             </div>
         </div>
         </div>

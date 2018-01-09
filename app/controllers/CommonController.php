@@ -11,7 +11,7 @@ class CommonController extends Controller
         $auth = $this->session->get('auth');
 
         if (!isset($auth)) {
-            $this->response->redirect('session/index'); 
+            $this->response->redirect('login'); 
             return;
         } else {
             $user = Users::findFirst($auth['id']);
@@ -26,7 +26,7 @@ class CommonController extends Controller
                 }
             }
 
-            $this->view->user = $user;
+            $this->view->userData = $user;
             $this->view->menus = $menus;
         }
     }

@@ -7,7 +7,7 @@ $(window).load(function() {
 
     $('[data-url="logout"]').on('click', function() {
         var root = location.protocol + '//' + location.host;
-        window.location.href = root + '/session/end';
+        window.location.href = root + '/logout';
     });
 
     /*if ( navigator.geolocation ) {

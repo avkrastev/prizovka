@@ -6,7 +6,7 @@ use Phalcon\Mvc\Router;
 $router = new Router();
 
 $router->add(
-    '/admin/login',
+    '/',
     [
         'controller' => 'session',
         'action'     => 'start',
@@ -14,10 +14,18 @@ $router->add(
 );
 
 $router->add(
-    '/admin',
+    '/login',
     [
-        'controller' => 'index',
+        'controller' => 'session',
         'action'     => 'index',
+    ]
+);
+
+$router->add(
+    '/logout',
+    [
+        'controller' => 'session',
+        'action'     => 'end',
     ]
 );
 
