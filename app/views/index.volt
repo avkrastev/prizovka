@@ -12,7 +12,7 @@
     <!-- Bootstrap Datepicker CSS-->
     <link rel="stylesheet" href="{{ static_url('css/bootstrap-datepicker.min.css') }}" type="text/css" />
     <!-- Google fonts - Roboto -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <!-- theme stylesheet-->
     <link rel="stylesheet" href="{{ static_url('css/style.default.css') }}" type="text/css" />
     <!-- jQuery Circle-->

@@ -6,7 +6,7 @@
 	<title>Default theme - jQuery Mobile Demos</title>
   <link rel="stylesheet" href="{{ static_url('css/jquery.mobile-1.4.5.min.css') }}" type="text/css" />
   <!-- Google fonts - Roboto -->
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
   <link rel="stylesheet" href="{{ static_url('css/app.css') }}" type="text/css" />
 	<link rel="shortcut icon" href="../favicon.ico">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
