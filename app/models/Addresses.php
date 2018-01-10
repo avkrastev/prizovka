@@ -3,6 +3,8 @@
 use Phalcon\Mvc\Model;
 use Phalcon\Db\RawValue;
 use Phalcon\Mvc\Model\Query;
+use Phalcon\Validation;
+use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
 
 class Addresses extends Model
 {
@@ -44,6 +46,19 @@ class Addresses extends Model
             'alias' => 'address',
             'reusable' => true
         ]);
+	}
+	
+	public function validation()
+    {
+        $validator = new Validation();
+        
+        $validator->add(
+            'reference_number',
+            new UniquenessValidator([
+            'message' => 'Изходящият номер е уникално поле!'
+        ]));
+        
+        return $this->validate($validator);
     }
 
 	public function beforeCreate()

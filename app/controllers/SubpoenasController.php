@@ -180,26 +180,8 @@ class SubpoenasController extends ControllerBase
 
         if (!empty($data['assigned_to']) && $data['old_assignment'] != $data['assigned_to']) {
             $subpoena = $this->assignSubpoena($id, $data['assigned_to'], Subpoenas::CHANGED);
-        }
-
-        try {
-            if ($address->save() == false && $subpoena === false) {
+            if (!$subpoena) {
                 $this->flash->error("Възникна грешки повреме на запазването на данните!");
-            }
-
-            $form->clear();
-
-            $this->flash->success("Информацията беше редактирана успешно!");
-
-            return $this->dispatcher->forward(
-                [
-                    "controller" => "subpoenas",
-                    "action"     => "index",
-                ]
-            );
-        } catch (PDOException $e) {
-            if ($e->getCode() == '23000') {
-                $this->flash->error("Изходящият номер е уникално поле!");
 
                 return $this->dispatcher->forward(
                     [
@@ -209,6 +191,30 @@ class SubpoenasController extends ControllerBase
                 );
             }
         }
+
+        if ($address->save() == false) {
+            foreach ($address->getMessages() as $message) {
+                $this->flash->error((string) $message);
+            }
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "addresses",
+                    "action"     => "index",
+                ]
+            );
+        }
+
+        $form->clear();
+
+        $this->flash->success("Информацията беше редактирана успешно!");
+
+        return $this->dispatcher->forward(
+            [
+                "controller" => "subpoenas",
+                "action"     => "index",
+            ]
+        );
     }
 
     public function detailsAction($id)

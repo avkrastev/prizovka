@@ -10,7 +10,7 @@ $(window).load(function() {
         window.location.href = root + '/logout';
     });
 
-    /*if ( navigator.geolocation ) {
+    if (navigator.geolocation) {
         function success(pos) {
             // Location found, show map with these coordinates
             drawMap(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
@@ -30,7 +30,7 @@ $(window).load(function() {
             center: latlng,
             //mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-        var map = new google.maps.Map(document.getElementById("subpoenaMap"), myOptions);
+        var map = new google.maps.Map(document.getElementById("map"), myOptions);
         // Add an overlay to the map of current lat/lng
         var marker = new google.maps.Marker({
             position: latlng,
@@ -41,7 +41,7 @@ $(window).load(function() {
             google.maps.event.trigger(map, 'resize');
             map.setCenter(marker.getPosition());
         });
-    }*/
+    }
 });
 
 $( document ).on( "pagecreate", "#routes-page", function() {
