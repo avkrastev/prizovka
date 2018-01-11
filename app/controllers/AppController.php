@@ -19,6 +19,7 @@ class AppController extends AppControllerBase
 
     public function indexAction()
     {
+        $this->view->user = Users::findFirstById($this->session->get('auth')['id']);
         $this->view->addresses = $this->allAddressesPerEmployee();
     }
 

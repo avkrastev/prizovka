@@ -43,14 +43,12 @@ class SessionController extends CommonController
             $password = $this->request->getPost('password');
 
             $user = Users::findFirst(array(
-                "email = :email: AND password = :password:",
-                'bind' => array('email' => $email, 'password' => sha1($password))
+                "email = :email:",
+                'bind' => ['email' => $email]
             ));
 
-            if ($user != false) {
+            if ($user !== false && password_verify($password, $user->password)) {
                 $this->_registerSession($user);
-
-                $this->view->user = $user;
 
                 switch ($user->type) {
                     case Users::ADMIN: // ЧСИ

@@ -68,7 +68,7 @@ class EmployeesController extends ControllerBase
             $user->org = $auth['org'];
             $user->first_name = $data['first_name'];
             $user->last_name = $data['last_name'];
-            $user->password = sha1($data['password']);
+            $user->password = password_hash($data['password'], PASSWORD_DEFAULT);
             $user->email = $data['email'];
             $user->type = $data['type'];
             $user->active = $active = isset($data['active']) ? 1 : 0;
@@ -187,7 +187,7 @@ class EmployeesController extends ControllerBase
         $data = $this->request->getPost();
 
         if (isset($data['password']) && !empty($data['password'])) {
-            $data['password'] = sha1($data['password']);
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         } else {
             unset($data['password']);
         }
