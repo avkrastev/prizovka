@@ -48,7 +48,7 @@ class UsersMigration_101 extends Migration
                 'Александър',
                 'Кръстев',
                 'avkrastev@gmail.com',
-                'c0bd96dc7ea4ec56741a4e07f6ce98012814d853',
+                password_hash('secret', PASSWORD_DEFAULT),
                 1
             ],
             [
@@ -70,7 +70,7 @@ class UsersMigration_101 extends Migration
                 'Иван',
                 'Стоянов',
                 'ivan@example.com',
-                'e5e9fa1ba31ecd1ae84f75caaa474f3a663f05f4',
+                password_hash('secret', PASSWORD_DEFAULT),
                 1
             ],
             [
@@ -92,7 +92,7 @@ class UsersMigration_101 extends Migration
                 'Димитър',
                 'Христов',
                 'dimitar@example.com',
-                'e5e9fa1ba31ecd1ae84f75caaa474f3a663f05f4',
+                password_hash('secret', PASSWORD_DEFAULT),
                 1
             ],
             [
@@ -114,7 +114,7 @@ class UsersMigration_101 extends Migration
                 'Йордан',
                 'Милушев',
                 'jordan@example.com',
-                'e5e9fa1ba31ecd1ae84f75caaa474f3a663f05f4',
+                password_hash('secret', PASSWORD_DEFAULT),
                 1
             ],
             [
@@ -136,7 +136,7 @@ class UsersMigration_101 extends Migration
                 'Стоян',
                 'Колев',
                 'stoyan@example.com',
-                'e5e9fa1ba31ecd1ae84f75caaa474f3a663f05f4',
+                password_hash('secret', PASSWORD_DEFAULT),
                 1
             ],
             [
