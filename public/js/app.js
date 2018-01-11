@@ -9,39 +9,6 @@ $(window).load(function() {
         var root = location.protocol + '//' + location.host;
         window.location.href = root + '/logout';
     });
-
-    if (navigator.geolocation) {
-        function success(pos) {
-            // Location found, show map with these coordinates
-            drawMap(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-        }
-        function fail(error) {
-            drawMap(myLatLng);  // Failed to find location, show default map
-        }
-        // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
-        navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
-    } else {
-        drawMap(myLatLng);  // No geolocation support, show default map
-    }
-
-    function drawMap(latlng) {
-        var myOptions = {
-            zoom: 17,
-            center: latlng,
-            //mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map"), myOptions);
-        // Add an overlay to the map of current lat/lng
-        var marker = new google.maps.Marker({
-            position: latlng,
-            map: map,
-        });
-
-        google.maps.event.addListenerOnce(map, 'idle', function(){
-            google.maps.event.trigger(map, 'resize');
-            map.setCenter(marker.getPosition());
-        });
-    }
 });
 
 $( document ).on( "pagecreate", "#routes-page", function() {
@@ -72,7 +39,24 @@ $( document ).on( "pagecreate", "#routes-page", function() {
             }
         });
 
-        var originLatLng = {lat: parseFloat($('#start option:selected').attr('lat')), lng: parseFloat($('#start option:selected').attr('lng'))};
+        var originLatLng = {lat: 42.1530036, lng: 24.7561777};  
+        if ($('#start option:selected').val() == 'my') {
+            if (navigator.geolocation) {
+                function success(pos) {
+                    // Location found
+                    originLatLng = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+                }
+                function fail(error) {
+                    // Failed to find location. Default address - "bul. 6-ti Septemvri 219"
+                    originLatLng = {lat: 42.1530036, lng: 24.7561777};  
+                }
+                // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
+                navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
+            }
+        } else {
+            originLatLng = {lat: parseFloat($('#start option:selected').attr('lat')), lng: parseFloat($('#start option:selected').attr('lng'))};  
+        }
+
         var destLatLng = {lat: parseFloat($('#end option:selected').attr('lat')), lng: parseFloat($('#end option:selected').attr('lng'))};
 
         directionsService.route({

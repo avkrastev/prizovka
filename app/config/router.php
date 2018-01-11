@@ -8,8 +8,8 @@ $router = new Router();
 $router->add(
     '/',
     [
-        'controller' => 'session',
-        'action'     => 'start',
+        'controller' => 'index',
+        'action'     => 'index',
     ]
 );
 

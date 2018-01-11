@@ -36,7 +36,7 @@ html .ui-body-a .ui-slider-track .ui-btn-active,
 html body .ui-group-theme-a .ui-slider-track .ui-btn-active, 
 html body div.ui-slider-track.ui-body-a .ui-btn-active {
     background-color: #33b35a;
-    border-color: #33b35a;
+    border-color: #33b35a !important;
     text-shadow: none;
 }
 .ui-page-theme-a .ui-btn:focus, 

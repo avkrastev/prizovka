@@ -15,11 +15,12 @@ class AppController extends AppControllerBase
         $this->tag->setTitle('Призовка.бг');
         
         parent::initialize();
+        
+        $this->view->user = Users::findFirstById($this->session->get('auth')['id']);
     }
 
     public function indexAction()
-    {
-        $this->view->user = Users::findFirstById($this->session->get('auth')['id']);
+    {  
         $this->view->addresses = $this->allAddressesPerEmployee();
     }
 
