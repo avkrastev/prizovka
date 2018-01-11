@@ -12,6 +12,19 @@ $(window).load(function() {
 });
 
 $( document ).on( "pagecreate", "#routes-page", function() {
+    if (navigator.geolocation) {
+        function success(pos) {
+            // Location found
+            $('#start option[value="my"]').attr({'lat': pos.coords.latitude, 'lng': pos.coords.longitude});
+        }
+        function fail(error) {
+            // Failed to find location. Default address - "bul. 6-ti Septemvri 219"
+            $('#start option[value="my"]').attr({'lat': 42.1530036, 'lng': 24.7561777});
+        }
+        // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
+        navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 5000});
+    }
+
     document.getElementById('submit').addEventListener('click', function() {
         $( "#mapDialog" ).popup( "open" );
         calculateAndDisplayRoute();
@@ -39,24 +52,7 @@ $( document ).on( "pagecreate", "#routes-page", function() {
             }
         });
 
-        var originLatLng = {lat: 42.1530036, lng: 24.7561777};  
-        if ($('#start option:selected').val() == 'my') {
-            if (navigator.geolocation) {
-                function success(pos) {
-                    // Location found
-                    originLatLng = {lat: pos.coords.latitude, lng: pos.coords.longitude};
-                }
-                function fail(error) {
-                    // Failed to find location. Default address - "bul. 6-ti Septemvri 219"
-                    originLatLng = {lat: 42.1530036, lng: 24.7561777};  
-                }
-                // Find the users current position.  Cache the location for 5 minutes, timeout after 6 seconds
-                navigator.geolocation.getCurrentPosition(success, fail, {maximumAge: 500000, enableHighAccuracy:true, timeout: 6000});
-            }
-        } else {
-            originLatLng = {lat: parseFloat($('#start option:selected').attr('lat')), lng: parseFloat($('#start option:selected').attr('lng'))};  
-        }
-
+        var originLatLng = {lat: parseFloat($('#start option:selected').attr('lat')), lng: parseFloat($('#start option:selected').attr('lng'))};  
         var destLatLng = {lat: parseFloat($('#end option:selected').attr('lat')), lng: parseFloat($('#end option:selected').attr('lng'))};
 
         directionsService.route({
