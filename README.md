@@ -1,10 +1,10 @@
-# prizovka
+# Prizovka
 
-One Paragraph of project description goes here
+Software system for managing and control of serving subpoenas
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+The main cases of use are that the system creates addresses whose coordinates are encoded in the so-called matrix (QR) codes. Once an employee scans this code, the subpoena (its distribution address) is assigned to it and appears into the list of summonses. These subpoenas, which are tied to specific addresses, may then form the shortest delivery route. Other important instances of use are related to easy access to the address history and address visits, as well as statistics measuring of the number of key business-specific indicators.
 
 ### Prerequisites
 
@@ -32,34 +32,16 @@ until finished
 
 End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 ## Deployment
 
 Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Phalcon](https://phalconphp.com/en/) - The web framework used
+* [Phalcon](https://phalconphp.com/en/) - The PHP framework used
+* [jQuery](https://jquery.com/) - A JavaScript framework
 * [Bootstrap](http://getbootstrap.com/) - Front-end component library
+
 
 ## Versioning
 
@@ -77,4 +59,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Inspiration
 
-private enforcement agent Konstantin Pavlov
+Konstantin Pavlov
