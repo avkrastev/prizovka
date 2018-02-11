@@ -46,7 +46,10 @@ class SubpoenasController extends ControllerBase
             $parameters = $this->persistent->searchParams;
         }
 
-        $parameters['order'] = 'id ASC'; //TODO get order dinamically
+        $order = $this->request->get('order', 'string', 'first_name');
+        $direction = $this->request->get('direction', 'string', 'asc');
+
+        $parameters['order'] = $order.' '.$direction;
         $addresses = Addresses::find($parameters);
 
         if (count($addresses) == 0) {
@@ -68,6 +71,7 @@ class SubpoenasController extends ControllerBase
 
         $this->view->address = $addresses;
         $this->view->page = $paginator->getPaginate();
+        $this->view->order = [$order => $direction == 'asc' ? 'desc' : 'asc'];
         $this->view->form = new AddressesForm($addresses, array('search' => true));
     }
 

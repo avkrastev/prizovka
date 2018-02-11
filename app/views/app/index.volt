@@ -53,4 +53,7 @@
         </fieldset><br>
         <input type="button" id="submit" value="Запази"/>
     </div><!-- /popup -->
+    <div id="error" class="ui-content" data-role="popup" data-theme="a">
+        <p>Възникна грешка, моля опитайте отново по-късно!</p>
+    </div><!-- /popup -->
 </div>

@@ -2,9 +2,15 @@
     <div class="container-fluid">
         <header class="clearfix"> 
             <h1 class="h3 float-left">Детайли за призовка по Дело {{ subpoena[0].getAddress().case_number }} и Изходящ номер: {{ subpoena[0].getAddress().reference_number }}</h1>
-            <a href="{{ url('subpoenas') }}" class="btn btn-primary float-right">
-                <i class="icon ion-chevron-left"></i>Обратно към списъка с призовки
-            </a>
+            {% if dispatcher.getParam(1) == 'history' %}
+                <a href="{{ url('history') }}" class="btn btn-primary float-right">
+                    <i class="icon ion-chevron-left"></i>Обратно към историята
+                </a>
+            {% else %}
+                <a href="{{ url('subpoenas') }}" class="btn btn-primary float-right">
+                    <i class="icon ion-chevron-left"></i>Обратно към списъка с призовки
+                </a>
+            {% endif %}
         </header>
         <div id="subpoenaMap" lat="{{ subpoena[0].getAddress().latitude }}" lng="{{ subpoena[0].getAddress().longitude }} "></div>
         <h5>{{ subpoena[0].getAddress().address }}</h5>

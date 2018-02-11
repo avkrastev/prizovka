@@ -67,11 +67,22 @@ class AppController extends AppControllerBase
         if ($this->request->isPost()) {
             $addressesModel = new Addresses;
             $postData = $this->request->getPost();
-            $addresses = $addressesModel->getNotAssignedAddresses($postData['case_number'], $postData['reference_number']); // TODO limit results
+            $addresses = $addressesModel->getNotAssignedAddresses($postData['case_number'], $postData['reference_number']);
         }
-        
+    
         $this->view->addresses = $addresses;
         $this->view->postData = $postData;
+    }
+
+    public function addMoreSubpoenasAction()
+    {
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+        $addressesModel = new Addresses;
+        $data = $this->request->getPost();
+
+        $addresses = $addressesModel->getNotAssignedAddresses($data['case_number'], $data['reference_number'], $data['limit']);
+
+        echo json_encode($addresses);
     }
     
     public function assignSubpoenaAction()
@@ -83,11 +94,9 @@ class AppController extends AppControllerBase
         $addressDetails = $this->assignSubpoena($id, $auth['id'], Subpoenas::CHANGED);
 
         if ($addressDetails !== false) {
-            echo json_encode(true); // TODO show errors
-            return;
+            echo json_encode(true);
         } else {
             echo json_encode(false);
-            return;
         }
     }
 
@@ -104,11 +113,9 @@ class AppController extends AppControllerBase
         $addressDetails = $this->assignSubpoena($id, $auth['id'], $action = Subpoenas::DELIVERED);
 
         if ($address->save() !== false && $addressDetails !== false) {
-            echo json_encode(true); // TODO show errors
-            return;
+            echo json_encode(true);
         } else {
             echo json_encode(false);
-            return;
         }
     }
 

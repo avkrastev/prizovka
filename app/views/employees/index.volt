@@ -16,9 +16,33 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Име</th>
-                                    <th>Фамилия</th>
-                                    <th>Длъжност</th>
+                                    {% if order['first_name'] is defined %}
+                                        {% if order['first_name'] == 'asc' %}
+                                            <th>{{ link_to("employees/index?order=first_name&direction=" ~ order['first_name'], 'Име <i class="icon ion-chevron-up"></i>', "class": "") }}</th>
+                                        {% else %}
+                                            <th>{{ link_to("employees/index?order=first_name&direction=" ~ order['first_name'], 'Име <i class="icon ion-chevron-down"></i>', "class": "") }}</th>
+                                        {% endif %}
+                                    {% else %}
+                                        <th>{{ link_to("employees/index?order=first_name&direction=asc", 'Име', "class": "") }}</th>
+                                    {% endif %}
+                                    {% if order['last_name'] is defined %}
+                                        {% if order['last_name'] == 'asc' %}
+                                            <th>{{ link_to("employees/index?order=last_name&direction=" ~ order['last_name'], 'Фамилия <i class="icon ion-chevron-up"></i>', "class": "") }}</th>
+                                        {% else %}
+                                            <th>{{ link_to("employees/index?order=last_name&direction=" ~ order['last_name'], 'Фамилия <i class="icon ion-chevron-down"></i>', "class": "") }}</th>
+                                        {% endif %}
+                                    {% else %}
+                                        <th>{{ link_to("employees/index?order=last_name&direction=asc", 'Фамилия', "class": "") }}</th>
+                                    {% endif %}
+                                    {% if order['type'] is defined %}
+                                        {% if order['type'] == 'asc' %}
+                                            <th>{{ link_to("employees/index?order=type&direction=" ~ order['type'], 'Длъжност <i class="icon ion-chevron-up"></i>', "class": "") }}</th>
+                                        {% else %}
+                                            <th>{{ link_to("employees/index?order=type&direction=" ~ order['type'], 'Длъжност <i class="icon ion-chevron-down"></i>', "class": "") }}</th>
+                                        {% endif %}                                   
+                                    {% else %}
+                                        <th>{{ link_to("employees/index?order=type&direction=asc", 'Длъжност', "class": "") }}</th>
+                                    {% endif %}
                                     <th>Операции</th>
                                 </tr>
                             </thead>

@@ -45,7 +45,7 @@ class Addresses extends Model
 		$this->hasMany('id', 'Subpoenas', 'address', [
             'alias' => 'address',
             'reusable' => true
-        ]);
+		]);
 	}
 	
 	public function validation()
@@ -86,14 +86,14 @@ class Addresses extends Model
 		return $query->execute();
 	}
 
-	public function getNotAssignedAddresses($case_number, $reference_number) 
+	public function getNotAssignedAddresses($case_number, $reference_number, $limit = 0, $offset = 5) 
 	{
 		$query = $this->modelsManager->createQuery('SELECT a.*
 													FROM Addresses a
 													LEFT JOIN Subpoenas s ON (a.id = s.address)
 													WHERE s.assigned_to IS NULL 
 													AND a.case_number like "%'.$case_number.'%" 
-													AND a.reference_number like "%'.$reference_number.'%"');
+													AND a.reference_number like "%'.$reference_number.'%" LIMIT '.$limit.', '.$offset);
 		return $query->execute();
 	}
 

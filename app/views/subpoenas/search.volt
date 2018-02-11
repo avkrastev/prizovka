@@ -35,9 +35,33 @@
                         <table class="table subpoenas">
                             <thead>
                                 <tr>
-                                    <th>Номер на дело</th>
-                                    <th>Изходящ номер</th>
-                                    <th>Адрес</th>
+                                    {% if order['case_number'] is defined %}
+                                        {% if order['case_number'] == 'asc' %}
+                                            <th>{{ link_to("subpoenas/search?order=case_number&direction=" ~ order['case_number'], 'Номер на дело <i class="icon ion-chevron-up"></i>', "class": "") }}</th>
+                                        {% else %}
+                                            <th>{{ link_to("subpoenas/search?order=case_number&direction=" ~ order['case_number'], 'Номер на дело <i class="icon ion-chevron-down"></i>', "class": "") }}</th>
+                                        {% endif %}
+                                    {% else %}
+                                        <th>{{ link_to("subpoenas/search?order=case_number&direction=asc", 'Номер на дело', "class": "") }}</th>
+                                    {% endif %}
+                                    {% if order['reference_number'] is defined %}
+                                        {% if order['reference_number'] == 'asc' %}
+                                            <th>{{ link_to("subpoenas/search?order=reference_number&direction=" ~ order['reference_number'], 'Изходящ номер <i class="icon ion-chevron-up"></i>', "class": "") }}</th>
+                                        {% else %}
+                                            <th>{{ link_to("subpoenas/search?order=reference_number&direction=" ~ order['reference_number'], 'Изходящ номер <i class="icon ion-chevron-down"></i>', "class": "") }}</th>
+                                        {% endif %}
+                                    {% else %}
+                                        <th>{{ link_to("subpoenas/search?order=reference_number&direction=asc", 'Изходящ номер', "class": "") }}</th>
+                                    {% endif %}
+                                    {% if order['address'] is defined %}
+                                        {% if order['address'] == 'asc' %}
+                                            <th>{{ link_to("subpoenas/search?order=address&direction=" ~ order['address'], 'Адрес <i class="icon ion-chevron-up"></i>', "class": "") }}</th>
+                                        {% else %}
+                                            <th>{{ link_to("subpoenas/search?order=address&direction=" ~ order['address'], 'Адрес <i class="icon ion-chevron-down"></i>', "class": "") }}</th>
+                                        {% endif %}
+                                    {% else %}
+                                        <th>{{ link_to("subpoenas/search?order=address&direction=asc", 'Адрес', "class": "") }}</th>
+                                    {% endif %}
                                     <th>Зачислена</th>
                                     <th>Операции</th>
                                 </tr>
@@ -50,7 +74,7 @@
                                     <td class="address">
                                         <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal">{{ address.address }}</a>
                                     </td>
-                                    <td></td>
+                                    <td>TODO</td>
                                     <td class="operations">
                                         {{ link_to("subpoenas/edit/" ~ address.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
                                         {{ link_to("subpoenas/details/" ~ address.id, '<i class="icon ion-clipboard"></i>', "title": "Преглед") }}

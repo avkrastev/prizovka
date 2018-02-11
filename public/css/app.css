@@ -180,3 +180,8 @@ p.error {
     padding: 0.5em;
     border-radius: 0.25em;
 }
+#error.ui-popup {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebcccc;
+}

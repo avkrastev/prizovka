@@ -246,8 +246,7 @@ $(window).load(function() {
         var root = location.protocol + '//' + location.host;
         $.getJSON('/statistics/getStats', function (resp) {
             var brandPrimary = 'rgba(51, 179, 90, 1)';
-
-            if (resp['subpoenasCountCurrentMonth'].length > 0) {
+            if (!jQuery.isEmptyObject(resp['subpoenasCountCurrentMonth'])) {
                 var subpoenasCountCurrentMonth = new Chart($('#subpoenasCountCurrentMonth'), {
                     type: 'doughnut',
                     data: {
@@ -271,7 +270,7 @@ $(window).load(function() {
                 });
             }
 
-            if (resp['subpoenasCountPrevMonth'].length > 0) {
+            if (!jQuery.isEmptyObject(resp['subpoenasCountPrevMonth'])) {
                 var subpoenasCountPrevMonth = new Chart($('#subpoenasCountPrevMonth'), {
                     type: 'doughnut',
                     data: {

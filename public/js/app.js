@@ -177,6 +177,11 @@ $( document ).on( "pagecreate", "#index-page", function() {
                                     listitem.remove();
                                     // ...the list will be refreshed and the temporary class for border styling removed
                                     $( "#list" ).listview( "refresh" ).find( ".border-bottom" ).removeClass( "border-bottom" );
+                                } else {
+                                    $("#error").popup("open");
+                                    setTimeout(function() {
+                                        $("#error").popup("close");
+                                    }, 2000);
                                 }
                             }, 'json'
                         );
@@ -200,28 +205,84 @@ $( document ).on( "pagecreate", "#index-page", function() {
     }
 });
 
-$( document ).on( "pagecreate", "#assign-page", function() {
-    $( "#list li .address" ).on( "click", function( event ) {
-        var self = $(this);
+$(document).on("pagecreate", "#assign-page", function() {  
+    /* check scroll function */
+    function checkScroll() {
+        var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"),
+        screenHeight = $.mobile.getScreenHeight(),
+        contentHeight = $(".ui-content", activePage).outerHeight(),
+        header = $(".ui-header", activePage).outerHeight() - 1,
+        scrolled = $(window).scrollTop(),
+        scrollEnd = contentHeight - screenHeight + header;
 
-        $( "#confirm" ).popup( "open" );
-        $( "#confirm #yes" ).on( "click", function() {
-            $( "#confirm #yes" ).off();
-            var root = location.protocol + '//' + location.host;
-            $.post(root+'/app/assignSubpoena', 
-                {id: self.parent().attr('subpoena')},
-                function (resp) {
-                    if (resp != false) {
-                        self.parent().remove();
-                        $( "#list" ).listview( "refresh" ).find( ".border-bottom" ).removeClass( "border-bottom" );
+        if (activePage[0].id == "assign-page" && scrolled >= scrollEnd) {
+            addMore(activePage);
+        }
+    }
+
+    /* add more function */
+    function addMore(page) {
+        $(document).off("scrollstop");
+        $.mobile.loading( 'show', { text: "Зареждане...", textVisible: true, textonly: true});
+
+        var root = location.protocol + '//' + location.host,
+            items = '',
+            last = $("#list li", page).length,
+            cont = last + 10;
+        $.post(root+'/app/addMoreSubpoenas', 
+            {case_number: $('#case_number').val(),
+             reference_number: $('#reference_number').val(),
+             offset: 10,
+             limit: last},
+            function (resp) {
+                $.mobile.loading("hide");
+                if (resp != false) {
+                    for (var i in resp) {
+                        items += '<li subpoena="'+resp[i]['id']+'">' + 
+                                    '<a href="#" class="address" lat="'+resp[i]['latitude']+'" lng="'+resp[i]['longitude']+'">' +
+                                        '<h3 class="topic">'+resp[i]['address']+'</h3>' +
+                                        '<p><strong>Номер на делото: '+resp[i]['case_number']+'</strong></p>' +
+                                        '<p>Изходящ номер: '+resp[i]['reference_number']+'</p>'+
+                                    '</a>' +
+                                 '</li>';
                     }
-                }, 'json'
-            );
-        });
-        // Remove active state and unbind when the cancel button is clicked
-        $( "#confirm #cancel" ).on( "click", function() {
-            self.children( ".ui-btn" ).removeClass( "ui-btn-active" );
-            $( "#confirm #yes" ).off();
-        });
-    });
+                    $("#list", page).append(items).listview("refresh");
+                }
+                console.log(123);
+                $("#list li a.address").on("click", function() {
+                    var self = $(this);
+
+                    $("#confirm").popup("open");
+                    $("#confirm #yes").on("click", function() {
+                        $("#confirm #yes").off();
+                        var root = location.protocol + '//' + location.host;
+                        $.post(root+'/app/assignSubpoena', 
+                            {id: self.parent().attr('subpoena')},
+                            function (resp) {
+                                if (resp != false) {
+                                    self.parent().remove();
+                                    $("#list").listview("refresh").find(".border-bottom").removeClass("border-bottom");
+                                } else {
+                                    $("#error").popup("open");
+                                    setTimeout(function() {
+                                        $("#error").popup("close");
+                                    }, 2000);
+                                }
+                            }, 'json'
+                        );
+                    });
+                    // Remove active state and unbind when the cancel button is clicked
+                    $("#confirm #cancel").on("click", function() {
+                        self.children(".ui-btn").removeClass("ui-btn-active");
+                        $("#confirm #yes").off();
+                    });
+                });  
+                $(document).on("scrollstop", checkScroll);
+            }, 'json'
+        );
+    }
+
+    /* attach if scrollstop for first time */
+    $(document).on("scrollstop", checkScroll);
 });
+

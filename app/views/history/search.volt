@@ -34,7 +34,7 @@
                                         <td>{{ history.s.getAssigned_to().first_name ~' '~ history.s.getAssigned_to().last_name}}</td>
                                         <td>{{ date('d.m.Y', strtotime(history.s.date)) }} г.</td>
                                         <td class="operations">
-                                            {{ link_to("subpoenas/details/" ~ history.a.id, '<i class="icon ion-clipboard"></i>', "title": "Преглед") }}
+                                            {{ link_to("subpoenas/details/" ~ history.a.id ~'/history', '<i class="icon ion-clipboard"></i>', "title": "Преглед") }}
                                         </td>
                                     </tr>
                                 {% if loop.last %}

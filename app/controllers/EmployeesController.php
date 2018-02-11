@@ -22,8 +22,10 @@ class EmployeesController extends ControllerBase
         $numberPage = $this->request->getQuery("page", "int");
 
         $parameters = array();
+        $order = $this->request->get('order', 'string', 'first_name');
+        $direction = $this->request->get('direction', 'string', 'asc');
 
-        $parameters['order'] = 'type ASC'; //TODO get order dinamically
+        $parameters['order'] = $order.' '.$direction;
         $employees = Users::find($parameters);
 
         if (count($employees) == 0) {
@@ -44,6 +46,7 @@ class EmployeesController extends ControllerBase
         ));
 
         $this->view->users = $employees;
+        $this->view->order = [$order => $direction == 'asc' ? 'desc' : 'asc'];
         $this->view->userTypes = Users::getUserTypes();
         $this->view->page = $paginator->getPaginate();
     }

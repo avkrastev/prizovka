@@ -56,7 +56,7 @@ class SecurityPlugin extends Plugin
 				'invoices'     => array('index', 'profile'),
 				'addresses'	   => array('index', 'createQR', 'download', 'assign', 'list', 'qr'),
 				'subpoenas'	   => array('index', 'edit', 'save', 'view', 'delete', 'details', 'search'),
-				'app'		   => array('index', 'address', 'routes', 'assign', 'deliver', 'status', 'assignSubpoena'),
+				'app'		   => array('index', 'address', 'routes', 'assign', 'deliver', 'status', 'assignSubpoena', 'addMoreSubpoenas'),
 				'statistics'   => array('index', 'search', 'getStats'),
 				'history'	   => array('índex', 'search')
 			);
@@ -69,7 +69,7 @@ class SecurityPlugin extends Plugin
 				'employees'    => array('index', 'create', 'edit', 'save', 'view', 'delete'),
 				'addresses'	   => array('index', 'createQR', 'download', 'assign', 'list', 'qr'),
 				'subpoenas'	   => array('index', 'edit', 'save', 'view', 'delete', 'details', 'search'),
-				'app'		   => array('index', 'address', 'routes', 'assign', 'deliver', 'status', 'assignSubpoena'),
+				'app'		   => array('index', 'address', 'routes', 'assign', 'deliver', 'status', 'assignSubpoena', 'addMoreSubpoenas'),
 				'statistics'   => array('index', 'search', 'getStats'),
 				'history'	   => array('index', 'search')
 			);
