@@ -464,4 +464,22 @@ $(window).load(function() {
 
         return url.join('/');
     };
+
+    var totalPages =  $('.subpoenas nav ul.pagination').attr('page-total');
+    var currentPage =  $('.subpoenas nav ul.pagination').attr('page-current');
+
+    $('.subpoenas nav ul.pagination, .history nav ul.pagination').pagination({
+        items: totalPages,
+        itemOnPage: 8,
+        currentPage: currentPage,
+        cssStyle: '',
+        prevText: 'Предишна',
+        nextText: 'Следваща',
+        onInit: function () {
+            // fire first page loading
+        },
+        onPageClick: function (page, evt) {
+            // some code
+        }
+    });
 });

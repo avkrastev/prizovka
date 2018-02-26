@@ -1,4 +1,4 @@
-<section class="charts">
+<section class="charts subpoenas">
     <div class="container-fluid">
         <header class="clearfix"> 
             <h1 class="h3 float-left">Призовки</h1>
@@ -68,53 +68,27 @@
                             </thead>
                             <tbody>
                             {% endif %}                       
-                                <tr addressId="{{ address.id }}" {{ request.getQuery('addressid') == address.id ? 'class="activeRow"' : '' }}>
-                                    <td># {{ address.case_number }}</td>
-                                    <td>{{ address.reference_number }}</td>
+                                <tr addressId="{{ address.a.id }}" {{ request.getQuery('addressid') == address.a.id ? 'class="activeRow"' : '' }}>
+                                    <td># {{ address.a.case_number }}</td>
+                                    <td>{{ address.a.reference_number }}</td>
                                     <td class="address">
-                                        <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal">{{ address.address }}</a>
+                                        <a href="#" class="viewAddress" data-toggle="modal" data-target="#viewAddressModal">{{ address.a.address }}</a>
                                     </td>
-                                    <td>TODO</td>
+                                    {% if (address.s.assigned_to != '') %}
+                                        <td>Да</td>
+                                    {% else %}
+                                        <td>Не</td>
+                                    {% endif %}
                                     <td class="operations">
-                                        {{ link_to("subpoenas/edit/" ~ address.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
-                                        {{ link_to("subpoenas/details/" ~ address.id, '<i class="icon ion-clipboard"></i>', "title": "Преглед") }}
+                                        {{ link_to("subpoenas/edit/" ~ address.a.id, '<i class="icon ion-edit"></i>', "title": "Редакция") }}
+                                        {{ link_to("subpoenas/details/" ~ address.a.id, '<i class="icon ion-clipboard"></i>', "title": "Преглед") }}
                                     </td>
                                 </tr>
                             {% if loop.last %}
                             </tbody>
                         </table>
-                        <nav>
-                            <ul class="pagination justify-content-center">
-                                {% if page.before == page.current %}
-                                    <li class="page-item disabled">
-                                        {{ link_to("subpoenas/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
-                                    </li>
-                                {% else %}
-                                    <li class="page-item">
-                                        {{ link_to("subpoenas/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
-                                    </li>
-                                {% endif %}
-                                {% for i in 1..page.total_pages %}
-                                    {% if i == page.current %}
-                                        <li class="page-item active">
-                                            {{ link_to("subpoenas/index?page=" ~ i, i, "class": "page-link") }}
-                                        </li>
-                                    {% else %}
-                                        <li class="page-item">
-                                            {{ link_to("subpoenas/index?page=" ~ i, i, "class": "page-link") }}
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                                {% if page.next == page.current %}
-                                    <li class="page-item disabled">
-                                        {{ link_to("subpoenas/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
-                                    </li>
-                                {% else %}
-                                    <li class="page-item">
-                                        {{ link_to("subpoenas/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
-                                    </li>
-                                {% endif %}
-                            </ul>
+                        <nav id="pagination">
+                            <ul class="pagination justify-content-center" page-current="{{ page.current }}" page-total="{{ page.total_pages }}"></ul>
                         </nav>
                         {% endif %}
                         {% else %}

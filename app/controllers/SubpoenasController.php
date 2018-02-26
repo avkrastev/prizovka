@@ -29,28 +29,24 @@ class SubpoenasController extends ControllerBase
         $this->view->address = $addresses;
         $this->view->page = $paginator->getPaginate();
         $this->view->form = new AddressesForm($addresses, array('search' => true));
+        //$addressesModel->test();
     }
 
     public function searchAction() 
     {
+        $addressesModel = new Addresses;
         $numberPage = 1;
+        $parameters = [];
         if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, 'Addresses', $this->request->getPost());
-            $this->persistent->searchParams = $query->getParams();
+            $parameters = $this->request->getPost();
         } else {
             $numberPage = $this->request->getQuery('page','int');
         }
 
-        $parameters = array();
-        if ($this->persistent->searchParams) {
-            $parameters = $this->persistent->searchParams;
-        }
-
-        $order = $this->request->get('order', 'string', 'first_name');
+        $order = $this->request->get('order', 'string', 'case_number');
         $direction = $this->request->get('direction', 'string', 'asc');
 
-        $parameters['order'] = $order.' '.$direction;
-        $addresses = Addresses::find($parameters);
+        $addresses = $addressesModel->getNotDeliveredAddressesByCriteria($parameters, $order.' '.$direction);
 
         if (count($addresses) == 0) {
             $this->flash->notice("Няма намерени адреси по зададените критерии!");

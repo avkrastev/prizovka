@@ -130,5 +130,40 @@ class Addresses extends Model
 		return $query->execute();
 	}
 
+	public function getNotDeliveredAddressesByCriteria($criteria, $order)
+	{
+		$where = '';
+		foreach ($criteria as $k=>$v) {
+			if (!empty($v)) {
+				$where.= ' AND '.$k.' like "%'.$v.'%"';
+			}
+		}
 
+		$query = $this->modelsManager->createQuery('SELECT a.*, s.*
+													FROM Addresses a
+													LEFT JOIN Subpoenas s ON (a.id = s.address)
+													WHERE a.delivered = "N" '.$where.'
+													GROUP BY a.id ORDER BY a.'.$order);
+		return $query->execute();
+	}
+
+	public function test() 
+    {
+		set_time_limit(0);
+		$phql = "INSERT INTO Addresses (case_number, reference_number, address, latitude, longitude, delivered, created_at) " . 
+					           "VALUES (:case_number:, :reference_number:, :address:, :latitude:, :longitude:, :delivered:, :created_at:)";
+		$query = $this->modelsManager->createQuery($phql);
+
+		for ($i=1; $i<=10000; $i++) {
+			$query->execute([ 
+				"case_number" => '20180225'. $i,
+				"reference_number" => str_pad($i, 6, "000000", STR_PAD_LEFT),
+				"address" => 'адрес '.$i,
+				"latitude" => number_format((rand(1300001, 1699999)/10000000 + 42), 7),
+				"longitude" => number_format((rand(7200001, 7799999)/10000000 + 24), 7),
+				"delivered" => 'N',
+				"created_at" => new Phalcon\Db\RawValue('now()'),
+			]);
+		}
+    }
 }

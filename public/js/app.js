@@ -248,7 +248,6 @@ $(document).on("pagecreate", "#assign-page", function() {
                     }
                     $("#list", page).append(items).listview("refresh");
                 }
-                console.log(123);
                 $("#list li a.address").on("click", function() {
                     var self = $(this);
 

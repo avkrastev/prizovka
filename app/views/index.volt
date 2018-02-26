@@ -48,5 +48,6 @@
     {{ javascript_include('js/front.js') }}  
     {{ javascript_include('js/base64.js') }}
     {{ javascript_include('js/custom.js') }}
+    {{ javascript_include('js/jquery.simplePagination.js') }}
   </body>
 </html>

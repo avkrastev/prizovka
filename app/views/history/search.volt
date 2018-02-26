@@ -1,4 +1,4 @@
-<section class="charts">
+<section class="charts history">
         <div class="container-fluid">
             <header class="clearfix"> 
                 <h1 class="h3 float-left">История на раздадените призовки</h1>
@@ -40,38 +40,8 @@
                                 {% if loop.last %}
                                 </tbody>
                             </table>
-                            <nav>
-                                <ul class="pagination justify-content-center">
-                                    {% if page.before == page.current %}
-                                        <li class="page-item disabled">
-                                            {{ link_to("history/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
-                                        </li>
-                                    {% else %}
-                                        <li class="page-item">
-                                            {{ link_to("history/index?page=" ~ page.before, 'Предишна', "class": "page-link") }}
-                                        </li>
-                                    {% endif %}
-                                    {% for i in 1..page.total_pages %}
-                                        {% if i == page.current %}
-                                            <li class="page-item active">
-                                                {{ link_to("history/index?page=" ~ i, i, "class": "page-link") }}
-                                            </li>
-                                        {% else %}
-                                            <li class="page-item">
-                                                {{ link_to("history/index?page=" ~ i, i, "class": "page-link") }}
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                    {% if page.next == page.current %}
-                                        <li class="page-item disabled">
-                                            {{ link_to("history/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
-                                        </li>
-                                    {% else %}
-                                        <li class="page-item">
-                                            {{ link_to("history/index?page=" ~ page.next, 'Следваща', "class": "page-link") }}
-                                        </li>
-                                    {% endif %}
-                                </ul>
+                            <nav id="pagination">
+                                <ul class="pagination justify-content-center" page-current="{{ page.current }}" page-total="{{ page.total_pages }}"></ul>
                             </nav>
                             {% endif %}
                             {% else %}
