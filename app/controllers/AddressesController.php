@@ -86,7 +86,17 @@ class AddressesController extends ControllerBase
 
     public function qrAction() 
     {
+        if (!$this->isLogged()) {
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "session",
+                    "action"     => "start",
+                ]
+            );
+        } 
+
         $subpoena = $this->request->get('subpoena');
+        $this->view->error = '';
         if (!empty($subpoena)) {
             $subpoena = explode('&', base64_decode($subpoena));
             $coords = explode(',', $subpoena[0]);
@@ -108,50 +118,62 @@ class AddressesController extends ControllerBase
                 $address->created_at = new Phalcon\Db\RawValue('now()');
 
                 if ($address->save() == false) {
-                    $this->flash->error("Възникна грешки повреме на запазването на данните!");
+                    $this->view->error = "Възникна грешки повреме на запазването на данните!";
     
                     return $this->dispatcher->forward(
                         [
-                            "controller" => "addresses",
+                            "controller" => "app",
                             "action"     => "index",
                         ]
                     );
                 } else {
-                    $this->flash->success('Призовката беше зачислена успешно!');
+                    $subpoena = $this->assignSubpoena($address->id, $this->session->get('auth')['id'], Subpoenas::ISSUED);
+
+                    if ($subpoena === false) {
+                        $this->view->error = "Възникна грешки повреме на запазването на данните!";
+                        return $this->dispatcher->forward(
+                            [
+                                "controller" => "app",
+                                "action"     => "index",
+                            ]
+                        );
+                    }
+
+                    $this->view->successId = $address->id;
     
-                    $addresses = Addresses::find();
-                    $lastPage = intval(ceil(count($addresses)*0.1));
-    
-                    return $this->response->redirect('/subpoenas/index?page='.$lastPage.'&addressid='.$address->id);
+                    return $this->dispatcher->forward(
+                        [
+                            "controller" => "app",
+                            "action"     => "index",
+                        ]
+                    );
                 }
             } else {
                 $subpoena = $this->assignSubpoena($existingSubpoena->id, $this->session->get('auth')['id'], Subpoenas::CHANGED);
 
-                if ($existingSubpoena->latitude != $coords[0] || $existingSubpoena->longitude != $coords[1]) {
-                    $existingSubpoena->latitude = $coords[0];
-                    $existingSubpoena->longitude = $coords[1];
-                    $existingSubpoena->address = $this->getAddressByCoords($coords[0], $coords[1]);
-                    $existingSubpoena->updated_by = $this->session->get('auth')['id'];
-                    $existingSubpoena->updated_at = new Phalcon\Db\RawValue('now()');    
-                }
+                $existingSubpoena->case_number = $subpoena[1];
+                $existingSubpoena->reference_number = $subpoena[2];
+                $existingSubpoena->latitude = $coords[0];
+                $existingSubpoena->longitude = $coords[1];
+                $existingSubpoena->address = $this->getAddressByCoords($coords[0], $coords[1]);
+                $existingSubpoena->updated_by = $this->session->get('auth')['id'];
+                $existingSubpoena->updated_at = new Phalcon\Db\RawValue('now()'); 
 
                 if ($existingSubpoena->save() == false && $subpoena === false) {
-                    $this->flash->error("Възникна грешки повреме на запазването на данните!");
+                    $this->view->error = "Възникна грешки повреме на запазването на данните!";
         
                     return $this->dispatcher->forward(
                         [
-                            "controller" => "subpoenas",
-                            "action"     => "edit",
-                            "params"     => [$id]
+                            "controller" => "app",
+                            "action"     => "index",
                         ]
                     );
                 }
 
-                $this->flash->success("Информацията беше редактирана успешно!");
-        
+                $this->view->successId = $existingSubpoena->id;
                 return $this->dispatcher->forward(
                     [
-                        "controller" => "subpoenas",
+                        "controller" => "app",
                         "action"     => "index",
                     ]
                 );

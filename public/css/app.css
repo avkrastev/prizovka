@@ -185,3 +185,8 @@ p.error {
     background-color: #f2dede;
     border-color: #ebcccc;
 }
+#list li.success a {
+    background-color: #33b35a;
+    color: #fff;
+    text-shadow: none;
+}

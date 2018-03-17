@@ -31,7 +31,8 @@ class CommonController extends Controller
         }
     }
 
-    protected function assignSubpoena($addressId, $assigned_to, $action = Subpoenas::VISITED) {
+    protected function assignSubpoena($addressId, $assigned_to, $action = Subpoenas::VISITED) 
+    {
         $subpoena = new Subpoenas();
       
         $subpoena->address = $addressId;
@@ -46,5 +47,12 @@ class CommonController extends Controller
         } else {
             return true;
         }
+    }
+
+    protected function isLogged() 
+    {
+        $auth = $this->session->get('auth');
+
+        return isset($auth) ? true : false;
     }
 }

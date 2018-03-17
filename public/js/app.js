@@ -84,6 +84,9 @@ $( document ).on( "pagecreate", "#routes-page", function() {
 });
         
 $( document ).on( "pagecreate", "#index-page", function() {
+    if ($(this).attr('data-error') != '') {
+        $('#error').popup('open');
+    }
     // Swipe to remove list item
     $( document ).on( "swipeleft swiperight", "#list li", function( event ) {
         var listitem = $( this ),

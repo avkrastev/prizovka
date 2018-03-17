@@ -1,4 +1,9 @@
-<div data-role="page" id="index-page" data-title="Призовка.бг" data-url="index">
+{% if error is defined %}
+    {% set errorMsg = error %}
+{% else %}
+    {% set errorMsg = '' %}
+{% endif %}
+<div data-role="page" id="index-page" data-title="Призовка.бг" data-url="index" data-error="{{ errorMsg }}">
     <div data-role="header" data-position="fixed" data-theme="b">
         <h1>Призовкар.бг</h1>
         <a href="#" data-rel="back" class="initials">
@@ -17,7 +22,12 @@
     <div role="main" class="ui-content">
         <ul id="list" class="touch" data-role="listview" data-icon="false" data-split-icon="delete" data-filter="true" data-filter-placeholder="Търсене по адрес">
             {% for key, address in addresses %}
-                <li subpoena="{{ address.a.id }}">
+            {% if successId is defined %}
+                {% set selectedRow = successId %}
+            {% else %}
+                {% set selectedRow = '' %}
+            {% endif %}
+                <li subpoena="{{ address.a.id }}" {{ selectedRow == address.a.id ? 'class="success"' : '' }}>
                     <a href="#" class="address" lat="{{ address.a.latitude }}" lng="{{ address.a.longitude }}">
                         <h3 class="topic">{{ address.a.address }}</h3>
                         <p><strong>Номер на делото: {{ address.a.case_number }}</strong></p>
