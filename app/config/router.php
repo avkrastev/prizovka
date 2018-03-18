@@ -69,4 +69,12 @@ $router->add(
     ]
 );
 
+$router->add(
+    '/app',
+    [
+        'controller' => 'app',
+        'action'     => 'index',
+    ]
+);
+
 $router->handle();
