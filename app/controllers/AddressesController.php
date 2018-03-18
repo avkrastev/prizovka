@@ -106,6 +106,8 @@ class AddressesController extends ControllerBase
                                             ->bind(['case' => $subpoena[1], 'refNumber' => $subpoena[2]])
                                             ->execute()
                                             ->getFirst();
+            // Start a transaction
+            $this->db->begin();
 
             if (!$existingSubpoena) {
                 $address = new Addresses();
@@ -117,30 +119,18 @@ class AddressesController extends ControllerBase
                 $address->created_by = $this->session->get('auth')['id'];
                 $address->created_at = new Phalcon\Db\RawValue('now()');
 
-                if ($address->save() == false) {
-                    $this->view->error = "Възникна грешки повреме на запазването на данните!";
-    
-                    return $this->dispatcher->forward(
-                        [
-                            "controller" => "app",
-                            "action"     => "index",
-                        ]
-                    );
-                } else {
-                    $subpoena = $this->assignSubpoena($address->id, $this->session->get('auth')['id'], Subpoenas::ISSUED);
-
-                    if ($subpoena === false) {
-                        $this->view->error = "Възникна грешки повреме на запазването на данните!";
-                        return $this->dispatcher->forward(
-                            [
-                                "controller" => "app",
-                                "action"     => "index",
-                            ]
-                        );
+                try {
+                    if ($address->save() === false) {
+                        throw new Exception('Възникна грешки повреме на запазването на данните!');
                     }
+                    
+                    if ($this->assignSubpoena($address->id, $this->session->get('auth')['id'], Subpoenas::ISSUED) === false) {
+                        throw new Exception('Възникна грешки повреме на запазването на данните!'); 
+                    }
+                } catch (Exception $e) {
+                    $this->db->rollback();
+                    $this->view->error = $e->getMessage();
 
-                    $this->view->successId = $address->id;
-    
                     return $this->dispatcher->forward(
                         [
                             "controller" => "app",
@@ -148,9 +138,9 @@ class AddressesController extends ControllerBase
                         ]
                     );
                 }
-            } else {
-                $subpoena = $this->assignSubpoena($existingSubpoena->id, $this->session->get('auth')['id'], Subpoenas::CHANGED);
 
+                $successId = $address->id;
+            } else {
                 $existingSubpoena->case_number = $subpoena[1];
                 $existingSubpoena->reference_number = $subpoena[2];
                 $existingSubpoena->latitude = $coords[0];
@@ -159,9 +149,18 @@ class AddressesController extends ControllerBase
                 $existingSubpoena->updated_by = $this->session->get('auth')['id'];
                 $existingSubpoena->updated_at = new Phalcon\Db\RawValue('now()'); 
 
-                if ($existingSubpoena->save() == false && $subpoena === false) {
-                    $this->view->error = "Възникна грешки повреме на запазването на данните!";
-        
+                try {
+                    if ($existingSubpoena->save() === false) {
+                        throw new Exception('Възникна грешки повреме на запазването на данните!');
+                    }
+                    
+                    if ($this->assignSubpoena($existingSubpoena->id, $this->session->get('auth')['id'], Subpoenas::CHANGED) !== false) {
+                        throw new Exception('Възникна грешки повреме на запазването на данните!'); 
+                    }
+                } catch (Exception $e) {
+                    $this->db->rollback();
+                    $this->view->error = $e->getMessage();
+
                     return $this->dispatcher->forward(
                         [
                             "controller" => "app",
@@ -169,21 +168,24 @@ class AddressesController extends ControllerBase
                         ]
                     );
                 }
-
-                $this->view->successId = $existingSubpoena->id;
-                return $this->dispatcher->forward(
-                    [
-                        "controller" => "app",
-                        "action"     => "index",
-                    ]
-                );
+                $successId = $existingSubpoena->id;
             }
+
+            $this->db->commit();
+            $this->view->successId = $successId;
+            
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "app",
+                    "action"     => "index",
+                ]
+            );
         }     
     }
 
     private function getAddressByCoords($lat, $lng) 
     {
-        $url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=".$lat.",".$lng."&sensor=true&language=bg&region=BG";
+        $url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=".$lat.",".$lng."&sensor=true&language=bg&region=BG&key=AIzaSyDUWhWLcBeYctXEvOdzOHOQcpvfKDbVZsQ";
         $json_result = json_decode(file_get_contents($url));
 
         return $json_result->results[0]->formatted_address;

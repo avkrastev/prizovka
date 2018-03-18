@@ -35,7 +35,7 @@
     {{ content() }}
     <!-- Javascript files-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtCnmwX45uhYbzCjNI7a5FRl4PbthO2LU&libraries=places&language=bg&region=BG" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUWhWLcBeYctXEvOdzOHOQcpvfKDbVZsQ&libraries=places&language=bg&region=BG" async defer></script>
     {{ javascript_include('js/tether.min.js') }}
     {{ javascript_include('js/bootstrap.min.js') }}
     {{ javascript_include('js/bootstrap-datepicker.min.js') }}

@@ -3,7 +3,7 @@
 {% else %}
     {% set errorMsg = '' %}
 {% endif %}
-<div data-role="page" id="index-page" data-title="Призовка.бг" data-url="index" data-error="{{ errorMsg }}">
+<div data-role="page" id="index-page" data-title="Призовка.бг" data-url="index" data-error="{{ errorMsg }}" data-history="false">
     <div data-role="header" data-position="fixed" data-theme="b">
         <h1>Призовкар.бг</h1>
         <a href="#" data-rel="back" class="initials">
