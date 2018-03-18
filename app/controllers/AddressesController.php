@@ -154,7 +154,7 @@ class AddressesController extends ControllerBase
                         throw new Exception('Възникна грешки повреме на запазването на данните!');
                     }
                     
-                    if ($this->assignSubpoena($existingSubpoena->id, $this->session->get('auth')['id'], Subpoenas::CHANGED) !== false) {
+                    if ($this->assignSubpoena($existingSubpoena->id, $this->session->get('auth')['id'], Subpoenas::CHANGED) === false) {
                         throw new Exception('Възникна грешки повреме на запазването на данните!'); 
                     }
                 } catch (Exception $e) {
