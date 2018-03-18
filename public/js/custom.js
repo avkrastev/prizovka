@@ -274,10 +274,10 @@ $(window).load(function() {
                 var subpoenasCountPrevMonth = new Chart($('#subpoenasCountPrevMonth'), {
                     type: 'doughnut',
                     data: {
-                        labels: [resp['subpoenasCountPrevMonth']['name']],
+                        labels: resp['subpoenasCountPrevMonth']['name'],
                         datasets: [
                             {
-                                data: [resp['subpoenasCountPrevMonth']['count']],
+                                data: resp['subpoenasCountPrevMonth']['count'],
                                 borderWidth: [1, 1, 1],
                                 backgroundColor: [
                                     brandPrimary,
@@ -298,10 +298,22 @@ $(window).load(function() {
                 responsive: true
             };
 
+            var months = ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'];
+            var d = new Date();
+            
+            var pastMonths = [];
+            for (var i = d.getMonth(); i >= 0; i--) {
+                pastMonths.push(months[i]);
+            }
+            for (var j = 11; j > d.getMonth(); j--) {
+                pastMonths.push(months[j]);
+            }
+            var pastMonthsOrder = pastMonths.reverse();
+
             var allDeliveredByMonths = new Chart($('#allDeliveredByMonths'), {
                 type: 'line',
                 data: {
-                    labels: ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'],
+                    labels: pastMonthsOrder,
                     datasets: [
                         {
                             label: "Общ брой раздадени призовки по месеци",
@@ -333,7 +345,7 @@ $(window).load(function() {
             var barChartExample = new Chart($('#barChartExample'), {
                 type: 'bar',
                 data: {
-                    labels: ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'],
+                    labels: pastMonthsOrder,
                     datasets: [
                         {
                             label: "Връчени",

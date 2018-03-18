@@ -33,17 +33,30 @@ class StatisticsController extends ControllerBase
             $subpoenasCountPrevMonth['name'][] = $stp->name;
         } 
 
-        $allDeliveredByMonths = array_fill(1, 12, 0);
+        $currentMonth = intval(date('n'));
+        $allDeliveredByMonths = [];
+        $allSubpoenasActionPerMonths['delivered'] = [];
+        $allSubpoenasActionPerMonths['visited'] = [];
+        $allSubpoenasActionPerMonths['not_delivered'] = [];
+
+        for ($i = $currentMonth; $i >= 1; $i--) {
+            $allDeliveredByMonths[$i] = 0;
+            $allSubpoenasActionPerMonths['delivered'][$i] = 0;
+            $allSubpoenasActionPerMonths['visited'][$i] = 0;
+            $allSubpoenasActionPerMonths['not_delivered'][$i] = 0;
+        }
+        for ($j = 12; $j > $currentMonth; $j--) {
+            $allDeliveredByMonths[$j] = 0;
+            $allSubpoenasActionPerMonths['delivered'][$j] = 0;
+            $allSubpoenasActionPerMonths['visited'][$j] = 0;
+            $allSubpoenasActionPerMonths['not_delivered'][$j] = 0;
+        }
 
         foreach ($subpoenasModel->getDeliveredByMonths() as $count) {
             $allDeliveredByMonths[$count->month] = $count->delivered;
         }
 
-        $allDeliveredByMonths = array_values($allDeliveredByMonths);
-
-        $allSubpoenasActionPerMonths['delivered'] = array_fill(1, 12, 0);
-        $allSubpoenasActionPerMonths['visited'] = array_fill(1, 12, 0);
-        $allSubpoenasActionPerMonths['not_delivered'] = array_fill(1, 12, 0);
+        $allDeliveredByMonths = array_reverse(array_values($allDeliveredByMonths));
 
         foreach ($subpoenasModel->getSubpoenasActions() as $action) {
             $allSubpoenasActionPerMonths['delivered'][$action->month] = $action->delivered;
@@ -51,9 +64,9 @@ class StatisticsController extends ControllerBase
             $allSubpoenasActionPerMonths['not_delivered'][$action->month] = $action->not_delivered;
         }
 
-        $allSubpoenasActionPerMonths['delivered'] = array_values($allSubpoenasActionPerMonths['delivered']);
-        $allSubpoenasActionPerMonths['visited'] = array_values($allSubpoenasActionPerMonths['visited']);
-        $allSubpoenasActionPerMonths['not_delivered'] = array_values($allSubpoenasActionPerMonths['not_delivered']);
+        $allSubpoenasActionPerMonths['delivered'] = array_reverse(array_values($allSubpoenasActionPerMonths['delivered']));
+        $allSubpoenasActionPerMonths['visited'] = array_reverse(array_values($allSubpoenasActionPerMonths['visited']));
+        $allSubpoenasActionPerMonths['not_delivered'] = array_reverse(array_values($allSubpoenasActionPerMonths['not_delivered']));
 
         echo json_encode(['subpoenasCountCurrentMonth' => $subpoenasCountCurrentMonth, 
                           'subpoenasCountPrevMonth' => $subpoenasCountPrevMonth, 

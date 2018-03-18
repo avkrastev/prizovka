@@ -45,11 +45,12 @@ class Subpoenas extends Model
         $lastMonthFirstDay = date('Y-m-d H:i:s', strtotime(date('Y-m')." -1 month"));
         $lastMonthLastDay = date('Y-m-d H:i:s', strtotime('-1 second',strtotime(date('m').'/01/'.date('Y'))));
 
-		$query = $this->modelsManager->createQuery('SELECT COUNT(*) AS delivered, CONCAT(first_name, " ", last_name) AS name
+		$query = $this->modelsManager->createQuery("SELECT COUNT(*) AS delivered, CONCAT(first_name, ' ', last_name) AS name
 													FROM Subpoenas
                                                     LEFT JOIN Users ON Subpoenas.assigned_to = Users.id 
-													WHERE action = 3 AND (date BETWEEN "'.$lastMonthFirstDay.'" AND "'.$lastMonthLastDay.'")
-                                                    GROUP BY assigned_to');
+													WHERE action = 3 AND (date BETWEEN '".$lastMonthFirstDay."' AND '".$lastMonthLastDay."')
+                                                    GROUP BY assigned_to");
+
 		return $query->execute();
     }
     
@@ -57,10 +58,10 @@ class Subpoenas extends Model
     {
         $oneYearAgo = date('Y-m-d', strtotime('-1 year', time()));
 
-		$query = $this->modelsManager->createQuery('SELECT count(*) as delivered, MONTH(date) as month
+		$query = $this->modelsManager->createQuery("SELECT count(*) as delivered, MONTH(date) as month
                                                     FROM Subpoenas
-                                                    WHERE action = 3 AND (date BETWEEN "'.$oneYearAgo.'" AND NOW())
-                                                    GROUP BY MONTH(date)');
+                                                    WHERE action = 3 AND (date BETWEEN '".$oneYearAgo."' AND NOW())
+                                                    GROUP BY MONTH(date)");
         return $query->execute();
     }
 
@@ -68,14 +69,14 @@ class Subpoenas extends Model
     {
         $oneYearAgo = date('Y-m-d', strtotime('-1 year', time()));
 
-        $query = $this->modelsManager->createQuery('SELECT
+        $query = $this->modelsManager->createQuery("SELECT
                                                         MONTH(date) as month, 
                                                         SUM(action = 2) AS visited,
                                                         SUM(action = 3) AS delivered,
                                                         SUM(action = 5) AS not_delivered
                                                     FROM Subpoenas
-                                                    WHERE date BETWEEN "'.$oneYearAgo.'" AND NOW()
-                                                    GROUP BY MONTH(date)');
+                                                    WHERE date BETWEEN '".$oneYearAgo."' AND NOW()
+                                                    GROUP BY MONTH(date)");
         return $query->execute();
     }
 
