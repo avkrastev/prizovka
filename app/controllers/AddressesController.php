@@ -185,7 +185,7 @@ class AddressesController extends ControllerBase
 
     private function getAddressByCoords($lat, $lng) 
     {
-        $url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=".$lat.",".$lng."&sensor=true&language=bg&region=BG&key=AIzaSyDUWhWLcBeYctXEvOdzOHOQcpvfKDbVZsQ";
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=".$lat.",".$lng."&sensor=true&language=bg&region=BG&key=AIzaSyDUWhWLcBeYctXEvOdzOHOQcpvfKDbVZsQ";
         $json_result = json_decode(file_get_contents($url));
 
         return $json_result->results[0]->formatted_address;
