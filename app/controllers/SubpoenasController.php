@@ -29,7 +29,6 @@ class SubpoenasController extends ControllerBase
         $this->view->address = $addresses;
         $this->view->page = $paginator->getPaginate();
         $this->view->form = new AddressesForm($addresses, array('search' => true));
-        //$addressesModel->test();
     }
 
     public function searchAction() 

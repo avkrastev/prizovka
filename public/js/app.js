@@ -208,7 +208,37 @@ $( document ).on( "pagecreate", "#index-page", function() {
     }
 });
 
-$(document).on("pagecreate", "#assign-page", function() {  
+$(document).on("pagecreate", "#assign-page", function() {
+    function assignSubpona(self) {
+        $("#confirm").popup("open");
+        $("#confirm #yes").on("click", function() {
+            $("#confirm #yes").off();
+            var root = location.protocol + '//' + location.host;
+            $.post(root+'/app/assignSubpoena', 
+                {id: self.parent().attr('subpoena')},
+                function (resp) {
+                    if (resp != false) {
+                        self.parent().remove();
+                        $("#list").listview("refresh").find(".border-bottom").removeClass("border-bottom");
+                    } else {
+                        $("#error").popup("open");
+                        setTimeout(function() {
+                            $("#error").popup("close");
+                        }, 2000);
+                    }
+                }, 'json'
+            );
+        });
+        // Remove active state and unbind when the cancel button is clicked
+        $("#confirm #cancel").on("click", function() {
+            self.children(".ui-btn").removeClass("ui-btn-active");
+            $("#confirm #yes").off();
+        });
+    }
+
+    $("#list li a.address").on("click", function() {
+        assignSubpona($(this));
+    });  
     /* check scroll function */
     function checkScroll() {
         var activePage = $.mobile.pageContainer.pagecontainer("getActivePage"),
@@ -252,32 +282,7 @@ $(document).on("pagecreate", "#assign-page", function() {
                     $("#list", page).append(items).listview("refresh");
                 }
                 $("#list li a.address").on("click", function() {
-                    var self = $(this);
-
-                    $("#confirm").popup("open");
-                    $("#confirm #yes").on("click", function() {
-                        $("#confirm #yes").off();
-                        var root = location.protocol + '//' + location.host;
-                        $.post(root+'/app/assignSubpoena', 
-                            {id: self.parent().attr('subpoena')},
-                            function (resp) {
-                                if (resp != false) {
-                                    self.parent().remove();
-                                    $("#list").listview("refresh").find(".border-bottom").removeClass("border-bottom");
-                                } else {
-                                    $("#error").popup("open");
-                                    setTimeout(function() {
-                                        $("#error").popup("close");
-                                    }, 2000);
-                                }
-                            }, 'json'
-                        );
-                    });
-                    // Remove active state and unbind when the cancel button is clicked
-                    $("#confirm #cancel").on("click", function() {
-                        self.children(".ui-btn").removeClass("ui-btn-active");
-                        $("#confirm #yes").off();
-                    });
+                    assignSubpona($(this));
                 });  
                 $(document).on("scrollstop", checkScroll);
             }, 'json'

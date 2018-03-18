@@ -147,7 +147,7 @@ class Addresses extends Model
 		return $query->execute();
 	}
 
-	public function test() 
+	public function generateAddressesForTest() 
     {
 		set_time_limit(0);
 		$phql = "INSERT INTO Addresses (case_number, reference_number, address, latitude, longitude, delivered, created_at) " . 

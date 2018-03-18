@@ -21,6 +21,9 @@
                 <select name="start" id="start">
                     <option value="my">Моята позиция</option>
                     <option value="" lat="42.1530036" lng="24.7561777">бул. „6-ти Септември“ 219</option>
+                    {% for key, address in addresses %}
+                        <option value="{{ address.a.id }}" lat="{{ address.a.latitude }}" lng="{{ address.a.longitude }}">{{ address.a.address }}</option>
+                    {% endfor %}
                 </select><br/>
                 <fieldset data-role="controlgroup" id="waypoints">
                         <legend>Междинни точки:</legend>
