@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Phalcon\Db\Column;
 use Phalcon\Db\Index;
@@ -17,34 +17,34 @@ class SubpoenasMigration_101 extends Migration
      */
     public function up()
     {
-        $schema = self::$_connection->getDescriptor()['dbname'];
+        $schema = self::$connection->getDescriptor()['dbname'];
 
-        self::$_connection->addIndex(
+        self::$connection->addIndex(
             'subpoenas',
             $schema,
             new Index('ADDRESS', ['address'], null)
         );
 
-        self::$_connection->addIndex(
+        self::$connection->addIndex(
             'subpoenas',
             $schema,
             new Index('ASSIGNEE', ['assigned_to'], null)
         );
-        
-        self::$_connection->addIndex(
+
+        self::$connection->addIndex(
             'subpoenas',
             $schema,
             new Index('SUB_CREATOR', ['created_by'], null)
         );
 
-        self::$_connection->addIndex(
+        self::$connection->addIndex(
             'subpoenas',
             $schema,
             new Index('SUB_UPDATER', ['updated_by'], null)
         );
 
-        self::$_connection->addForeignKey(
-            'subpoenas', 
+        self::$connection->addForeignKey(
+            'subpoenas',
             $schema,
             new Reference(
                 'ADDRESS',
@@ -58,8 +58,8 @@ class SubpoenasMigration_101 extends Migration
             )
         );
 
-        self::$_connection->addForeignKey(
-            'subpoenas', 
+        self::$connection->addForeignKey(
+            'subpoenas',
             $schema,
             new Reference(
                 'ASSIGNEE',
@@ -72,9 +72,9 @@ class SubpoenasMigration_101 extends Migration
                 ]
             )
         );
-        
-        self::$_connection->addForeignKey(
-            'subpoenas', 
+
+        self::$connection->addForeignKey(
+            'subpoenas',
             $schema,
             new Reference(
                 'SUB_CREATOR',
@@ -88,8 +88,8 @@ class SubpoenasMigration_101 extends Migration
             )
         );
 
-        self::$_connection->addForeignKey(
-            'subpoenas', 
+        self::$connection->addForeignKey(
+            'subpoenas',
             $schema,
             new Reference(
                 'SUB_UPDATER',
@@ -111,25 +111,25 @@ class SubpoenasMigration_101 extends Migration
      */
     public function down()
     {
-        $schema = self::$_connection->getDescriptor()['dbname'];
+        $schema = self::$connection->getDescriptor()['dbname'];
 
-        $indexes = self::$_connection->describeIndexes('subpoenas');
+        $indexes = self::$connection->describeIndexes('subpoenas');
 
         if (isset($indexes['ADDRESS'])) {
-            self::$_connection->dropForeignKey('subpoenas', $schema, 'ADDRESS'); 
-            self::$_connection->dropIndex('subpoenas', $schema, 'ADDRESS');
+            self::$connection->dropForeignKey('subpoenas', $schema, 'ADDRESS');
+            self::$connection->dropIndex('subpoenas', $schema, 'ADDRESS');
         }
         if (isset($indexes['ASSIGNEE'])) {
-            self::$_connection->dropForeignKey('subpoenas', $schema, 'ASSIGNEE'); 
-            self::$_connection->dropIndex('subpoenas', $schema, 'ASSIGNEE');
+            self::$connection->dropForeignKey('subpoenas', $schema, 'ASSIGNEE');
+            self::$connection->dropIndex('subpoenas', $schema, 'ASSIGNEE');
         }
         if (isset($indexes['SUB_CREATOR'])) {
-            self::$_connection->dropForeignKey('subpoenas', $schema, 'SUB_CREATOR'); 
-            self::$_connection->dropIndex('subpoenas', $schema, 'SUB_CREATOR');
+            self::$connection->dropForeignKey('subpoenas', $schema, 'SUB_CREATOR');
+            self::$connection->dropIndex('subpoenas', $schema, 'SUB_CREATOR');
         }
         if (isset($indexes['SUB_UPDATER'])) {
-            self::$_connection->dropForeignKey('subpoenas', $schema, 'SUB_UPDATER'); 
-            self::$_connection->dropIndex('subpoenas', $schema, 'SUB_UPDATER');
+            self::$connection->dropForeignKey('subpoenas', $schema, 'SUB_UPDATER');
+            self::$connection->dropIndex('subpoenas', $schema, 'SUB_UPDATER');
         }
     }
 

@@ -35,7 +35,7 @@
     {{ content() }}
     <!-- Javascript files-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUImjLeDBrWYfZZ9WRKAPbsl1k5xo-3o0&libraries=places&language=bg&region=BG" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtCnmwX45uhYbzCjNI7a5FRl4PbthO2LU&libraries=places&language=bg&region=BG" async defer></script>
     {{ javascript_include('js/tether.min.js') }}
     {{ javascript_include('js/bootstrap.min.js') }}
     {{ javascript_include('js/bootstrap-datepicker.min.js') }}
@@ -45,7 +45,7 @@
     {{ javascript_include('js/jquery.nicescroll.min.js') }}
     {{ javascript_include('js/jquery.validate.min.js') }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    {{ javascript_include('js/front.js') }}  
+    {{ javascript_include('js/front.js') }}
     {{ javascript_include('js/base64.js') }}
     {{ javascript_include('js/custom.js') }}
     {{ javascript_include('js/jquery.simplePagination.js') }}

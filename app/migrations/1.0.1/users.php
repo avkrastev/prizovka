@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Phalcon\Db\Column;
 use Phalcon\Db\Index;
@@ -17,16 +17,16 @@ class UsersMigration_101 extends Migration
      */
     public function up()
     {
-        $schema = self::$_connection->getDescriptor()['dbname'];
-        
-        self::$_connection->addIndex(
+        $schema = self::$connection->getDescriptor()['dbname'];
+
+        self::$connection->addIndex(
             'users',
             $schema,
             new Index('USER_ORG', ['org'], null)
         );
-        
-        self::$_connection->addForeignKey(
-            'users', 
+
+        self::$connection->addForeignKey(
+            'users',
             $schema,
             new Reference(
                 'USER_ORG',
@@ -40,7 +40,7 @@ class UsersMigration_101 extends Migration
             )
         );
 
-        self::$_connection->insert(
+        self::$connection->insert(
             'users',
             [
                 1,
@@ -62,7 +62,7 @@ class UsersMigration_101 extends Migration
             ]
         );
 
-        self::$_connection->insert(
+        self::$connection->insert(
             'users',
             [
                 1,
@@ -84,7 +84,7 @@ class UsersMigration_101 extends Migration
             ]
         );
 
-        self::$_connection->insert(
+        self::$connection->insert(
             'users',
             [
                 1,
@@ -106,7 +106,7 @@ class UsersMigration_101 extends Migration
             ]
         );
 
-        self::$_connection->insert(
+        self::$connection->insert(
             'users',
             [
                 1,
@@ -128,7 +128,7 @@ class UsersMigration_101 extends Migration
             ]
         );
 
-        self::$_connection->insert(
+        self::$connection->insert(
             'users',
             [
                 1,
@@ -158,17 +158,17 @@ class UsersMigration_101 extends Migration
      */
     public function down()
     {
-        $schema = self::$_connection->getDescriptor()['dbname'];
+        $schema = self::$connection->getDescriptor()['dbname'];
 
-        $indexes = self::$_connection->describeIndexes('users');
-        
+        $indexes = self::$connection->describeIndexes('users');
+
         if (isset($indexes['USER_ORG'])) {
-            self::$_connection->dropForeignKey('users', $schema, 'USER_ORG'); 
-            self::$_connection->dropIndex('users', $schema, 'USER_ORG');
+            self::$connection->dropForeignKey('users', $schema, 'USER_ORG');
+            self::$connection->dropIndex('users', $schema, 'USER_ORG');
         }
 
-        if (self::$_connection->tableExists('users', $schema)) {
-            self::$_connection->dropTable('users');
+        if (self::$connection->tableExists('users', $schema)) {
+            self::$connection->dropTable('users');
         }
     }
 

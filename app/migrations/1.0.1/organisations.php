@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Phalcon\Db\Column;
 use Phalcon\Db\Index;
@@ -17,7 +17,7 @@ class OrganisationsMigration_101 extends Migration
      */
     public function up()
     {
-        self::$_connection->insert(
+        self::$connection->insert(
             'organisations',
             [
                 1,
@@ -39,9 +39,9 @@ class OrganisationsMigration_101 extends Migration
      */
     public function down()
     {
-        self::$_connection->execute('SET FOREIGN_KEY_CHECKS = 0');
-        self::$_connection->dropTable('organisations');
-        self::$_connection->execute('SET FOREIGN_KEY_CHECKS = 1');
+        self::$connection->execute('SET FOREIGN_KEY_CHECKS = 0');
+        self::$connection->dropTable('organisations');
+        self::$connection->execute('SET FOREIGN_KEY_CHECKS = 1');
     }
 
 }

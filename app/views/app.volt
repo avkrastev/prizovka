@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{{ static_url('css/app.css') }}" type="text/css" />
 	<link rel="shortcut icon" href="../favicon.ico">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUImjLeDBrWYfZZ9WRKAPbsl1k5xo-3o0&libraries=places&language=bg&region=BG" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtCnmwX45uhYbzCjNI7a5FRl4PbthO2LU&libraries=places&language=bg&region=BG" async defer></script>
   {{ javascript_include('js/jquery.mobile-1.4.5.min.js') }}
   {{ javascript_include('js/app.js') }}
 </head>
