@@ -5,7 +5,7 @@
 {% endif %}
 <div data-role="page" id="index-page" data-title="Призовка.бг" data-url="index" data-error="{{ errorMsg }}" data-history="false">
     <div data-role="header" data-position="fixed" data-theme="b">
-        <h1>Призовкар.бг</h1>
+        <h1>Призовка.бг</h1>
         <a href="#" data-rel="back" class="initials">
             <strong><?php echo mb_substr($user->first_name, 0, 1); ?></strong>
             <strong class="text-primary"><?php echo mb_substr($user->last_name, 0, 1); ?></strong>

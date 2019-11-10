@@ -1,6 +1,6 @@
 <div data-role="page" id="routes-page" data-title="Призовка.бг" data-url="routes">
     <div data-role="header" data-position="fixed" data-theme="b">
-        <h1>Призовкар.бг</h1>
+        <h1>Призовка.бг</h1>
         <a href="#" data-rel="back" class="initials">
             <strong><?php echo mb_substr($user->first_name, 0, 1); ?></strong>
             <strong class="text-primary"><?php echo mb_substr($user->last_name, 0, 1); ?></strong>

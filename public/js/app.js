@@ -11,7 +11,7 @@ $(window).load(function() {
     });
 });
 
-$( document ).on( "pagecreate", "#routes-page", function() {
+$(document).on( "pagecreate", "#routes-page", function() {
     if (navigator.geolocation) {
         function success(pos) {
             // Location found
